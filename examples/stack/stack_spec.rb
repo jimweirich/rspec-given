@@ -6,23 +6,23 @@ describe Stack do
   # Invariant { stack.depth >= 0 }
   # Invariant { stack.empty? == (stack.depth == 0) }
 
-  Given(:empty_stack) { Stack.new }
+  Given(:an_empty_stack) { Stack.new }
 
-  def a_stack_with_one_item
-    stack = Stack.new
-    stack.push(:an_item)
-    stack
+  Given(:a_stack_with_one_item) do
+    Stack.new.tap do |s|
+      s.push(:an_item)
+    end
   end
 
-  def a_stack_with_several_items
-   stack = Stack.new
-   stack.push(:second_item)
-   stack.push(:top_item)
-   stack
+  Given(:a_stack_with_several_items) do
+    Stack.new.tap do |s|
+      s.push(:second_item)
+      s.push(:top_item)
+    end
   end
 
   context "an empty stack" do
-    Given(:stack) { Stack.new }
+    Given(:stack) { an_empty_stack }
 
     Then { stack.depth.should == 0 }
 
