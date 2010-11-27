@@ -31,14 +31,14 @@ With all that in mind, here's a specification in my imaginary
 framework:
 
 <pre>
-require 'rspec/given'
-require 'examples/stack'
+require 'spec_helper'
+require 'stack'
 
 describe Stack do
   # NOTE: Invariants are not yet supported in rspec-given
-  Invariant { stack.depth >= 0 }
-  Invariant { stack.empty? == (stack.depth == 0) }
-  
+  # Invariant { stack.depth >= 0 }
+  # Invariant { stack.empty? == (stack.depth == 0) }
+
   Given(:empty_stack) { Stack.new }
 
   def a_stack_with_one_item
@@ -55,7 +55,7 @@ describe Stack do
   end
 
   context "an empty stack" do
-    Given(:stack) { an_empty_stack }
+    Given(:stack) { Stack.new }
 
     Then { stack.depth.should == 0 }
 
@@ -67,7 +67,7 @@ describe Stack do
     end
   end
 
-  context "a stack with one item do
+  context "a stack with one item do" do
     Given(:stack) { a_stack_with_one_item }
 
     context "popping an item empties the stack" do
@@ -80,7 +80,7 @@ describe Stack do
 
   context "a stack with several items" do
     Given(:stack) { a_stack_with_several_items }
-    let!(:original_depth) { stack.depth }
+    Given!(:original_depth) { stack.depth }
 
     context "pushing a new item adds a new top" do
       When { stack.push(:new_item) }
@@ -90,9 +90,9 @@ describe Stack do
     end
 
     context "popping an item removes the top item" do
-      When { stack.pop }
+      When(:pop_result) { stack.pop }
 
-      Then { result.should == :top_item }
+      Then { pop_result.should == :top_item }
       Then { stack.top.should == :second_item }
       Then { stack.depth.should == original_depth - 1 }
     end

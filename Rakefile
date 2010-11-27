@@ -9,6 +9,18 @@ CLOBBER.include("*.gemspec", "html")
 
 require 'bluecloth'
 
+
+task :default => :examples
+
+# Running examples ---------------------------------------------------
+
+desc "Run the examples"
+task :examples do
+  sh "rspec examples"
+end
+
+# Formatting the README ----------------------------------------------
+
 directory 'html'
 
 desc "Display the README file"
