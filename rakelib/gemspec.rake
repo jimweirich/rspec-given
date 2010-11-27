@@ -34,6 +34,8 @@ EOF
       '--title', 'RSpec Given Extensions'
     ]
 
+    s.add_dependency("rspec", ">= 2.0")
+
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/jimweirich/rspec-given"
