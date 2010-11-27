@@ -35,6 +35,7 @@ EOF
     ]
 
     s.add_dependency("rspec", "~> 2.0")
+    s.add_development_dependency("bluecloth")
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
