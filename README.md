@@ -165,3 +165,9 @@ used in contexts that define that accessor.
 
 NOTE: Invariants are not yet implemented in the current version of
 rspec-given.
+
+# Links
+
+* Github: https://github.com/jimweirich/rspec-given
+* Clone URL: git://github.com/jimweirich/rspec-given.git
+* Bug/Issue Reporting: http://onestepback.org/cgi-bin/bugs.cgi?project=rspec-given
