@@ -1,6 +1,17 @@
 module RSpec
   module Given
     module Extensions
+
+      # Declare a "given" of the current specification.  If the given
+      # is named, the block will be lazily evaluated the first time
+      # the given is mentioned by name in the specification.  If the
+      # given is unnamed, the block is evaluated for side effects
+      # every time the specification is executed.
+      #
+      # :call-seq:
+      #   Given(:name, &block)
+      #   Given(&block)
+      #
       def Given(*args,&block)
         if args.first.is_a?(Symbol)
           let(args.first, &block)
@@ -9,10 +20,22 @@ module RSpec
         end
       end
 
-      def Given!(var, &block)
-        let!(var, &block)
+      # Declare a named given of the current specification.  Similar
+      # to the named version of the "Given" command, except that the
+      # block is always evaluated.
+      #
+      # :call-seq:
+      #   Given!(:name) { ... code ... }
+      def Given!(name, &block)
+        let!(name, &block)
       end
 
+      # Declare the code that is under test.
+      #
+      # :call-seq:
+      #   When(:named_result, &block)
+      #   When(&block)
+      #
       def When(*args, &block)
         if args.first.is_a?(Symbol)
           let!(args.first, &block)
