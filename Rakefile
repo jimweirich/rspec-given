@@ -36,3 +36,30 @@ task "html/README.html" => ['html', 'README.md'] do
     end
   end
 end
+
+# RDoc ---------------------------------------------------------------
+require 'rake/rdoctask'
+
+begin
+  require 'darkfish-rdoc'
+  DARKFISH_ENABLED = true
+rescue LoadError => ex
+  DARKFISH_ENABLED = false
+end
+
+BASE_RDOC_OPTIONS = [
+  '--line-numbers', '--inline-source',
+  '--main' , 'README.rdoc',
+  '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
+]
+
+rd = Rake::RDocTask.new("rdoc") do |rdoc|
+  rdoc.rdoc_dir = 'html'
+#  rdoc.template = 'doc/jamis.rb'
+  rdoc.title    = "Rake -- Ruby Make"
+  rdoc.options = BASE_RDOC_OPTIONS.dup
+  rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
+
+  rdoc.rdoc_files.include('README.md', 'MIT-LICENSE')
+  rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
+end
