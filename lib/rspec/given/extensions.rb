@@ -2,6 +2,20 @@ module RSpec
   module Given
     module Extensions
 
+      # Declare a scenario to contain Given/When/Then declarations.  A
+      # Scenario is essentially an RSpec context, with the additional
+      # expectations:
+      #
+      # * There is a single When declaration in a Scenario.
+      # * Scenarios do not nest.
+      #
+      # :call-seq:
+      #    Scenario "a scenario description" do ... end
+      #
+      def Scenario(description, &block)
+        context(description, &block)
+      end
+
       # Declare a "given" of the current specification.  If the given
       # is named, the block will be lazily evaluated the first time
       # the given is mentioned by name in the specification.  If the
