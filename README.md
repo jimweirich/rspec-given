@@ -15,11 +15,7 @@ RSpec specifications.
 
 ## Status
 
-rspec-given is quite usable at the moment, although is is lacking
-several features I would eventually like to see.
-
-* Invariants are not supported yet.
-* Then assertions without _should_ are not supported yet.
+_rspec-given_ is ready for production use.
 
 ## Example
 
