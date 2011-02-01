@@ -6,27 +6,12 @@ describe Stack do
   # Invariant { stack.depth >= 0 }
   # Invariant { stack.empty? == (stack.depth == 0) }
 
-  Given(:an_empty_stack) { Stack.new }
+  Given(:stack) { Stack.new }
 
-  Given(:a_stack_with_one_item) do
-    Stack.new.tap do |s|
-      s.push(:an_item)
-    end
-  end
-
-  Given(:a_stack_with_several_items) do
-    Stack.new.tap do |s|
-      s.push(:second_item)
-      s.push(:top_item)
-    end
-  end
-
-  context "an empty stack" do
-    Given(:stack) { an_empty_stack }
-
+  context "when empty" do
     Then { stack.depth.should == 0 }
 
-    Scenario "pushing onto an empty stack" do
+    context "when pushing" do
       When { stack.push(:an_item) }
 
       Then { stack.depth.should == 1 }
@@ -34,10 +19,10 @@ describe Stack do
     end
   end
 
-  context "a stack with one item do" do
-    Given(:stack) { a_stack_with_one_item }
+  context "with one item" do
+    Given { stack.push(:an_item) }
 
-    Scenario "popping an item empties the stack" do
+    context "when popping" do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
@@ -45,18 +30,21 @@ describe Stack do
     end
   end
 
-  context "a stack with several items" do
-    Given(:stack) { a_stack_with_several_items }
+  context "with several items" do
+    Given {
+      stack.push(:second_item)
+      stack.push(:top_item)
+    }
     Given!(:original_depth) { stack.depth }
 
-    Scenario "pushing a new item adds a new top" do
+    context "when pushing" do
       When { stack.push(:new_item) }
 
       Then { stack.top.should == :new_item }
       Then { stack.depth.should == original_depth + 1 }
     end
 
-    Scenario "popping an item removes the top item" do
+    context "when popping" do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :top_item }

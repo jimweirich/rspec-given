@@ -7,8 +7,11 @@ CLOBBER.include("*.gemspec", "html")
 
 # README Formatting --------------------------------------------------
 
-require 'bluecloth'
-
+begin
+  require 'bluecloth'
+rescue LoadError => ex
+  puts "WARNING: BlueCloth not available"
+end
 
 task :default => :examples
 
