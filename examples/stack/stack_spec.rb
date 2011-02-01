@@ -1,3 +1,4 @@
+require 'rspec/given'
 require 'spec_helper'
 require 'stack'
 
@@ -6,9 +7,16 @@ describe Stack do
   # Invariant { stack.depth >= 0 }
   # Invariant { stack.empty? == (stack.depth == 0) }
 
-  Given(:stack) { Stack.new }
+  def stack_with(initial_contents)
+    stack = Stack.new
+    initial_contents.each do |item| stack.push(item) end
+    stack
+  end
+
+  Given(:stack) { stack_with(initial_contents) }
 
   context "when empty" do
+    Given(:initial_contents) { [] }
     Then { stack.depth.should == 0 }
 
     context "when pushing" do
@@ -20,7 +28,7 @@ describe Stack do
   end
 
   context "with one item" do
-    Given { stack.push(:an_item) }
+    Given(:initial_contents) { [:an_item] }
 
     context "when popping" do
       When(:pop_result) { stack.pop }
@@ -31,10 +39,7 @@ describe Stack do
   end
 
   context "with several items" do
-    Given {
-      stack.push(:second_item)
-      stack.push(:top_item)
-    }
+    Given(:initial_contents) { [:second_item, :top_item] }
     Given!(:original_depth) { stack.depth }
 
     context "when pushing" do

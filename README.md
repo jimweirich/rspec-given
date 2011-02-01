@@ -19,16 +19,24 @@ _rspec-given_ is ready for production use.
 
 ## Example
 
-Here is a specification in rspec-given framework:
+Here is a specification written in the rspec-given framework:
 
 <pre>
+require 'rspec/given'
 require 'spec_helper'
 require 'stack'
 
 describe Stack do
-  Given(:stack) { Stack.new }
+  def stack_with(initial_contents)
+    stack = Stack.new
+    initial_contents.each do |item| stack.push(item) end
+    stack
+  end
+
+  Given(:stack) { stack_with(initial_contents) }
 
   context "when empty" do
+    Given(:initial_contents) { [] }
     Then { stack.depth.should == 0 }
 
     context "when pushing" do
@@ -40,7 +48,7 @@ describe Stack do
   end
 
   context "with one item" do
-    Given { stack.push(:an_item) }
+    Given(:initial_contents) { [:an_item] }
 
     context "when popping" do
       When(:pop_result) { stack.pop }
@@ -51,10 +59,7 @@ describe Stack do
   end
 
   context "with several items" do
-    Given {
-      stack.push(:second_item)
-      stack.push(:top_item)
-    }
+    Given(:initial_contents) { [:second_item, :top_item] }
     Given!(:original_depth) { stack.depth }
 
     context "when pushing" do
@@ -75,7 +80,8 @@ describe Stack do
 end
 </pre>
 
-Let's talk about the individual sections.
+Let's talk about the individual statements used in the Given
+framework.
 
 ### Given
 
@@ -85,10 +91,15 @@ standard test frameworks the preconditions are established with a
 combination of setup methods (or :before actions in RSpec) and code in
 the test.
 
-In the example code above, we see three starting points of interest.
-One is an empty, just freshly created stack.  The next is a stack with
-exactly one item.  The final starting point is a stack with several
-items.
+In the example code above the preconditions are started with _Given_
+statements.  A top level _Given_ (that applies to the entire describe
+block) says that one of the preconditions is that there is a stack
+with some initial contents.
+
+Note that initial contents are not specified in the top level describe
+block, but are given in each of the nested contexts.  By pushing the
+definition of "initial_contents" into the nested contexts, we can vary
+them as needed for that particular context.
 
 A precondition in the form "Given(:var) {...}" creates an accessor
 method named "var".  The accessor is lazily initialized by the code
@@ -162,8 +173,8 @@ context.  E.g.
     When { stack.push(:item) }
 </pre>
 
-The code block is executed once per test.  The effect of the When{}
-block is very similar to Given{}.  However, When is used to identify
+The code block is executed once per test.  The effect of the _When{}_
+block is very similar to _Given{}_.  However, When is used to identify
 the particular code that is being specified in the current context or
 describe block.
 
@@ -173,7 +184,7 @@ describe block.
 
 The code block is executed once per test and the value of the code
 block is bound to 'result'.  Use this form when the code under test
-returns a value that you wish to interrogate in the Then code.
+returns a value that you wish to interrogate in the _Then_ code.
 
 ### Then
 
@@ -237,7 +248,7 @@ we could say:
     Then { x == y }
 
 I think the [wrong assertion library](http://rubygems.org/gems/wrong)
-has laid the groundwork in this area.
+has laid some groundwork in this area.
 
 # Links
 
