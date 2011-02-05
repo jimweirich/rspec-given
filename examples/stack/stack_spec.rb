@@ -23,7 +23,7 @@ describe Stack do
       When { stack.push(:an_item) }
 
       Then { stack.depth.should == 1 }
-      Then { stack.top.should == :an_item }
+      And  { stack.top.should == :an_item }
     end
   end
 
@@ -34,27 +34,28 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      Then { stack.should be_empty }
+      And  { stack.should be_empty }
     end
   end
 
   context "with several items" do
     Given(:initial_contents) { [:second_item, :top_item] }
-    Given!(:original_depth) { stack.depth }
+    And!(:original_depth) { stack.depth }
 
     context "when pushing" do
       When { stack.push(:new_item) }
 
       Then { stack.top.should == :new_item }
-      Then { stack.depth.should == original_depth + 1 }
+      And  { stack.depth.should == original_depth + 1 }
     end
 
     context "when popping" do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :top_item }
-      Then { stack.top.should == :second_item }
-      Then { stack.depth.should == original_depth - 1 }
+      And  { stack.top.should == :second_item }
+      And  { stack.depth.should == original_depth - 1 }
+      But  { stack.depth.should_not == original_depth }
     end
   end
 end
