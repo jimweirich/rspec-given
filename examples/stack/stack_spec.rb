@@ -3,10 +3,6 @@ require 'spec_helper'
 require 'stack'
 
 describe Stack do
-  # NOTE: Invariants are not yet supported in rspec-given
-  # Invariant { stack.depth >= 0 }
-  # Invariant { stack.empty? == (stack.depth == 0) }
-
   def stack_with(initial_contents)
     stack = Stack.new
     initial_contents.each do |item| stack.push(item) end
