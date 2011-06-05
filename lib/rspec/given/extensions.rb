@@ -2,6 +2,12 @@ module RSpec
   module Given
     module Extensions
 
+      # *DEPRECATED:*
+      #
+      # The Scenario command is deprecated.  Future versions of
+      # rspec/given will start displaying warnings when used.
+      # Eventually the command will be removed.
+      #
       # Declare a scenario to contain Given/When/Then declarations.  A
       # Scenario is essentially an RSpec context, with the additional
       # expectations:
@@ -26,7 +32,7 @@ module RSpec
       #   Given(:name, &block)
       #   Given(&block)
       #
-      def Given(*args,&block)
+      def Given(*args, &block)
         if args.first.is_a?(Symbol)
           let(args.first, &block)
         else
