@@ -1,4 +1,4 @@
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require './lib/rspec/given/version'
 
 if ! defined?(Gem)
@@ -26,16 +26,15 @@ pre and post-conditions for code under test.
 EOF
     s.files = PKG_FILES.to_a
     s.require_path = 'lib'                         # Use these for libraries.
-    s.has_rdoc = true
-#    s.extra_rdoc_files = rd.rdoc_files.reject { |fn| fn =~ /\.rb$/ }.to_a
     s.rdoc_options = [
       '--line-numbers', '--inline-source',
       '--main' , 'README.md',
       '--title', 'RSpec Given Extensions'
     ]
 
-    s.add_dependency("rspec", "~> 2.0")
+    s.add_dependency("rspec", "> 1.2.8")
     s.add_development_dependency("bluecloth")
+    s.add_development_dependency("rdoc", "> 2.4.2")
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
@@ -43,7 +42,7 @@ EOF
     s.rubyforge_project = "given"
   end
 
-  package_task = Rake::GemPackageTask.new(SPEC) do |pkg|
+  package_task = Gem::PackageTask.new(SPEC) do |pkg|
     pkg.need_zip = true
     pkg.need_tar = true
   end

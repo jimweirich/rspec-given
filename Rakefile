@@ -41,7 +41,7 @@ task "html/README.html" => ['html', 'README.md'] do
 end
 
 # RDoc ---------------------------------------------------------------
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 begin
   require 'darkfish-rdoc'
@@ -56,7 +56,7 @@ BASE_RDOC_OPTIONS = [
   '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
 ]
 
-rd = Rake::RDocTask.new("rdoc") do |rdoc|
+rd = RDoc::Task.new("rdoc") do |rdoc|
   rdoc.rdoc_dir = 'html'
 #  rdoc.template = 'doc/jamis.rb'
   rdoc.title    = "Rake -- Ruby Make"
