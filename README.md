@@ -1,9 +1,11 @@
 # rspec-given
 
-rspec-given is an RSpec 2 extension to allow Given/When/Then notation
-in RSpec specifications.  It is a natural extension of the
-experimental work done on the Given framework.  It turns out that 90%
-of the Given framework can be trivially implemented on top of RSpec.
+Covering rspec-given, version 1.4.0.
+
+rspec-given is an RSpec extension to allow Given/When/Then notation in
+RSpec specifications.  It is a natural extension of the experimental
+work done on the Given framework.  It turns out that 90% of the Given
+framework can be trivially implemented on top of RSpec.
 
 # Why Given/When/Then
 
