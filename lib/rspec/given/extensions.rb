@@ -38,6 +38,10 @@ module RSpec
         else
           before(&block)
         end
+        alias :And :Given
+        alias :But :Given
+        alias :And! :Given!
+        alias :But! :Given!
       end
 
       # Declare a named given of the current specification.  Similar
@@ -48,6 +52,10 @@ module RSpec
       #   Given!(:name) { ... code ... }
       def Given!(name, &block)
         let!(name, &block)
+        alias :And :Given
+        alias :But :Given
+        alias :And! :Given!
+        alias :But! :Given!
       end
 
       # Declare the code that is under test.
@@ -61,6 +69,12 @@ module RSpec
           let!(args.first, &block)
         else
           before(&block)
+        end
+        # Since there can only be one When in an example,,
+        # Eagerly alias And and But
+        RSpec.configure do |c|
+          c.alias_example_to :And
+          c.alias_example_to :But
         end
       end
     end
