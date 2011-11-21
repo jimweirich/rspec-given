@@ -1,4 +1,4 @@
-if defined? Spec
+if !defined?(RSpec) && defined?(Spec::Version::STRING) && Spec::Version::STRING =~ /^1\./
   require 'rspec/given/rspec1_given'
 else
   require 'rspec/given/version'
