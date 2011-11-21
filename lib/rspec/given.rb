@@ -1,4 +1,13 @@
-if !defined?(RSpec) && defined?(Spec::Version::STRING) && Spec::Version::STRING =~ /^1\./
+module RSpec
+  module Given
+    def self.using_old_rspec?
+      defined?(Spec::VERSION::SUMMARY) &&
+        Spec::VERSION::SUMMARY =~ /^rspec +1\./
+    end
+  end
+end
+
+if RSpec::Given.using_old_rspec?
   require 'rspec/given/rspec1_given'
 else
   require 'rspec/given/version'
