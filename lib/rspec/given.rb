@@ -1,7 +1,9 @@
 module RSpec
   module Given
     def self.using_old_rspec?
-      defined?(Spec::VERSION::SUMMARY) &&
+      defined?(Spec) &&
+        defined?(Spec::VERSION) &&
+        defined?(Spec::VERSION::SUMMARY) &&
         Spec::VERSION::SUMMARY =~ /^rspec +1\./
     end
   end
