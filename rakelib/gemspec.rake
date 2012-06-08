@@ -6,6 +6,7 @@ if ! defined?(Gem)
 else
   PKG_FILES = FileList[
     '[A-Z]*',
+    'lib/*.rb',
     'lib/**/*.rb',
     'test/**/*.rb',
     'examples/**/*',
