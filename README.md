@@ -252,9 +252,10 @@ we could say:
 I think the [wrong assertion library](http://rubygems.org/gems/wrong)
 has laid some groundwork in this area.
 
+Demo Comment.
+
 # Links
 
 * Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
 * Clone URL: git://github.com/jimweirich/rspec-given.git
 * Bug/Issue Reporting: [http://onestepback.org/cgi-bin/bugs.cgi?project=rspec-given](http://onestepback.org/cgi-bin/bugs.cgi?project=rspec-given)
-
