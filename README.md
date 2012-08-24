@@ -256,5 +256,4 @@ has laid some groundwork in this area.
 
 * Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
 * Clone URL: git://github.com/jimweirich/rspec-given.git
-* Bug/Issue Reporting: [http://onestepback.org/cgi-bin/bugs.cgi?project=rspec-given](http://onestepback.org/cgi-bin/bugs.cgi?project=rspec-given)
-
+* Bug/Issue Reporting: [https://github.com/jimweirich/rspec-given/issues](https://github.com/jimweirich/rspec-given/issues)
