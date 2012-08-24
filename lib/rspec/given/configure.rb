@@ -1,3 +1,4 @@
+require 'rspec'
 require 'rspec/given/extensions'
 
 RSpec.configure do |c|
