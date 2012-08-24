@@ -21,13 +21,25 @@ desc "Run all the examples"
 task :examples => [:examples1, :examples2]
 
 desc "Run the examples in RSpec 1"
-task :examples1 do
+task :examples1 => [:verify_rspec1] do
   sh "spec examples/stack/stack_spec1.rb"
 end
 
 desc "Run the examples in RSpec 2"
-task :examples2 do
+task :examples2 => [:verify_rspec2] do
   sh "rspec examples"
+end
+
+task :verify_rspec1 do
+  sh "type spec >/dev/null 2>&1", verbose: false do |status|
+    fail "You need to install RSpec 1 in order to test agains it." unless status
+  end
+end
+
+task :verify_rspec2 do
+  sh "type rspec >/dev/null 2>&1", verbose: false do |status|
+    fail "You need to install RSpec 2 in order to test agains it." unless status
+  end
 end
 
 # Formatting the README ----------------------------------------------
