@@ -36,6 +36,7 @@ describe Stack do
   end
 
   Given(:stack) { stack_with(initial_contents) }
+  Invariant { stack.empty?.should == (stack.depth == 0) }
 
   context "when empty" do
     Given(:initial_contents) { [] }
