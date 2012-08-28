@@ -47,6 +47,11 @@ describe Stack do
       Then { stack.depth.should == 1 }
       Then { stack.top.should == :an_item }
     end
+
+    context "when popping" do
+      When(:result) { stack.pop }
+      Then { result.should have_failed(Stack::UnderflowError, /empty/) }
+    end
   end
 
   context "with one item" do
