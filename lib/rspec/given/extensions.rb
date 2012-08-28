@@ -3,7 +3,10 @@ require 'rspec/given/failure'
 module RSpec
   module Given
     module InstanceExtensions
-      def _rg_run_all_givens
+      # Establish all the Given preconditions the current and
+      # surrounding describe/context blocks, starting with the
+      # outermost context.
+      def _rg_establish_givens  # :nodoc:
         return if defined?(@_rg_ran)
         self.class.ancestors.reverse.each do |context|
           context._rg_givens.each do |block|
@@ -13,7 +16,9 @@ module RSpec
         @_rg_ran = true
       end
 
-      def _rg_check_invariants
+      # Check all the invariants in the current and surrounding
+      # describe/context blocks, starting with the outermost context.
+      def _rg_check_invariants  # :nodoc:
         self.class.ancestors.reverse.each do |context|
           context._rg_invariants.each do |block|
             instance_eval(&block)
@@ -23,6 +28,18 @@ module RSpec
     end
 
     module ClassExtensions
+
+      # List of all givens directly in the current describe/context
+      # block.
+      def _rg_givens            # :nodoc:
+        @_rg_givens ||= []
+      end
+
+      # List of all invariants directly in the current
+      # describe/context block.
+      def _rg_invariants        # :nodoc:
+        @_rg_invariants ||= []
+      end
 
       # *DEPRECATED:*
       #
@@ -62,14 +79,6 @@ module RSpec
         end
       end
 
-      def _rg_givens
-        @_rg_givens ||= []
-      end
-
-      def _rg_invariants
-        @_rg_invariants ||= []
-      end
-
       # Declare a named given of the current specification.  Similar
       # to the named version of the "Given" command, except that the
       # block is always evaluated.
@@ -90,7 +99,7 @@ module RSpec
         if args.first.is_a?(Symbol)
           let!(args.first) do
             begin
-              _rg_run_all_givens
+              _rg_establish_givens
               instance_eval(&block)
             rescue Exception => ex
               Failure.new(ex)
@@ -98,20 +107,27 @@ module RSpec
           end
         else
           before do
-            _rg_run_all_givens
+            _rg_establish_givens
             instance_eval(&block)
           end
         end
       end
 
+      # Provide an assertion about the specification.
+      #
+      # Then supplies an assertion that should be true after all the
+      # Given and When blocks have been run. All invariants in scope
+      # will be checked before the Then block is run.
       def Then(&block)
         specify do
-          _rg_run_all_givens
+          _rg_establish_givens
           _rg_check_invariants
           instance_eval(&block)
         end
       end
 
+      # Establish an invariant that must be true for all Then blocks
+      # in the current (and nested) scopes.
       def Invariant(&block)
         _rg_invariants << block
       end
