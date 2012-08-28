@@ -2,6 +2,15 @@ module RSpec
   module Given
     module Extensions
 
+      class Touchy < BasicObject
+        def initialize(exception)
+          @exception = exception
+        end
+        def method_missing(sym, *args, &block)
+          ::Kernel.raise @exception
+        end
+      end
+
       # *DEPRECATED:*
       #
       # The Scenario command is deprecated.  Future versions of
@@ -58,7 +67,13 @@ module RSpec
       #
       def When(*args, &block)
         if args.first.is_a?(Symbol)
-          let!(args.first, &block)
+          let!(args.first) do
+            begin
+              instance_eval(&block)
+            rescue Exception => ex
+              Touchy.new(ex)
+            end
+          end
         else
           before(&block)
         end
