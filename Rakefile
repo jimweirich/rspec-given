@@ -23,13 +23,21 @@ task :examples => [:specs, :examples1, :examples2]
 desc "Run the RSpec 2 specs and examples"
 task :ex2 => [:specs, :examples2]
 
+desc "Run the specs"
+task :specs do
+  puts "Running specs"
+  sh "rspec spec"
+end
+
 desc "Run the examples in RSpec 1"
 task :examples1 => [:verify_rspec1] do
+  puts "Running examples (with RSpec2)"
   sh "spec examples/stack/stack_spec1.rb"
 end
 
 desc "Run the examples in RSpec 2"
 task :examples2 => [:verify_rspec2] do
+  puts "Running examples (with RSpec2)"
   sh "rspec examples"
 end
 
@@ -44,11 +52,6 @@ task :verify_rspec2 do
     fail "You need to install RSpec 2 in order to test against it." unless status
   end
 end
-
-task :specs do
-  sh "rspec spec"
-end
-
 
 # Formatting the README ----------------------------------------------
 
