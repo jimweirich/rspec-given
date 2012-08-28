@@ -5,6 +5,9 @@ module RSpec
       # Alias for raise_error(...), but reads a bit better when using
       # a failure result from a when clause.
       #
+      # NOTE: This is new for 1.6.0.beta.1. A name change for this
+      # method is possible.
+      #
       # Typical Usage:
       #
       #    When(:result) { fail "OUCH" }
