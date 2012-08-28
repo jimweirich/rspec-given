@@ -13,12 +13,15 @@ rescue LoadError => ex
   puts "WARNING: BlueCloth not available"
 end
 
-task :default => :examples
+task :default => :ex2
 
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
-task :examples => [:examples1, :examples2]
+task :examples => [:specs, :examples1, :examples2]
+
+desc "Run the RSpec 2 specs and examples"
+task :ex2 => [:specs, :examples2]
 
 desc "Run the examples in RSpec 1"
 task :examples1 => [:verify_rspec1] do
@@ -32,15 +35,20 @@ end
 
 task :verify_rspec1 do
   sh "type spec >/dev/null 2>&1", verbose: false do |status|
-    fail "You need to install RSpec 1 in order to test agains it." unless status
+    fail "You need to install RSpec 1 in order to test against it." unless status
   end
 end
 
 task :verify_rspec2 do
   sh "type rspec >/dev/null 2>&1", verbose: false do |status|
-    fail "You need to install RSpec 2 in order to test agains it." unless status
+    fail "You need to install RSpec 2 in order to test against it." unless status
   end
 end
+
+task :specs do
+  sh "rspec spec"
+end
+
 
 # Formatting the README ----------------------------------------------
 
