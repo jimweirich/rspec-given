@@ -15,4 +15,6 @@ else
   require 'rspec/given/version'
   require 'rspec/given/extensions'
   require 'rspec/given/configure'
+  require 'rspec/given/failure'
+  require 'rspec/given/have_failed'
 end

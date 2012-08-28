@@ -1,15 +1,8 @@
+require 'rspec/given/failure'
+
 module RSpec
   module Given
     module Extensions
-
-      class Touchy < BasicObject
-        def initialize(exception)
-          @exception = exception
-        end
-        def method_missing(sym, *args, &block)
-          ::Kernel.raise @exception
-        end
-      end
 
       # *DEPRECATED:*
       #
@@ -71,7 +64,7 @@ module RSpec
             begin
               instance_eval(&block)
             rescue Exception => ex
-              Touchy.new(ex)
+              Failure.new(ex)
             end
           end
         else
