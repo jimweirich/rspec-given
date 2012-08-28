@@ -25,6 +25,9 @@ describe Stack do
     context "when popping" do
       When(:result) { stack.pop }
       Then { result.should have_failed(Stack::UnderflowError, /empty/) }
+
+      # Check that other operations on result will raise an error
+      Then { lambda { result.should be_nil }.should raise_error(Stack::UnderflowError, /empty/) }
     end
   end
 

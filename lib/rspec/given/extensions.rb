@@ -2,7 +2,27 @@ require 'rspec/given/failure'
 
 module RSpec
   module Given
-    module Extensions
+    module InstanceExtensions
+      def _rg_run_all_givens
+        return if defined?(@_rg_ran)
+        self.class.ancestors.reverse.each do |context|
+          context._rg_givens.each do |block|
+            instance_eval(&block)
+          end
+        end
+        @_rg_ran = true
+      end
+
+      def _rg_check_invariants
+        self.class.ancestors.reverse.each do |context|
+          context._rg_invariants.each do |block|
+            instance_eval(&block)
+          end
+        end
+      end
+    end
+
+    module ClassExtensions
 
       # *DEPRECATED:*
       #
@@ -38,8 +58,16 @@ module RSpec
         if args.first.is_a?(Symbol)
           let(args.first, &block)
         else
-          before(&block)
+          _rg_givens << block
         end
+      end
+
+      def _rg_givens
+        @_rg_givens ||= []
+      end
+
+      def _rg_invariants
+        @_rg_invariants ||= []
       end
 
       # Declare a named given of the current specification.  Similar
@@ -62,14 +90,30 @@ module RSpec
         if args.first.is_a?(Symbol)
           let!(args.first) do
             begin
+              _rg_run_all_givens
               instance_eval(&block)
             rescue Exception => ex
               Failure.new(ex)
             end
           end
         else
-          before(&block)
+          before do
+            _rg_run_all_givens
+            instance_eval(&block)
+          end
         end
+      end
+
+      def Then(&block)
+        specify do
+          _rg_run_all_givens
+          _rg_check_invariants
+          instance_eval(&block)
+        end
+      end
+
+      def Invariant(&block)
+        _rg_invariants << block
       end
     end
   end
