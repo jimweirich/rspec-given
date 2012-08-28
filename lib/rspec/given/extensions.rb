@@ -58,6 +58,9 @@ module RSpec
       #    Scenario "a scenario description" do ... end
       #
       def Scenario(description, &block)
+        line = eval("__LINE__", block.binding)
+        file = eval("__FILE__", block.binding)
+        puts "WARNING: Scenario is deprecated, please use either describe or context (#{file}:#{line})"
         context(description, &block)
       end
 
