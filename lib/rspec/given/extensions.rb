@@ -2,7 +2,12 @@ require 'rspec/given/failure'
 
 module RSpec
   module Given
-    module InstanceExtensions
+
+    # Provide run-time methods to support RSpec/Given infrastructure.
+    # All the methods in this module are considered private and
+    # implementation-specific.
+    module InstanceExtensions   # :nodoc:
+
       # Establish all the Given preconditions the current and
       # surrounding describe/context blocks, starting with the
       # outermost context.
@@ -43,9 +48,9 @@ module RSpec
 
       # *DEPRECATED:*
       #
-      # The Scenario command is deprecated.  Future versions of
-      # rspec/given will start displaying warnings when used.
-      # Eventually the command will be removed.
+      # The Scenario command is deprecated. Using Scenario in a spec
+      # will result in a warning message. Eventually the command will
+      # be removed.
       #
       # Declare a scenario to contain Given/When/Then declarations.  A
       # Scenario is essentially an RSpec context, with the additional
