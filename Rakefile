@@ -15,6 +15,36 @@ end
 
 task :default => :ex2
 
+def version
+  RSpec::Given::VERSION
+end
+
+def tag_name
+  "rspec-given-#{version}"
+end
+
+def tagged?
+  `git tag`.split.include?(tag_name)
+end
+
+def git_clean?
+  sh "git status | grep 'nothing to commit'", :verbose => false do |status|
+    return status
+  end
+end
+
+desc "Display the current version tag"
+task :version do
+  puts tag_name
+end
+
+desc "Tag the current commit with #{tag_name}"
+task :tag do
+  fail "Cannot tag, project directory is not clean" unless git_clean?
+  fail "Cannot tag, #{tag_name} already exists." if tagged?
+  sh "git tag #{tag_name}"
+end
+
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
@@ -22,6 +52,7 @@ task :examples => [:specs, :examples1, :examples2]
 
 desc "Run the RSpec 2 specs and examples"
 task :ex2 => [:specs, :examples2]
+
 
 desc "Run the specs"
 task :specs do
