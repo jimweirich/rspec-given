@@ -231,7 +231,6 @@ assertion. Code in _Then_ blocks should not have any side effects.
 After the related _When_ block is run, the stack should be empty.  If
 it is not empty, the test will fail.
 
-<!--
 ### Invariant
 
 The _Invariant_ block is a new idea that doesn't have an analog in
@@ -249,11 +248,6 @@ that context.
 
 Invariants that reference a _Given_ precondition accessor must only be
 used in contexts that define that accessor.
-
-NOTE: Invariants are not yet implemented in the current version of
-rspec-given.
-
--->
 
 # Future Directions
 
