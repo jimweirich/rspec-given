@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 1.5.1.
+Covering rspec-given, version 1.6.0.beta.1.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
@@ -47,6 +47,11 @@ describe Stack do
 
       Then { stack.depth.should == 1 }
       Then { stack.top.should == :an_item }
+    end
+
+    context "when popping" do
+      When(:result) { stack.pop }
+      Then { result.should have_failed(Stack::UnderflowError, /empty/) }
     end
   end
 
@@ -188,6 +193,25 @@ describe block.
 The code block is executed once per test and the value of the code
 block is bound to 'result'.  Use this form when the code under test
 returns a value that you wish to interrogate in the _Then_ code.
+
+If an exception occurs during the execution of the When block, the
+exception is caught and a failure object is bound to 'result'. The
+failure can be checked in a then block with the 'have_failed' matcher.
+
+The failure object will rethrow the captured exception if anything
+other than have_failed matcher is used on the failure object.
+
+For example, if the stack is empty when it is popped, then it is
+reasonable for pop to raise an UnderflowError. This is how you might
+specify that behavior:
+
+<pre>
+    When(:result) { stack.pop }
+    Then { result.should have_failed(UnderflowError, /empty/) }
+</pre>
+
+Note that the arguments to the 'have_failed' matcher are the same as
+those given to the standard RSpec matcher 'raise_error'.
 
 ### Then
 
