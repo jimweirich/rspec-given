@@ -62,7 +62,7 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      Then { stack.should be_empty }
+      Then { stack.depth.should == 0 }
     end
   end
 
