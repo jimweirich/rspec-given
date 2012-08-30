@@ -3,6 +3,7 @@
 require 'rake/clean'
 require './lib/rspec/given/version'
 
+CLEAN.include("pkg/rspec-given-*").exclude("pkg/*.gem")
 CLOBBER.include("*.gemspec", "html", "README", "README.old")
 
 # README Formatting --------------------------------------------------
