@@ -138,8 +138,13 @@ end
 
 
 # RDoc ---------------------------------------------------------------
-gem "rdoc"
-require 'rdoc/task'
+begin
+  gem "rdoc"
+  require 'rdoc/task'
+  RDOC_ENABLED = true
+rescue LoadError => ex
+  RDOC_ENABLED = false
+end
 
 begin
   require 'darkfish-rdoc'
@@ -148,57 +153,59 @@ rescue LoadError => ex
   DARKFISH_ENABLED = false
 end
 
-def md_to_rdoc(infile, outfile)
-  open(infile) do |ins|
-    open(outfile, "w") do |outs|
-      state = :copy
-      while line = ins.gets
-        case state
-        when :ignore
-          if line =~ /^-->/
-            state = :copy
-          end
-        when :pre
-          if line =~ /^<\/pre>/
-            state = :copy
-          else
-            outs.puts "    #{line}"
-          end
-        when :copy
-          if line =~ /^<!--/
-            state = :ignore
-          elsif line =~ /^<pre>/
-            state = :pre
-          else
-            line.gsub!(/^####/, '====')
-            line.gsub!(/^###/, '===')
-            line.gsub!(/^##/, '==')
-            line.gsub!(/^#/, '=')
-            outs.puts line
+if RDOC_ENABLED
+  def md_to_rdoc(infile, outfile)
+    open(infile) do |ins|
+      open(outfile, "w") do |outs|
+        state = :copy
+        while line = ins.gets
+          case state
+          when :ignore
+            if line =~ /^-->/
+              state = :copy
+            end
+          when :pre
+            if line =~ /^<\/pre>/
+              state = :copy
+            else
+              outs.puts "    #{line}"
+            end
+          when :copy
+            if line =~ /^<!--/
+              state = :ignore
+            elsif line =~ /^<pre>/
+              state = :pre
+            else
+              line.gsub!(/^####/, '====')
+              line.gsub!(/^###/, '===')
+              line.gsub!(/^##/, '==')
+              line.gsub!(/^#/, '=')
+              outs.puts line
+            end
           end
         end
       end
     end
   end
+
+  file "README" => ["README.md"] do
+    md_to_rdoc("README.md", "README")
+  end
+
+  RDoc::Task.new("rdoc") do |rdoc|
+    rdoc.rdoc_dir = 'html'
+    rdoc.title    = "RSpec/Given -- A Given/When/Then extension for RSpec"
+    rdoc.options = [
+      '--line-numbers',
+      '--main' , 'README',
+      '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
+    ]
+    rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
+
+    rdoc.rdoc_files.include('README')
+    rdoc.rdoc_files.include('MIT-LICENSE')
+    rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
+  end
+
+  task :rdoc => "README"
 end
-
-file "README" => ["README.md"] do
-  md_to_rdoc("README.md", "README")
-end
-
-RDoc::Task.new("rdoc") do |rdoc|
-  rdoc.rdoc_dir = 'html'
-  rdoc.title    = "RSpec/Given -- A Given/When/Then extension for RSpec"
-  rdoc.options = [
-    '--line-numbers',
-    '--main' , 'README',
-    '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
-  ]
-  rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
-
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('MIT-LICENSE')
-  rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
-end
-
-task :rdoc => "README"
