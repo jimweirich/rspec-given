@@ -276,3 +276,4 @@ has laid some groundwork in this area.
 * Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
 * Clone URL: git://github.com/jimweirich/rspec-given.git
 * Bug/Issue Reporting: [https://github.com/jimweirich/rspec-given/issues](https://github.com/jimweirich/rspec-given/issues)
+* Continuous Integration: [http://travis-ci.org/#!/jimweirich/rspec-given](http://travis-ci.org/#!/jimweirich/rspec-given)
