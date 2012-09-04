@@ -46,6 +46,12 @@ module RSpec
         @_rg_invariants ||= []
       end
 
+      # Trigger the evaluation of a Given! block by referencing its
+      # name.
+      def _rg_trigger_given(name) # :nodoc:
+        Proc.new { send(name) }
+      end
+
       # *DEPRECATED:*
       #
       # The Scenario command is deprecated. Using Scenario in a spec
@@ -95,6 +101,7 @@ module RSpec
       #   Given!(:name) { ... code ... }
       def Given!(name, &block)
         let!(name, &block)
+        _rg_givens << _rg_trigger_given(name)
       end
 
       # Declare the code that is under test.

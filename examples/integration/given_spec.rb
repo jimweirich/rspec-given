@@ -49,3 +49,15 @@ describe "Lazy Givens" do
     Then { value.should == :ok }
   end
 end
+
+describe "Non-Lazy Givens" do
+  Given(:info) { [] }
+
+  When { info << :when }
+
+  context "inner" do
+    Given!(:a) { info << :given; "A VALUE" }
+    Then { info.should == [:given, :when] }
+  end
+
+end
