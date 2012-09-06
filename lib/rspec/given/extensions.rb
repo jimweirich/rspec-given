@@ -30,6 +30,13 @@ module RSpec
           end
         end
       end
+
+      # Implement the run-time semantics of the Then clause.
+      def _rg_then(&block)      # :nodoc:
+        _rg_establish_givens
+        _rg_check_invariants
+        instance_eval(&block)
+      end
     end
 
     module ClassExtensions
@@ -134,11 +141,10 @@ module RSpec
       # Given and When blocks have been run. All invariants in scope
       # will be checked before the Then block is run.
       def Then(&block)
-        specify do
-          _rg_establish_givens
-          _rg_check_invariants
-          instance_eval(&block)
-        end
+        b = block.binding
+        file = eval "__FILE__", b
+        line = eval "__LINE__", b
+        eval %{specify do _rg_then(&block) end}, binding, file, line
       end
 
       # Establish an invariant that must be true for all Then blocks
