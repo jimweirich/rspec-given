@@ -241,9 +241,9 @@ in term of <tt>size</tt>.  Whenever <tt>size</tt> is 0,
 <tt>empty?</tt> should be false.
 
 You can conceptually think of an _Invariant_ block as a _Then_ block
-that automatically gets added to every _When_ within its scope.
+that automatically gets added to every _Then_ within its scope.
 
-Invariants nested within a context only apply to the _When_ blocks in
+Invariants nested within a context only apply to the _Then_ blocks in
 that context.
 
 Invariants that reference a _Given_ precondition accessor must only be
@@ -255,11 +255,7 @@ I really like the way the Given framework is working out.  I feel my
 tests are much more like specifications when I use it.  However, I'm
 not entirely happy with it.
 
-First, I would like to introduce invariants.  An _Invariant_ block
-would essentially be a post-conditions that should be true after
-_Then_ block in the same (or nested) context as the invariant.
-
-Second, I would like to remove the need for the ".should" in all the
+I would like to remove the need for the ".should" in all the
 _Then_ blocks.  In other words, instead of saying:
 
     Then { x.should == y }
