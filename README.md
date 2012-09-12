@@ -46,7 +46,7 @@ describe Stack do
       When { stack.push(:an_item) }
 
       Then { stack.depth.should == 1 }
-      Then { stack.top.should == :an_item }
+      And  { stack.top.should == :an_item }
     end
 
     context "when popping" do
@@ -81,8 +81,8 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :top_item }
-      Then { stack.top.should == :second_item }
-      Then { stack.depth.should == original_depth - 1 }
+      And  { stack.top.should == :second_item }
+      And  { stack.depth.should == original_depth - 1 }
     end
   end
 end
@@ -215,12 +215,24 @@ those given to the standard RSpec matcher 'raise_error'.
 
 ### Then
 
-The _Then_ sections are the postconditions of the specification. These
+The _Then_ clauses are the postconditions of the specification. These
 then conditions must be true after the code under test (the _When_
-block) is run.
+clause) is run.
 
-The code in the _Then_ block should be a single _should_
+The code in the block of a _Then_ clause should be a single _should_
 assertion. Code in _Then_ blocks should not have any side effects.
+
+In RSpec terms, a _Then_ clause forms a RSpec Example that runs in the
+context of an Example Group (defined by a describe or context clause).
+
+Each Example Group must have at least one _Then_ clause, otherwise
+there will be no examples to be run for that group. If all the
+assertions in an example group are done via Invariants, then the group
+should use an empty _Then_ clause, like this:
+
+<pre>
+    Then { }
+</pre>
 
 #### Then examples:
 
@@ -230,6 +242,47 @@ assertion. Code in _Then_ blocks should not have any side effects.
 
 After the related _When_ block is run, the stack should be empty.  If
 it is not empty, the test will fail.
+
+### And
+
+The _And_ clause is similar to _Then_, but do not form their own RSpec
+examples. This means that _And_ clauses reuse the setup from the
+_Then_ clause. Using a single _Then_ an multiple _And_ clauses in an
+example group means the setup for that group is run only once (for the
+_Then_ clause). This can be a significant speed savings where the
+setup for an example group is expensive.
+
+Some things to keep in mind about _And_ clauses:
+
+1. There must be at least one _Then_ in the example group and it must
+   be declared before the _And_ clauses. Forgetting the _Then_ clause
+   is an error.
+
+1. The code in the _And_ clause is run immediately after the first
+   _Then_ of an example group.
+
+1. And assertion failures in a _Then_ clause or a _And_ clause will
+   cause all the subsequent _And_ clauses to be skipped.
+
+1. Since _And_ clauses do not form their own RSpec examples, they are
+   not represented in the formatted output of RSpec. That means _And_
+   clauses do not produce dots in the Progress format, nor do they
+   appear in the documentation, html or textmate formats (options
+   -fhtml, -fdoc, or -ftextmate).
+
+The choice to use an _And_ clause is primarily a speed consideration.
+If an example group has expensive setup and there are a lot of _Then_
+clauses, then choosing to make some of the _Then_ clauses into _And_
+clause will speed up the spec. Otherwise it is probably better to
+stick with _Then_ clauses.
+
+#### Then examples:
+
+<pre>
+  Then { pop_result.should == :top_item }
+  And  { stack.top.should == :second_item }
+  And  { stack.depth.should == original_depth - 1 }
+</pre>
 
 ### Invariant
 
@@ -248,6 +301,12 @@ that context.
 
 Invariants that reference a _Given_ precondition accessor must only be
 used in contexts that define that accessor.
+
+Notes:
+
+1. Since Invariants do not form their own RSpec example, they are not
+   represented in the RSpec formatted output (e.g. the '--format html'
+   option).
 
 # Future Directions
 

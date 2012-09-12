@@ -31,11 +31,20 @@ module RSpec
         end
       end
 
+      def _rg_check_ands  # :nodoc:
+        return if self.class._rg_context_info[:and_ran]
+        self.class._rg_and_blocks.each do |block|
+          instance_eval(&block)
+        end
+        self.class._rg_context_info[:and_ran] = true
+      end
+
       # Implement the run-time semantics of the Then clause.
       def _rg_then(&block)      # :nodoc:
         _rg_establish_givens
         _rg_check_invariants
         instance_eval(&block)
+        _rg_check_ands
       end
     end
 
@@ -51,6 +60,14 @@ module RSpec
       # describe/context block.
       def _rg_invariants        # :nodoc:
         @_rg_invariants ||= []
+      end
+
+      def _rg_and_blocks
+        @_rg_and_blocks ||= []
+      end
+
+      def _rg_context_info
+        @_rg_contet_info ||= {}
       end
 
       # Trigger the evaluation of a Given! block by referencing its
@@ -145,12 +162,18 @@ module RSpec
         file = eval "__FILE__", b
         line = eval "__LINE__", b
         eval %{specify do _rg_then(&block) end}, binding, file, line
+        _rg_context_info[:then_defined] = true
       end
 
       # Establish an invariant that must be true for all Then blocks
       # in the current (and nested) scopes.
       def Invariant(&block)
         _rg_invariants << block
+      end
+
+      def And(&block)
+        fail "And defined without a Then" unless _rg_context_info[:then_defined]
+        _rg_and_blocks << block
       end
     end
   end
