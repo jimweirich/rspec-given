@@ -32,12 +32,12 @@ module RSpec
         end
       end
 
-      def _rg_check_alsos  # :nodoc:
-        return if self.class._rg_context_info[:also_ran]
-        self.class._rg_alsos.each do |block|
+      def _rg_check_ands  # :nodoc:
+        return if self.class._rg_context_info[:and_ran]
+        self.class._rg_ands.each do |block|
           instance_eval(&block)
         end
-        self.class._rg_context_info[:also_ran] = true
+        self.class._rg_context_info[:and_ran] = true
       end
 
       # Implement the run-time semantics of the Then clause.
@@ -45,7 +45,7 @@ module RSpec
         _rg_establish_givens
         _rg_check_invariants
         instance_eval(&block)
-        _rg_check_alsos
+        _rg_check_ands
       end
     end
 
@@ -63,8 +63,8 @@ module RSpec
         @_rg_invariants ||= []
       end
 
-      def _rg_alsos
-        @_rg_alsos ||= []
+      def _rg_ands
+        @_rg_ands ||= []
       end
 
       def _rg_context_info
@@ -182,9 +182,9 @@ module RSpec
         _rg_invariants << block
       end
 
-      def Also(&block)
-        fail "Also defined without a Then" unless _rg_context_info[:then_defined]
-        _rg_alsos << block
+      def And(&block)
+        fail "And defined without a Then" unless _rg_context_info[:then_defined]
+        _rg_ands << block
       end
     end
   end

@@ -1,47 +1,47 @@
 require 'rspec/given'
 require 'spec_helper'
 
-describe "Also" do
+describe "And" do
   Given(:info) { [] }
   Given(:mock) { flexmock("mock") }
 
-  describe "Also is called after Then" do
-    Given { mock.should_receive(:also_ran).once }
+  describe "And is called after Then" do
+    Given { mock.should_receive(:and_ran).once }
     Then { info << "T" }
-    Also {
+    And {
       info.should == ["T"]
-      mock.also_ran
+      mock.and_ran
     }
   end
 
-  describe "Also is called only once with multiple Thens" do
+  describe "And is called only once with multiple Thens" do
     Then { info << "T" }
     Then { info << "T2" }
-    Also { info.should == ["T"] }
+    And { info.should == ["T"] }
   end
 
-  describe "Inherited Alsos are not run" do
+  describe "Inherited Ands are not run" do
     Then { info << "T-OUTER" }
-    Also { info << "A-OUTER" }
-    Also { info.should == ["T-OUTER", "A-OUTER"] }
+    And { info << "A-OUTER" }
+    And { info.should == ["T-OUTER", "A-OUTER"] }
 
     context "inner" do
       Then { info << "T-INNER" }
-      Also { info << "A-INNER" }
-      Also { info.should == ["T-INNER", "A-INNER"] }
+      And { info << "A-INNER" }
+      And { info.should == ["T-INNER", "A-INNER"] }
     end
   end
 
-  describe "Alsos require a Then" do
+  describe "Ands require a Then" do
     begin
-      Also { }
+      And { }
     rescue StandardError => ex
       @message = ex.message
     end
 
     it "should define a message" do
       message = self.class.instance_eval { @message }
-      message.should =~ /also.*without.*then/i
+      message.should =~ /and.*without.*then/i
     end
   end
 
