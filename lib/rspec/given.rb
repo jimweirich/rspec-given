@@ -13,6 +13,8 @@ if RSpec::Given.using_old_rspec?
   require 'rspec/given/rspec1_given'
 else
   require 'rspec/given/version'
+  require 'rspec/given/module_methods'
+  require 'rspec/given/line_cache'
   require 'rspec/given/extensions'
   require 'rspec/given/configure'
   require 'rspec/given/failure'

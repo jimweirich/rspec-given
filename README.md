@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 2.0.0.
+Covering rspec-given, version 2.1.0.beta.3.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
@@ -62,7 +62,7 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      Then { stack.depth.should == 0 }
+      Also { stack.depth.should == 0 }
     end
   end
 
@@ -276,12 +276,12 @@ clauses, then choosing to make some of the _Then_ clauses into _And_
 clause will speed up the spec. Otherwise it is probably better to
 stick with _Then_ clauses.
 
-#### Then examples:
+#### Then/And examples:
 
 <pre>
-  Then { pop_result.should == :top_item }
-  And  { stack.top.should == :second_item }
-  And  { stack.depth.should == original_depth - 1 }
+  Then { pop_result.should == :top_item }           # Required
+  And  { stack.top.should == :second_item }         # No Setup rerun
+  And  { stack.depth.should == original_depth - 1 } # ... for these
 </pre>
 
 ### Invariant
@@ -307,6 +307,21 @@ Notes:
 1. Since Invariants do not form their own RSpec example, they are not
    represented in the RSpec formatted output (e.g. the '--format html'
    option).
+
+## Configuration
+
+Just require 'rspec/given' in the spec helper of your project and it
+is ready to go.
+
+If the RSpec format option document, html or textmate are chosen,
+RSpec/Given will automatically add addition source code information to
+the examples to produce better looking output. If you don't care about
+the pretty output and wish to disable source code caching
+unconditionally, then add the following line to your spec helper file:
+
+<pre>
+    RSpec::Given.source_caching_disabled = true
+</pre>
 
 # Future Directions
 
