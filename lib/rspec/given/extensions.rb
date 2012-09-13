@@ -1,15 +1,8 @@
 require 'rspec/given/failure'
+require 'rspec/given/module_methods'
 
 module RSpec
   module Given
-
-    def self.html_format_disabled
-      @_rg_html_format_disabled
-    end
-
-    def self.html_format_disabled=(value)
-      @_rg_html_format_disabled = value
-    end
 
     # Provide run-time methods to support RSpec/Given infrastructure.
     # All the methods in this module are considered private and
