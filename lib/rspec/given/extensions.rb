@@ -3,6 +3,14 @@ require 'rspec/given/failure'
 module RSpec
   module Given
 
+    def self.html_format_disabled
+      @_rg_html_format_disabled
+    end
+
+    def self.html_format_disabled=(value)
+      @_rg_html_format_disabled = value
+    end
+
     # Provide run-time methods to support RSpec/Given infrastructure.
     # All the methods in this module are considered private and
     # implementation-specific.
@@ -68,6 +76,10 @@ module RSpec
 
       def _rg_context_info
         @_rg_contet_info ||= {}
+      end
+
+      def _rg_cache
+        @_rg_cache ||= LineCache.new
       end
 
       # Trigger the evaluation of a Given! block by referencing its
@@ -161,7 +173,13 @@ module RSpec
         b = block.binding
         file = eval "__FILE__", b
         line = eval "__LINE__", b
-        eval %{specify do _rg_then(&block) end}, binding, file, line
+        description = _rg_cache.line(file, line) unless RSpec::Given.html_format_disabled
+        if description
+          cmd = "it(description)"
+        else
+          cmd = "specify"
+        end
+        eval %{#{cmd} do _rg_then(&block) end}, binding, file, line
         _rg_context_info[:then_defined] = true
       end
 

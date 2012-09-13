@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 2.0.0.
+Covering rspec-given, version 2.1.0.beta.3.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
@@ -62,7 +62,7 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      Then { stack.depth.should == 0 }
+      Also { stack.depth.should == 0 }
     end
   end
 
