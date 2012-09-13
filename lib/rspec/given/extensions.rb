@@ -34,7 +34,7 @@ module RSpec
 
       def _rg_check_ands  # :nodoc:
         return if self.class._rg_context_info[:and_ran]
-        self.class._rg_ands.each do |block|
+        self.class._rg_and_blocks.each do |block|
           instance_eval(&block)
         end
         self.class._rg_context_info[:and_ran] = true
@@ -63,8 +63,8 @@ module RSpec
         @_rg_invariants ||= []
       end
 
-      def _rg_ands
-        @_rg_ands ||= []
+      def _rg_and_blocks
+        @_rg_and_blocks ||= []
       end
 
       def _rg_context_info
@@ -184,7 +184,7 @@ module RSpec
 
       def And(&block)
         fail "And defined without a Then" unless _rg_context_info[:then_defined]
-        _rg_ands << block
+        _rg_and_blocks << block
       end
     end
   end
