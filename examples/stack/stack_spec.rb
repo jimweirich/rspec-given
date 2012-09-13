@@ -20,7 +20,7 @@ describe Stack do
       When { stack.push(:an_item) }
 
       Then { stack.depth.should == 1 }
-      And  { stack.top.should == :an_item }
+      Then { stack.top.should == :an_item }
     end
 
     context "when popping" do
@@ -36,7 +36,7 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      And  { stack.depth.should == 0 }
+      Then { stack.depth.should == 0 }
     end
   end
 
