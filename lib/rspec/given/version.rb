@@ -5,7 +5,7 @@ module RSpec
       VERSION_MINOR = 1,
       VERSION_BUILD = 0,
       VERSION_BETA  = 'beta',
-      VERSION_BETANUM = '3'
+      VERSION_BETANUM = '4'
     ]
     VERSION = VERSION_NUMBERS.join(".")
   end
