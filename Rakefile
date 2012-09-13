@@ -52,7 +52,11 @@ desc "Run all the examples"
 task :examples => [:specs, :examples1, :examples2]
 
 desc "Run the RSpec 2 specs and examples"
-task :ex2 => [:specs, :examples2]
+task :ex2 => [:bundleshow, :specs, :examples2]
+
+task :bundleshow do
+  sh "bundle show"
+end
 
 
 desc "Run the specs"
