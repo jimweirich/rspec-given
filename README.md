@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 2.1.0.beta.3.
+Covering rspec-given, version 2.1.0.beta.4.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
@@ -46,7 +46,7 @@ describe Stack do
       When { stack.push(:an_item) }
 
       Then { stack.depth.should == 1 }
-      And  { stack.top.should == :an_item }
+      Then { stack.top.should == :an_item }
     end
 
     context "when popping" do
@@ -62,7 +62,7 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :an_item }
-      Also { stack.depth.should == 0 }
+      Then { stack.depth.should == 0 }
     end
   end
 
@@ -81,8 +81,8 @@ describe Stack do
       When(:pop_result) { stack.pop }
 
       Then { pop_result.should == :top_item }
-      And  { stack.top.should == :second_item }
-      And  { stack.depth.should == original_depth - 1 }
+      Then { stack.top.should == :second_item }
+      Then { stack.depth.should == original_depth - 1 }
     end
   end
 end
@@ -127,11 +127,11 @@ preconditions running before inner preconditions.
     Given(:stack) { Stack.new }
 </pre>
 
-The given block is lazily run if 'stack' is ever referenced in the
-test and the value of the block is bound to 'stack'.  The first
-reference to 'stack' in the specification will cause the code block to
-execute.  Futher references to 'stack' will reuse the previously
-generated value.
+The block for the given clause is lazily run if 'stack' is ever
+referenced in the test and the value of the block is bound to 'stack'.
+The first reference to 'stack' in the specification will cause the
+code block to execute. Futher references to 'stack' will reuse the
+previously generated value.
 
 <pre>
     Given!(:original_size) { stack.size }
@@ -146,16 +146,17 @@ by the When code.
     Given { stack.clear }
 </pre>
 
-The given block is run unconditionally once before each test.  This
-form of given is used for code that is executed for side effects.
+The block for the given clause is run unconditionally once before each
+test. This form of given is used for code that is executed for side
+effects.
 
 ### When
 
-The _When_ block specifies the code to be tested ... oops, excuse me
+The _When_ clause specifies the code to be tested ... oops, excuse me
 ... specified.  After the preconditions in the given section are met,
 the when code block is run.
 
-There should only be one _When_ block for a given context. However, a
+There should only be one _When_ clause for a given context. However, a
 _When_ in an outer context shoud be treated as a _Given_ in an inner
 context.  E.g.
 
@@ -194,9 +195,10 @@ The code block is executed once per test and the value of the code
 block is bound to 'result'.  Use this form when the code under test
 returns a value that you wish to interrogate in the _Then_ code.
 
-If an exception occurs during the execution of the When block, the
-exception is caught and a failure object is bound to 'result'. The
-failure can be checked in a then block with the 'have_failed' matcher.
+If an exception occurs during the execution of the block for the When
+clause, the exception is caught and a failure object is bound to
+'result'. The failure can be checked in a then block with the
+'have_failed' matcher.
 
 The failure object will rethrow the captured exception if anything
 other than have_failed matcher is used on the failure object.
@@ -220,7 +222,7 @@ then conditions must be true after the code under test (the _When_
 clause) is run.
 
 The code in the block of a _Then_ clause should be a single _should_
-assertion. Code in _Then_ blocks should not have any side effects.
+assertion. Code in _Then_ clauses should not have any side effects.
 
 In RSpec terms, a _Then_ clause forms a RSpec Example that runs in the
 context of an Example Group (defined by a describe or context clause).
@@ -240,8 +242,8 @@ should use an empty _Then_ clause, like this:
     Then { stack.should be_empty }
 </pre>
 
-After the related _When_ block is run, the stack should be empty.  If
-it is not empty, the test will fail.
+After the related block for the _When_ clause is run, the stack should
+be empty. If it is not empty, the test will fail.
 
 ### And
 
@@ -286,18 +288,19 @@ stick with _Then_ clauses.
 
 ### Invariant
 
-The _Invariant_ block is a new idea that doesn't have an analog in
-RSpec or Test::Unit.  The invariant allows you specify things that
-must always be true.  In the stack example, <tt>empty?</tt> is defined
-in term of <tt>size</tt>.  Whenever <tt>size</tt> is 0,
-<tt>empty?</tt> should be true.  Whenever <tt>size</tt> is non-zero,
-<tt>empty?</tt> should be false.
+The _Invariant_ clause is a new idea that doesn't have an analog in
+RSpec or Test::Unit. The invariant allows you specify things that must
+always be true (or at least always be true in the scope of the
+invariant). In the stack example, <tt>empty?</tt> is defined in term
+of <tt>size</tt>. Whenever <tt>size</tt> is 0, <tt>empty?</tt> should
+be true. Whenever <tt>size</tt> is non-zero, <tt>empty?</tt> should be
+false.
 
-You can conceptually think of an _Invariant_ block as a _Then_ block
+You can conceptually think of an _Invariant_ clause as a _Then_ block
 that automatically gets added to every _Then_ within its scope.
 
-Invariants nested within a context only apply to the _Then_ blocks in
-that context.
+Invariants nested within a context only apply to the _Then_ clauses
+that are in the scope of that context.
 
 Invariants that reference a _Given_ precondition accessor must only be
 used in contexts that define that accessor.
@@ -329,8 +332,8 @@ I really like the way the Given framework is working out.  I feel my
 tests are much more like specifications when I use it.  However, I'm
 not entirely happy with it.
 
-I would like to remove the need for the ".should" in all the
-_Then_ blocks.  In other words, instead of saying:
+I would like to remove the need for the ".should" in all the _Then_
+clauses. In other words, instead of saying:
 
     Then { x.should == y }
 
