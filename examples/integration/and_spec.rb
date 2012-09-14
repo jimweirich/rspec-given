@@ -5,6 +5,8 @@ require 'flexmock/rspec'
 describe "And" do
   include FlexMock::MockContainer
 
+  puts "DBG: instance_methods=#{instance_methods.inspect}"
+
   Given(:info) { [] }
   Given(:mock) { flexmock("mock") }
 
