@@ -1,1 +1,1 @@
--Ispec -Iexamples --color
+-Ilib -Ispec -Iexamples --color
