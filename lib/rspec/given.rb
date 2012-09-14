@@ -14,7 +14,8 @@ if RSpec::Given.using_old_rspec?
 else
   require 'rspec/given/version'
   require 'rspec/given/module_methods'
-  require 'rspec/given/line_cache'
+  require 'rspec/given/file_cache'
+  require 'rspec/given/line_extractor'
   require 'rspec/given/extensions'
   require 'rspec/given/configure'
   require 'rspec/given/failure'
