@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'example_helper'
 
 describe "Line Spec" do
 
