@@ -2,7 +2,7 @@ require 'rspec/given'
 require 'spec_helper'
 # require 'flexmock/rspec'
 
-# describe "And" do
+describe "And" do
 #   include FlexMock::MockContainer
 
 #   Given(:info) { [] }
@@ -48,4 +48,4 @@ require 'spec_helper'
 #     end
 #   end
 
-# end
+end
