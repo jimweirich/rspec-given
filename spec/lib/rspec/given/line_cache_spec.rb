@@ -3,7 +3,7 @@ require 'spec_helper'
 module RSpec
   module Given
 
-    describe LineCache do
+    describe LineExtractor do
 
       class FauxFileCache
         def initialize(lines)
@@ -17,7 +17,7 @@ module RSpec
       Given(:file) { "MIT-LICENSE" }
       Given(:line) { 2 }
       Given(:file_cache) { FauxFileCache.new(input) }
-      Given(:cache) { LineCache.new(file_cache) }
+      Given(:cache) { LineExtractor.new(file_cache) }
 
       When(:result) { cache.line(file, line) }
 

@@ -72,7 +72,7 @@ module RSpec
       end
 
       def _rg_cache
-        @_rg_cache ||= LineCache.new
+        @_rg_cache ||= LineExtractor.new
       end
 
       # Trigger the evaluation of a Given! block by referencing its
