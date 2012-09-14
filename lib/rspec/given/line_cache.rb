@@ -1,33 +1,42 @@
+require 'rspec/given/file_cache'
+
 module RSpec
   module Given
     class LineCache
-      def initialize
-        @lines = {}
+      def initialize(file_cache=nil)
+        @files = file_cache || FileCache.new
       end
 
       def line(file_name, line)
-        lines = get_lines(file_name)
+        lines = @files.get(file_name)
         extract_lines_from(lines, line-1)
+      end
+
+      def to_s
+        "<LineCache>"
       end
 
       private
 
-      def extract_lines_from(lines, index)
-        result = lines[index]
-        if result =~ /\{ *$/
-          result =~ /^( *)[^ ]/
-          leading_spaces = $1
-          indent = leading_spaces.size
+      def extract_lines_from(lines, line_index)
+        result = lines[line_index]
+        if continued?(result)
+          level = indentation_level(result)
           begin
-            index += 1
-            result << lines[index]
-          end while lines[index] =~ /^#{leading_spaces} /
+            line_index += 1
+            result << lines[line_index]
+          end while indentation_level(lines[line_index]) > level
         end
         result
       end
 
-      def get_lines(file_name)
-        @lines[file_name] ||= open(file_name) { |f| f.readlines }
+      def continued?(string)
+        string =~ /(\{|do) *$/
+      end
+
+      def indentation_level(string)
+        string =~ /^(\s*)\S/
+        $1.size
       end
     end
   end
