@@ -1,5 +1,5 @@
 require 'rspec/given'
-require 'spec_helper'
+require 'example_helper'
 require 'stack'
 
 describe Stack do

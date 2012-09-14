@@ -1,17 +1,17 @@
 require 'rspec/given'
-require 'spec_helper'
-require 'flexmock/rspec'
+require 'example_helper'
 
 describe "And" do
+
   Given(:info) { [] }
-  Given(:mock) { flexmock("mock") }
 
   describe "And is called after Then" do
-    Given { mock.should_receive(:and_ran).once }
+    Given(:m) { mock("mock") }
+    Given { m.should_receive(:and_ran) }
     Then { info << "T" }
     And {
       info.should == ["T"]
-      mock.and_ran
+      m.and_ran
     }
   end
 
