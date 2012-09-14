@@ -2,10 +2,6 @@ require 'rspec/given'
 require 'example_helper'
 # require 'flexmock/rspec'
 
-# RSpec.configure do |config|
-#   config.mock_with :flexmock
-# end
-
 describe "And" do
 #   include FlexMock::MockContainer
 
