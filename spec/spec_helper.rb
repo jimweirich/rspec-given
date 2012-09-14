@@ -1,5 +1,5 @@
 require 'rspec/given'
 
-RSpec.configure do |c|
-  c.mock_with :flexmock
+RSpec.configure do |config|
+  config.mock_with :flexmock
 end
