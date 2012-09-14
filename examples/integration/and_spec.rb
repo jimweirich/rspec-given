@@ -5,17 +5,17 @@ require 'spec_helper'
 describe "And" do
 #   include FlexMock::MockContainer
 
-#   Given(:info) { [] }
-#   Given(:mock) { flexmock("mock") }
+  Given(:info) { [] }
+  Given(:mock) { flexmock("mock") }
 
-#   describe "And is called after Then" do
-#     Given { mock.should_receive(:and_ran).once }
-#     Then { info << "T" }
-#     And {
-#       info.should == ["T"]
-#       mock.and_ran
-#     }
-#   end
+  describe "And is called after Then" do
+    Given { mock.should_receive(:and_ran).once }
+    Then { info << "T" }
+    And {
+      info.should == ["T"]
+      mock.and_ran
+    }
+  end
 
 #   describe "And is called only once with multiple Thens" do
 #     Then { info << "T" }
