@@ -5,6 +5,13 @@ require 'example_helper'
 describe "And" do
 #   include FlexMock::MockContainer
 
+  describe "mocking" do
+    Given(:m) { flexmock("OK") }
+    Given { m.should_receive(:and_ran).once }
+    When { m.and_ran }
+    Then { }
+  end
+
   # Given(:info) { [] }
   # Given(:m) { flexmock("mock") }
 
