@@ -3,6 +3,8 @@ require 'spec_helper'
 require 'flexmock/rspec'
 
 describe "And" do
+  include FlexMock::MockContainer
+
   Given(:info) { [] }
   Given(:mock) { flexmock("mock") }
 
