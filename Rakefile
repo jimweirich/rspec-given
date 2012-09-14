@@ -55,6 +55,9 @@ desc "Run the RSpec 2 specs and examples"
 task :ex2 => [:bundleshow, :specs, :examples2]
 
 task :bundleshow do
+  puts "-- .rspec -------"
+  sh "cat .rspec"
+  puts "-- bundle show -------"
   sh "bundle show"
 end
 
