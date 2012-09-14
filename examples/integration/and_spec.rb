@@ -1,5 +1,6 @@
 require 'rspec/given'
 require 'spec_helper'
+require 'flexmock/rspec'
 
 describe "And" do
   Given(:info) { [] }
