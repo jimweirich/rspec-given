@@ -6,8 +6,8 @@ describe "And" do
   Given(:info) { [] }
 
   describe "And is called after Then" do
-    Given(:m) { mock("mock") }
-    Given { m.should_receive(:and_ran) }
+    Given(:m) { flexmock("mock") }
+    Given { m.should_receive(:and_ran).once }
     Then { info << "T" }
     And {
       info.should == ["T"]

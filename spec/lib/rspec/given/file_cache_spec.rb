@@ -16,7 +16,7 @@ module RSpec
       end
 
       context "when getting the same file twice" do
-        Given { cache.should_receive(:read_lines).once.and_return(["A"]) }
+        Given { flexmock(cache).should_receive(:read_lines).once.and_return(["A"]) }
         When(:result2) { cache.get(file_name) }
         Then { result.should == ["A"] }
         Then { result2.should == ["A"] }
