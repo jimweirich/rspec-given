@@ -5,7 +5,7 @@ module RSpec
 
     DESCRIBE_LINE = __LINE__
     describe FileCache do
-      Given(:file_name) { "spec/lib/rspec/given/file_cache_spec.rb" }
+      Given(:file_name) { __FILE__ }
       Given(:cache) { FileCache.new }
 
       When(:result) { cache.get(file_name) }

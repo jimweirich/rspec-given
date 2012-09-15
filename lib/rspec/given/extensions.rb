@@ -71,8 +71,8 @@ module RSpec
         @_rg_contet_info ||= {}
       end
 
-      def _rg_cache
-        @_rg_cache ||= LineExtractor.new
+      def _rg_lines
+        @_rg_lines ||= LineExtractor.new
       end
 
       # Trigger the evaluation of a Given! block by referencing its
@@ -166,7 +166,7 @@ module RSpec
         b = block.binding
         file = eval "__FILE__", b
         line = eval "__LINE__", b
-        description = _rg_cache.line(file, line) unless RSpec::Given.source_caching_disabled
+        description = _rg_lines.line(file, line) unless RSpec::Given.source_caching_disabled
         if description
           cmd = "it(description)"
         else
