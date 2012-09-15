@@ -2,7 +2,7 @@ require 'rspec/given/file_cache'
 
 module RSpec
   module Given
-    class LineCache
+    class LineExtractor
       def initialize(file_cache=nil)
         @files = file_cache || FileCache.new
       end
@@ -13,7 +13,7 @@ module RSpec
       end
 
       def to_s
-        "<LineCache>"
+        "<LineExtractor>"
       end
 
       private
