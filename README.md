@@ -23,7 +23,7 @@ _rspec-given_ is ready for production use.
 
 Here is a specification written in the rspec-given framework:
 
-<pre>
+```ruby
 require 'rspec/given'
 require 'spec_helper'
 require 'stack'
@@ -86,7 +86,7 @@ describe Stack do
     end
   end
 end
-</pre>
+```
 
 Let's talk about the individual statements used in the Given
 framework.
@@ -123,9 +123,9 @@ preconditions running before inner preconditions.
 
 #### Given examples:
 
-<pre>
+```ruby
     Given(:stack) { Stack.new }
-</pre>
+```
 
 The block for the given clause is lazily run if 'stack' is ever
 referenced in the test and the value of the block is bound to 'stack'.
@@ -133,18 +133,18 @@ The first reference to 'stack' in the specification will cause the
 code block to execute. Futher references to 'stack' will reuse the
 previously generated value.
 
-<pre>
+```ruby
     Given!(:original_size) { stack.size }
-</pre>
+```
 
 The code block is run unconditionally once before each test and the
 value of the block is bound to 'original_size'.  This form is useful
 when you want to record the value of something that might be affected
 by the When code.
 
-<pre>
+```ruby
     Given { stack.clear }
-</pre>
+```
 
 The block for the given clause is run unconditionally once before each
 test. This form of given is used for code that is executed for side
@@ -160,7 +160,7 @@ There should only be one _When_ clause for a given context. However, a
 _When_ in an outer context shoud be treated as a _Given_ in an inner
 context.  E.g.
 
-<pre>
+```ruby
     context "outer context" do
       When { code specified in the outer context }
       Then { assert something about the outer context }
@@ -174,22 +174,22 @@ context.  E.g.
         Then { assert something about the inner context }
       end
     end
-</pre>
+```
 
 #### When examples:
 
-<pre>
+```ruby
     When { stack.push(:item) }
-</pre>
+```
 
 The code block is executed once per test.  The effect of the _When{}_
 block is very similar to _Given{}_.  However, When is used to identify
 the particular code that is being specified in the current context or
 describe block.
 
-<pre>
+```ruby
     When(:result) { stack.pop }
-</pre>
+```
 
 The code block is executed once per test and the value of the code
 block is bound to 'result'.  Use this form when the code under test
@@ -207,10 +207,10 @@ For example, if the stack is empty when it is popped, then it is
 reasonable for pop to raise an UnderflowError. This is how you might
 specify that behavior:
 
-<pre>
+```ruby
     When(:result) { stack.pop }
     Then { result.should have_failed(UnderflowError, /empty/) }
-</pre>
+```
 
 Note that the arguments to the 'have_failed' matcher are the same as
 those given to the standard RSpec matcher 'raise_error'.
@@ -232,15 +232,15 @@ there will be no examples to be run for that group. If all the
 assertions in an example group are done via Invariants, then the group
 should use an empty _Then_ clause, like this:
 
-<pre>
+```ruby
     Then { }
-</pre>
+```
 
 #### Then examples:
 
-<pre>
+```ruby
     Then { stack.should be_empty }
-</pre>
+```
 
 After the related block for the _When_ clause is run, the stack should
 be empty. If it is not empty, the test will fail.
@@ -280,11 +280,11 @@ stick with _Then_ clauses.
 
 #### Then/And examples:
 
-<pre>
+```ruby
   Then { pop_result.should == :top_item }           # Required
   And  { stack.top.should == :second_item }         # No Setup rerun
   And  { stack.depth.should == original_depth - 1 } # ... for these
-</pre>
+```
 
 ### Invariant
 
@@ -322,9 +322,9 @@ the examples to produce better looking output. If you don't care about
 the pretty output and wish to disable source code caching
 unconditionally, then add the following line to your spec helper file:
 
-<pre>
+```ruby
     RSpec::Given.source_caching_disabled = true
-</pre>
+```
 
 # Future Directions
 
