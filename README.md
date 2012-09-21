@@ -156,9 +156,9 @@ The _When_ clause specifies the code to be tested ... oops, excuse me
 ... specified.  After the preconditions in the given section are met,
 the when code block is run.
 
-There should only be one _When_ clause for a given context. However, a
-_When_ in an outer context shoud be treated as a _Given_ in an inner
-context.  E.g.
+There should not be more than one _When_ clause for a given direct
+context. However, a _When_ in an outer context shoud be treated as a
+_Given_ in an inner context. E.g.
 
 ```ruby
     context "outer context" do
@@ -224,6 +224,12 @@ clause) is run.
 The code in the block of a _Then_ clause should be a single _should_
 assertion. Code in _Then_ clauses should not have any side effects.
 
+Let me repeat that: <b>_Then_ clauses should not have any side
+effects!</b> _Then_ clauses with side effects are erroneous. _Then_
+clauses need to be idempotent, so that running them once, twice, a
+hundred times, or never does not change the state of the program. (The
+same is true of _And_ clauses).
+
 In RSpec terms, a _Then_ clause forms a RSpec Example that runs in the
 context of an Example Group (defined by a describe or context clause).
 
@@ -247,12 +253,13 @@ be empty. If it is not empty, the test will fail.
 
 ### And
 
-The _And_ clause is similar to _Then_, but do not form their own RSpec
-examples. This means that _And_ clauses reuse the setup from the
+The _And_ clause is similar to _Then_, but does not form its own RSpec
+example. This means that _And_ clauses reuse the setup from a sibling
 _Then_ clause. Using a single _Then_ an multiple _And_ clauses in an
 example group means the setup for that group is run only once (for the
-_Then_ clause). This can be a significant speed savings where the
-setup for an example group is expensive.
+_Then_ clause) and reused for all the _And_s. This can be a
+significant speed savings where the setup for an example group is
+expensive.
 
 Some things to keep in mind about _And_ clauses:
 
@@ -261,7 +268,7 @@ Some things to keep in mind about _And_ clauses:
    is an error.
 
 1. The code in the _And_ clause is run immediately after the first
-   _Then_ of an example group.
+   (executed) _Then_ of an example group.
 
 1. And assertion failures in a _Then_ clause or a _And_ clause will
    cause all the subsequent _And_ clauses to be skipped.
@@ -271,6 +278,10 @@ Some things to keep in mind about _And_ clauses:
    clauses do not produce dots in the Progress format, nor do they
    appear in the documentation, html or textmate formats (options
    -fhtml, -fdoc, or -ftextmate).
+
+1. Like _Then_ clauses, _And_ clauses must be idempotent. That means
+   they should not execute any code that changes global program state.
+   (See the section on the _Then_ clause).
 
 The choice to use an _And_ clause is primarily a speed consideration.
 If an example group has expensive setup and there are a lot of _Then_
