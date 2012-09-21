@@ -346,11 +346,15 @@ not entirely happy with it.
 I would like to remove the need for the ".should" in all the _Then_
 clauses. In other words, instead of saying:
 
+```ruby
     Then { x.should == y }
+```
 
 we could say:
 
+```ruby
     Then { x == y }
+```
 
 I think the [wrong assertion library](http://rubygems.org/gems/wrong)
 has laid some groundwork in this area.
