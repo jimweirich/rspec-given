@@ -156,9 +156,13 @@ The _When_ clause specifies the code to be tested ... oops, excuse me
 ... specified.  After the preconditions in the given section are met,
 the when code block is run.
 
-There should not be more than one _When_ clause for a given direct
-context. However, a _When_ in an outer context shoud be treated as a
-_Given_ in an inner context. E.g.
+In general there should not be more than one _When_ clause for a given
+direct context. However, a _When_ in an outer context will be run
+after all the _Givens_ but before the inner _When_. You can think of
+an outer _When_ as setting up additional given state for the inner
+_When_.
+
+E.g.
 
 ```ruby
     context "outer context" do
@@ -301,11 +305,10 @@ stick with _Then_ clauses.
 
 The _Invariant_ clause is a new idea that doesn't have an analog in
 RSpec or Test::Unit. The invariant allows you specify things that must
-always be true (or at least always be true in the scope of the
-invariant). In the stack example, <tt>empty?</tt> is defined in term
-of <tt>size</tt>. Whenever <tt>size</tt> is 0, <tt>empty?</tt> should
-be true. Whenever <tt>size</tt> is non-zero, <tt>empty?</tt> should be
-false.
+always be true in the scope of the invariant. In the stack example,
+<tt>empty?</tt> is defined in term of <tt>size</tt>. Whenever
+<tt>size</tt> is 0, <tt>empty?</tt> should be true. Whenever
+<tt>size</tt> is non-zero, <tt>empty?</tt> should be false.
 
 You can conceptually think of an _Invariant_ clause as a _Then_ block
 that automatically gets added to every _Then_ within its scope.
