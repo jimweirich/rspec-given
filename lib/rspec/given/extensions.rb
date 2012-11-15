@@ -9,12 +9,20 @@ module RSpec
     # implementation-specific.
     module InstanceExtensions   # :nodoc:
 
+      # List of containing contexts in order from outermost to
+      # innermost.
+      def _rg_contexts          # :nodoc:
+        self.class.ancestors.select { |context|
+          context.respond_to?(:_rg_givens)
+        }.reverse
+      end
+
       # Establish all the Given preconditions the current and
       # surrounding describe/context blocks, starting with the
       # outermost context.
       def _rg_establish_givens  # :nodoc:
         return if defined?(@_rg_ran)
-        self.class.ancestors.reverse.each do |context|
+        _rg_contexts.each do |context|
           context._rg_givens.each do |block|
             instance_eval(&block)
           end
@@ -25,7 +33,7 @@ module RSpec
       # Check all the invariants in the current and surrounding
       # describe/context blocks, starting with the outermost context.
       def _rg_check_invariants  # :nodoc:
-        self.class.ancestors.reverse.each do |context|
+        _rg_contexts.each do |context|
           context._rg_invariants.each do |block|
             instance_eval(&block)
           end
