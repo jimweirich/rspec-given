@@ -10,6 +10,10 @@ module RSpec
         @exception = exception
       end
 
+      def is_a?(klass)
+        klass == Failure
+      end
+
       def method_missing(sym, *args, &block)
         ::Kernel.raise @exception
       end

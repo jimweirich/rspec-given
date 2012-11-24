@@ -2,22 +2,43 @@ module RSpec
   module Given
     module HaveFailed
 
-      # Alias for raise_error(...), but reads a bit better when using
+      # Specializes the RaiseError matcher to handle
+      # Failure/non-failure objects.
+      class HaveFailedMatcher < RSpec::Matchers::BuiltIn::RaiseError
+        def matches?(given_proc, negative_expectation = false)
+          if given_proc.is_a?(Failure)
+            super
+          else
+            super(lambda { }, negative_expectation)
+          end
+        end
+
+        def does_not_match?(given_proc)
+          if given_proc.is_a?(Failure)
+            super(given_proc)
+          else
+            super(lambda { })
+          end
+        end
+      end
+
+      # Simular to raise_error(...), but reads a bit better when using
       # a failure result from a when clause.
-      #
-      # NOTE: This is new for 1.6.0.beta.1. A name change for this
-      # method is possible.
       #
       # Typical Usage:
       #
       #    When(:result) { fail "OUCH" }
       #    Then { result.should have_failed(StandardError, /OUCH/) }
       #
+      #    When(:result) { good_code }
+      #    Then { result.should_not have_failed }
+      #
       # :call-seq:
       #    have_failed([exception_class [, message_pattern]])
+      #    have_failed([exception_class [, message_pattern]]) { |ex| ... }
       #
-      def have_failed(*args, &block)
-        raise_error(*args, &block)
+      def have_failed(error=Exception, message=nil, &block)
+        HaveFailedMatcher.new(error, message, &block)
       end
     end
   end
