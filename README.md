@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 2.2.0.
+Covering rspec-given, version 2.2.1.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
