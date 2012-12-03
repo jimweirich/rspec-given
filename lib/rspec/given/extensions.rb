@@ -21,13 +21,13 @@ module RSpec
       # surrounding describe/context blocks, starting with the
       # outermost context.
       def _rg_establish_givens  # :nodoc:
-        return if defined?(@_rg_ran)
+        return if defined?(@_rg_ran) && @_rg_ran
+        @_rg_ran = true
         _rg_contexts.each do |context|
           context._rg_givens.each do |block|
             instance_eval(&block)
           end
         end
-        @_rg_ran = true
       end
 
       # Check all the invariants in the current and surrounding
