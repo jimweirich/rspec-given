@@ -1,6 +1,94 @@
 require 'rspec/given/failure'
 require 'rspec/given/module_methods'
 
+require 'ripper'
+require 'sorcerer'
+module RSpec
+  module Given
+
+    class EvalErr
+      def initialize(str)
+        @string = str
+      end
+      def size
+        inspect.size
+      end
+      def to_s
+        @string
+      end
+      def inspect
+        @string
+      end
+    end
+
+    class NaturalExpression
+
+      def initialize(block, env)
+        @block = block
+        @env = env
+        @output = ""
+      end
+
+      def message
+        file, line = caller_line(@block)
+        @output << "Then expression failed at #{file}:#{line}\n"
+        lines = open(file).readlines
+        code = lines[line.to_i-1]
+        sexp = Ripper::SexpBuilder.new(code).parse
+        sexp = extract_test_expression(sexp)
+        puts "DBG: sexp=#{sexp.inspect}"
+        subs = Sorcerer.subexpressions(sexp).reverse.uniq.reverse
+        pairs = subs.map { |exp|
+          [exp, eval_in(exp, @env)]
+        }
+        if (sexp[2][0] == :binary && sexp[2][2] == :==)
+          expect_expr = Sorcerer.source(sexp[2][3])
+          @output << "expected: " << eval_in(expect_expr, @env) << "\n"
+          got_expr = Sorcerer.source(sexp[2][1])
+          @output << "got:      " << eval_in(got_expr, @env)<< "\n"
+        end
+        display_pairs(pairs)
+        @output << "\n"
+        @output
+      end
+
+      private
+
+      def caller_line(block)
+        eval "[__FILE__, __LINE__]", block.binding
+      end
+
+      def extract_test_expression(sexp)
+        sexp[1][2][2][2]
+      end
+
+      def eval_in(exp, binding)
+        eval(exp, binding).inspect
+      rescue StandardError => ex
+        EvalErr.new("#{ex.class}: #{ex.message}")
+      end
+
+      def suggest_width(pairs)
+        pairs.map { |x,v| v.size }.select { |n| n < 20 }.max || 10
+      end
+
+      def display_pairs(pairs)
+        width = suggest_width(pairs)
+        pairs.each do |x, v|
+          if v.size > 20
+            @output << sprintf("  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n", v, x)
+          else
+            @output << sprintf("  %-#{width+2}s <- %s\n", v, x)
+          end
+        end
+      end
+
+    end
+
+  end
+end
+
+
 module RSpec
   module Given
 
@@ -35,7 +123,7 @@ module RSpec
       def _rg_check_invariants  # :nodoc:
         _rg_contexts.each do |context|
           context._rg_invariants.each do |block|
-            instance_eval(&block)
+            _rg_evaluate(block)
           end
         end
       end
@@ -43,7 +131,7 @@ module RSpec
       def _rg_check_ands  # :nodoc:
         return if self.class._rg_context_info[:and_ran]
         self.class._rg_and_blocks.each do |block|
-          instance_eval(&block)
+          _rg_evaluate(block)
         end
         self.class._rg_context_info[:and_ran] = true
       end
@@ -52,8 +140,15 @@ module RSpec
       def _rg_then(&block)      # :nodoc:
         _rg_establish_givens
         _rg_check_invariants
-        instance_eval(&block)
+        _rg_evaluate(block)
         _rg_check_ands
+      end
+
+      def _rg_evaluate(block)
+        unless instance_eval(&block)
+          nexp = NaturalExpression.new(block, binding)
+          ::RSpec::Expectations.fail_with nexp.message
+        end
       end
     end
 
