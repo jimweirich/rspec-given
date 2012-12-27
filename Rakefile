@@ -66,10 +66,19 @@ task :examples1 => [:verify_rspec1] do
   sh "spec examples/stack/stack_spec1.rb"
 end
 
+EXAMPLES = FileList['examples/**/*_spec.rb'].exclude('examples/failing/*.rb')
+FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
+
 desc "Run the examples in RSpec 2"
 task :examples2 => [:verify_rspec2] do
   puts "Running examples (with RSpec2)"
-  sh "rspec examples"
+  sh "rspec #{EXAMPLES}"
+end
+
+desc "Run failing examples"
+task :failing => [:verify_rspec2] do
+  puts "Running failing examples (with RSpec2)"
+  sh "rspec #{FAILING_EXAMPLES}"
 end
 
 task :verify_rspec1 do
