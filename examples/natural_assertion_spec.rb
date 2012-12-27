@@ -1,5 +1,5 @@
 require 'rspec/given'
-require 'rspec/given/natural_assertions'
+require 'rspec/given/natural_assertion'
 
 describe "Natural Assertions" do
   Given(:foo) { 1 }
@@ -8,4 +8,6 @@ describe "Natural Assertions" do
   Then { nil == "HI" && true && :symbol  && 1}
   Then { foo.should == 2 }
   Then { foo == 1 }
+  Then { foo.should_not == 1 }
+  Then { foo.should_not be_nil }
 end
