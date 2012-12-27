@@ -34,27 +34,51 @@ module RSpec
 
       def message
         @output = "Then expression failed at #{@code_file}:#{@code_line}\n"
-        subs = Sorcerer.subexpressions(assertion_sexp).reverse.uniq.reverse
-        pairs = subs.map { |exp|
-          [exp, eval_in(exp, @env)]
-        }
-        if (assertion_sexp[2][0] == :binary && assertion_sexp[2][2] == :==)
-          expect_expr = Sorcerer.source(assertion_sexp[2][3])
-          @output << "expected: " << eval_in(expect_expr, @env) << "\n"
-          got_expr = Sorcerer.source(assertion_sexp[2][1])
-          @output << "got:      " << eval_in(got_expr, @env)<< "\n"
-        elsif (assertion_sexp[2][0] == :binary && assertion_sexp[2][2] == :!=)
-          expect_expr = Sorcerer.source(assertion_sexp[2][3])
-          @output << "expected not: " << eval_in(expect_expr, @env) << "\n"
-          got_expr = Sorcerer.source(assertion_sexp[2][1])
-          @output << "got:          " << eval_in(got_expr, @env)<< "\n"
-        end
-        display_pairs(pairs)
+        explain_failure
+        display_pairs(expression_value_pairs)
         @output << "\n"
         @output
       end
 
       private
+
+      BINARY_EXPLAINATIONS = {
+        :== => "to equal",
+        :!= => "to not equal",
+        :<  => "to be less than",
+        :<= => "to be less or equal to",
+        :>  => "to be greater than",
+        :>= => "to be greater or equal to",
+        :=~ => "to match",
+        :!~ => "to not match",
+      }
+
+      def explain_failure
+        sexp = assertion_sexp[2]
+        if sexp.first == :binary
+          msg = BINARY_EXPLAINATIONS[sexp[2]]
+          if msg
+            @output << explain_expected("expected", sexp[1], msg, sexp[3])
+          end
+        end
+      end
+
+      def explain_expected(expect_msg, expect_sexp, got_msg, got_sexp)
+        width = [expect_msg.size, got_msg.size].max
+        sprintf("%#{width}s: %s\n%#{width}s: %s\n",
+          expect_msg, eval_sexp(expect_sexp),
+          got_msg, eval_sexp(got_sexp))
+      end
+
+      def expression_value_pairs
+        assertion_subexpressions.map { |exp|
+          [exp, eval_in(exp, @env)]
+        }
+      end
+
+      def assertion_subexpressions
+        Sorcerer.subexpressions(assertion_sexp).reverse.uniq.reverse
+      end
 
       def assertion_sexp
         @assertion_sexp ||= extract_test_expression(Ripper::SexpBuilder.new(source).parse)
@@ -73,20 +97,27 @@ module RSpec
         sexp[1][2][2][2]
       end
 
+      def eval_sexp(sexp)
+        expr = Sorcerer.source(sexp)
+        eval_in(expr, @env)
+      end
+
       def eval_in(exp, binding)
         eval(exp, binding).inspect
       rescue StandardError => ex
         EvalErr.new("#{ex.class}: #{ex.message}")
       end
 
+      WRAP_WIDTH = 20
+
       def suggest_width(pairs)
-        pairs.map { |x,v| v.size }.select { |n| n < 20 }.max || 10
+        pairs.map { |x,v| v.size }.select { |n| n < WRAP_WIDTH }.max || 10
       end
 
       def display_pairs(pairs)
         width = suggest_width(pairs)
         pairs.each do |x, v|
-          if v.size > 20
+          if v.size > WRAP_WIDTH
             @output << sprintf("  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n", v, x)
           else
             @output << sprintf("  %-#{width+2}s <- %s\n", v, x)
