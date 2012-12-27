@@ -55,11 +55,8 @@ module RSpec
 
       def explain_failure
         sexp = assertion_sexp[2]
-        if sexp.first == :binary
-          msg = BINARY_EXPLAINATIONS[sexp[2]]
-          if msg
-            @output << explain_expected("expected", sexp[1], msg, sexp[3])
-          end
+        if sexp.first == :binary && msg = BINARY_EXPLAINATIONS[sexp[2]]
+          @output << explain_expected("expected", sexp[1], msg, sexp[3])
         end
       end
 
@@ -110,19 +107,18 @@ module RSpec
 
       WRAP_WIDTH = 20
 
-      def suggest_width(pairs)
-        pairs.map { |x,v| v.size }.select { |n| n < WRAP_WIDTH }.max || 10
-      end
-
       def display_pairs(pairs)
         width = suggest_width(pairs)
         pairs.each do |x, v|
-          if v.size > WRAP_WIDTH
-            @output << sprintf("  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n", v, x)
-          else
-            @output << sprintf("  %-#{width+2}s <- %s\n", v, x)
-          end
+          fmt = (v.size > WRAP_WIDTH) ?
+            "  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n" :
+            "  %-#{width+2}s <- %s\n"
+          @output << sprintf(fmt, v, x)
         end
+      end
+
+      def suggest_width(pairs)
+        pairs.map { |x,v| v.size }.select { |n| n < WRAP_WIDTH }.max || 10
       end
 
     end
