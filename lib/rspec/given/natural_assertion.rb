@@ -28,8 +28,8 @@ module RSpec
         set_file_and_line
       end
 
-      def using_should?
-        source =~ /\.should(_not)?\b/
+      def using_rspec_assertion?
+        using_should? || using_expect?
       end
 
       def message
@@ -41,6 +41,14 @@ module RSpec
       end
 
       private
+
+      def using_should?
+        source =~ /\.\s*should(_not)?\b/
+      end
+
+      def using_expect?
+        source =~ /\bexpect\s*[({].*[)}]\s*\.\s*(not_)?to\b/
+      end
 
       BINARY_EXPLAINATIONS = {
         :== => "to equal",

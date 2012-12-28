@@ -9,35 +9,71 @@ describe RSpec::Given::NaturalAssertion do
   Given(:lines) { RSpec::Given::LineExtractor.new }
   Given(:nassert) { RSpec::Given::NaturalAssertion.new(block, bind, lines) }
 
-  describe "detecting should" do
+  describe "detecting RSpec Assertions" do
     context "with should" do
       Given(:block) {
         lambda { a.should == 1 }
       }
-      Then { nassert.should be_using_should }
+      Then { nassert.should be_using_rspec_assertion }
     end
 
     context "with should in multi-line block" do
       Given(:block) {
         lambda {
-          a.should == 1
+          a
+            .
+          should == 1
         }
       }
-      Then { nassert.should be_using_should }
+      Then { nassert.should be_using_rspec_assertion }
     end
 
     context "with should_not" do
       Given(:block) {
         lambda { a.should_not == 1 }
       }
-      Then { nassert.should be_using_should }
+      Then { nassert.should be_using_rspec_assertion }
+    end
+
+    context "with expect/to" do
+      Given(:block) {
+        lambda { expect(a).to eq(1) }
+      }
+      Then { nassert.should be_using_rspec_assertion }
+    end
+
+    context "with expect/not_to" do
+      Given(:block) {
+        lambda { expect(a).not_to eq(1) }
+      }
+      Then { nassert.should be_using_rspec_assertion }
+    end
+
+    context "with expect on several lines" do
+      Given(:block) {
+        lambda {
+          expect(a)
+            .
+          to eq(1)
+        }
+      }
+      Then { nassert.should be_using_rspec_assertion }
+    end
+
+    context "with expect and block" do
+      Given(:block) {
+        lambda {
+          expect { a }.to eq(1)
+        }
+      }
+      Then { nassert.should be_using_rspec_assertion }
     end
 
     context "with natural assertion" do
       Given(:block) {
         lambda { a == 1 }
       }
-      Then { nassert.should_not be_using_should }
+      Then { nassert.should_not be_using_rspec_assertion }
     end
   end
 
