@@ -37,6 +37,8 @@ EOF
     s.add_development_dependency("bluecloth")
     s.add_development_dependency("rdoc", "> 2.4.2")
 
+    s.required_ruby_version = '>= 1.9.2'
+
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/jimweirich/rspec-given"
