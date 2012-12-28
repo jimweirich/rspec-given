@@ -76,7 +76,7 @@ module RSpec
       end
 
       def _rg_context_info
-        @_rg_contet_info ||= {}
+        @_rg_context_info ||= {}
       end
 
       def _rg_lines
