@@ -176,9 +176,8 @@ module RSpec
       #   Then { ... assertion ... }
       #
       def Then(&block)
-        b = block.binding
-        file = eval "__FILE__", b
-        line = eval "__LINE__", b
+        env = block.binding
+        file, line = eval "[__FILE__, __LINE__]", env
         description = _rg_lines.line(file, line) unless RSpec::Given.source_caching_disabled
         if description
           cmd = "it(description)"
