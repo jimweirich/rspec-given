@@ -119,8 +119,8 @@ module RSpec
       # every time the specification is executed.
       #
       # :call-seq:
-      #   Given(:name, &block)
-      #   Given(&block)
+      #   Given(:name) { ... code ... }
+      #   Given { ... code ... }
       #
       def Given(*args, &block)
         if args.first.is_a?(Symbol)
@@ -136,6 +136,7 @@ module RSpec
       #
       # :call-seq:
       #   Given!(:name) { ... code ... }
+      #
       def Given!(name, &block)
         let!(name, &block)
         _rg_givens << _rg_trigger_given(name)
@@ -144,8 +145,8 @@ module RSpec
       # Declare the code that is under test.
       #
       # :call-seq:
-      #   When(:named_result, &block)
-      #   When(&block)
+      #   When(:named_result) { ... code_under_test ... }
+      #   When { ... code_under_test ... }
       #
       def When(*args, &block)
         if args.first.is_a?(Symbol)
@@ -170,6 +171,10 @@ module RSpec
       # Then supplies an assertion that should be true after all the
       # Given and When blocks have been run. All invariants in scope
       # will be checked before the Then block is run.
+      #
+      # :call-seq:
+      #   Then { ... assertion ... }
+      #
       def Then(&block)
         b = block.binding
         file = eval "__FILE__", b
