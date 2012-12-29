@@ -325,6 +325,20 @@ Notes:
    represented in the RSpec formatted output (e.g. the '--format html'
    option).
 
+## Natural Assertions
+
+RSpec/Given now supports the use of "natural assertions" in Then, And,
+and Invariant blocks. Natural assertions are just Ruby conditionals,
+without the _should_ or _expect_ methods that RSpec provides. Here is
+are some examples of natural assertions:
+
+```ruby
+  Then { pop_result == :top_item }           # Required
+  And  { stack.top == :second_item }         # No Setup rerun
+  And  { stack.depth == original_depth - 1 } # ... for these
+```
+
+
 ## Configuration
 
 Just require 'rspec/given' in the spec helper of your project and it
