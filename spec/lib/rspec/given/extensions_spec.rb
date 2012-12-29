@@ -117,4 +117,103 @@ describe RSpec::Given::ClassExtensions do
     And { trace << :and}
     And { trace.should == [:given, :then, :and] }
   end
+
+  describe "inherited options" do
+    context "Outer" do
+      _rg_context_info[:name] = "Outer"
+      _rg_context_info[:outer] = true
+
+      Then { _rg_info(:name).should == "Outer" }
+      Then { _rg_info(:outer).should == true }
+      Then { _rg_info(:inner).should == nil }
+
+      context "Inner" do
+        _rg_context_info[:name] = "Inner"
+        _rg_context_info[:inner] = true
+
+        Then { _rg_info(:name).should == "Inner" }
+        Then { _rg_info(:outer).should == true }
+        Then { _rg_info(:inner).should == true }
+      end
+    end
+  end
+
+  describe "Global natural assertion configuration" do
+    Given(:rspec) { false }
+    Given(:nassert) { stub(:using_rspec_assertion? => rspec) }
+
+    after do
+      RSpec::Given.use_natural_assertions false
+    end
+
+    context "with no explicit word on natural assertions" do
+      Then { _rg_natural_assertions?(nassert).should be_false }
+
+      context "overridden locally" do
+        use_natural_assertions
+        Then { _rg_natural_assertions?(nassert).should be_true }
+      end
+    end
+
+    context "with global configuration enabled" do
+      When { RSpec::Given.use_natural_assertions }
+      Then { _rg_natural_assertions?(nassert).should be_true }
+
+      context "overridden locally" do
+        use_natural_assertions false
+        Then { _rg_natural_assertions?(nassert).should be_false }
+      end
+
+      context "with rspec assertion" do
+        Given(:rspec) { true }
+        Then { _rg_natural_assertions?(nassert).should be_false }
+      end
+
+      context "without rspec assertion" do
+        Given(:rspec) { false }
+        Then { _rg_natural_assertions?(nassert).should be_true }
+      end
+    end
+
+    context "with global configuration set to always" do
+      When { RSpec::Given.use_natural_assertions :always }
+      Then { _rg_natural_assertions?(nassert).should be_true }
+
+      context "overridden locally" do
+        use_natural_assertions false
+        Then { _rg_natural_assertions?(nassert).should be_false }
+      end
+
+      context "with rspec assertion" do
+        Given(:rspec) { true }
+        Then { _rg_natural_assertions?(nassert).should be_true }
+      end
+
+      context "without rspec assertion" do
+        Given(:rspec) { false }
+        Then { _rg_natural_assertions?(nassert).should be_true }
+      end
+    end
+
+    context "with global configuration disabled" do
+      When { RSpec::Given.use_natural_assertions false }
+      Then { _rg_natural_assertions?(nassert).should be_false }
+
+      context "overridden locally" do
+        use_natural_assertions true
+        Then { _rg_natural_assertions?(nassert).should be_true }
+      end
+
+      context "with rspec assertion" do
+        Given(:rspec) { true }
+        Then { _rg_natural_assertions?(nassert).should be_false }
+      end
+
+      context "without rspec assertion" do
+        Given(:rspec) { false }
+        Then { _rg_natural_assertions?(nassert).should be_false }
+      end
+    end
+
+  end
 end

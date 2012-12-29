@@ -10,12 +10,34 @@ module RSpec
     # implementation-specific.
     module InstanceExtensions   # :nodoc:
 
+      # List of containing contexts in order from innermost to
+      # outermost.
+      def _rg_inner_contexts    # :nodoc:
+        self.class.ancestors.select { |context|
+          context.respond_to?(:_rg_givens)
+        }
+      end
+
       # List of containing contexts in order from outermost to
       # innermost.
       def _rg_contexts          # :nodoc:
-        self.class.ancestors.select { |context|
-          context.respond_to?(:_rg_givens)
-        }.reverse
+        _rg_inner_contexts.reverse
+      end
+
+      def _rg_info(keyword)
+        _rg_inner_contexts.each do |context|
+          h = context._rg_context_info
+          if h.has_key?(keyword)
+            return h[keyword]
+          end
+        end
+        nil
+      end
+
+      def _rg_natural_assertions?(nassert)
+        info_value = _rg_info(:natural_assertions_enabled)
+        use_na = info_value.nil? ? RSpec::Given.natural_assertions_enabled? : info_value
+        (! nassert.using_rspec_assertion? && use_na) || (use_na == :always)
       end
 
       # Establish all the Given preconditions the current and
@@ -116,8 +138,7 @@ module RSpec
       #    Scenario "a scenario description" do ... end
       #
       def Scenario(description, &block)
-        line = eval("__LINE__", block.binding)
-        file = eval("__FILE__", block.binding)
+        file, line = eval("[__LINE__, __FILE__]", block.binding)
         puts "WARNING: Scenario is deprecated, please use either describe or context (#{file}:#{line})"
         context(description, &block)
       end
@@ -207,6 +228,10 @@ module RSpec
       def And(&block)
         fail "And defined without a Then" unless _rg_context_info[:then_defined]
         _rg_and_blocks << block
+      end
+
+      def use_natural_assertions(enabled=true)
+        _rg_context_info[:natural_assertions_enabled] = enabled
       end
     end
   end
