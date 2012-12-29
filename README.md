@@ -1,6 +1,6 @@
 # rspec-given
 
-Covering rspec-given, version 2.2.1.
+Covering rspec-given, version 3.0.0.beta.1.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
@@ -232,7 +232,7 @@ Let me repeat that: <b>_Then_ clauses should not have any side
 effects!</b> _Then_ clauses with side effects are erroneous. _Then_
 clauses need to be idempotent, so that running them once, twice, a
 hundred times, or never does not change the state of the program. (The
-same is true of _And_ clauses).
+same is true of _And_ and _Invariant_ clauses).
 
 In RSpec terms, a _Then_ clause forms a RSpec Example that runs in the
 context of an Example Group (defined by a describe or context clause).
@@ -327,17 +327,189 @@ Notes:
 
 ## Natural Assertions
 
-RSpec/Given now supports the use of "natural assertions" in Then, And,
-and Invariant blocks. Natural assertions are just Ruby conditionals,
-without the _should_ or _expect_ methods that RSpec provides. Here is
-are some examples of natural assertions:
+RSpec/Given now supports the use of "natural assertions" in _Then_,
+_And_, and _Invariant_ blocks. Natural assertions are just Ruby
+conditionals, without the _should_ or _expect_ methods that RSpec
+provides. Here are the Then/And examples from above, but written using
+natural assertions:
 
 ```ruby
-  Then { pop_result == :top_item }           # Required
-  And  { stack.top == :second_item }         # No Setup rerun
-  And  { stack.depth == original_depth - 1 } # ... for these
+  Then { pop_result == :top_item }
+  And  { stack.top == :second_item }
+  And  { stack.depth == original_depth - 1 }
 ```
 
+Natural assertions must be enabled, either globally or on a per
+context basis, to be recognized.
+
+### Failure Messages with Natural Assertions
+
+Since natural assertions do not depend upon matchers, you don't get
+customized error messages from them. What you _do_ get is a complete
+analsysis of the expression that failed.
+
+For example, given the following failing specification:
+
+```ruby
+  RSpec::Given.use_natural_assertions
+
+  describe "Natural Assertions" do
+    Given(:foo) { 1 }
+    Given(:bar) { 2 }
+    Then { foo + bar == 2 }
+  end
+```
+
+You would get:
+
+```
+  1) Natural Assertions
+     Failure/Error: Then { foo + bar == 2 }
+       Then expression failed at /Users/jim/working/git/rspec-given/examples/failing/sample_spec.rb:6
+       expected: 3
+       to equal: 2
+         false   <- foo + bar == 2
+         3       <- foo + bar
+         1       <- foo
+         2       <- bar
+     # ./examples/failing/sample_spec.rb:6:in `block in Then'
+```
+
+Notice how the failing expression "<code>foo+bar == 2</code>" was
+broken down into subexpressions and values for each subexpression.
+This gives you all the information you need to figure out exactly what
+part of the expression is causing the failure.
+
+Natural expressions will give additional information (e.g. "expected:
+3 to equal: 2") for top level expressions involving any of the
+comparison operators (==, !=, <, <=, >, >=) or matching operators (=~,
+!~).
+
+### Caveats on Natural Assertions
+
+Keep the following in mind when using Natural Assertions.
+
+* Only a single assertion per _Then_. Only the final expression of the
+  _Then_ block will be considered when determining pass/fail for the
+  assertion. If you _want_ to express a complex condition for the
+  _Then_, you need to use ||, && or some other logical operation to
+  join the conditions into a single expression.
+
+* Using natural assertions will add a dependency on the Sorcerer gem.
+  If you enable natural assertions without installing Sorcerer, you
+  will get an error message.
+
+* Natural assertions must be *idempotent* (that means they don't
+  change anything). Since the natural assertion error message contains
+  the values of all the subexpressions, the expression and its
+  subexpressions will be evaluated multiple times. If the block is not
+  idempotent, you will get changing answers as the subexpressions are
+  evaluated.
+
+That last point is important. If you write code like this:
+
+```ruby
+  # DO NOT WRITE CODE LIKE THIS
+  context "Incorrect non-idempotent conditions" do
+    Given(:ary) { [1, 2, 3] }
+    Then { ary.delete(1) == nil }
+  end
+```
+
+Then the assertion will fail (because <code>ary.delete(1)</code) will
+return 1). Then when the error message is formated, the system reports
+that <code>ary.delete(1)</code> returns nil. You will scratch your
+head over that for a good while.
+
+Instead, move the state changing code into a When block, then just
+assert what you need about the result from the when block. Something
+like this is good:
+
+```ruby
+  context "Correct idempotent conditions" do
+    Given(:ary) { [1, 2, 3] }
+    When(:result) { ary.delete(1) }
+    Then { result == nil }
+  end
+```
+
+### Mixing Natural Assertions and RSpec Assertions
+
+Natural assertions and RSpec assertions for the most part can be
+intermixed in a single test suite, even within a single context.
+Because there are a few corner cases that might cause problems, they
+must be explicitly enabled before they will be considered.
+
+To enable natural assertions in a context, call the
+_use_natural_assertions_ method in that context. For example:
+
+```ruby
+  context "Outer" do
+    use_natural_assertions
+
+    context "Inner" do
+    end
+
+    context "Disabled" do
+      use_natural_assertions false
+    end
+  end
+```
+
+Both the _Outer_ and _Inner_ contexts will use natural assertions. The
+_Disabled_ context overrides the setting inherited from _Outer_ and
+will not process natural assertions.
+
+See the *configuration* section below to see how to enable natural
+assertions project wide.
+
+### Processing Natural Assertions
+
+Natural assertions only kick in when:
+
+1. The block does not throw an RSpec assertion failure (or any
+   exception for that matter).
+
+1. The block returns false (blocks that return true pass the
+  assertion).
+
+1. The block does not use the _should_ or _expect_ method.
+
+Detecting that last point (the usage of _should_ and _expect_) is done
+by examining the source of the block. It is not always possible to
+correctly determine if _should_ and _expect_ are used. You can always
+override the automatic detection by either forcing natural assertions
+(with :always) or disabling them (with false).
+
+```ruby
+  # Then uses a non-RSpec version of "should" on
+  context "sample" do
+    use_natural_assertions :always
+    Then { obj.should }    # Non-rspec should is called
+  end
+```
+
+```ruby
+  # Then does not call should directly, so disable natural assertions
+  context "sample" do
+    use_natural_assertions false
+    Then { check_validations(obj) }   # check_validations calls "should" internally
+  end
+
+  # You can also just not use a Then for that condition.
+  context "another sample" do
+    it do
+      check_validations(obj)
+    end
+  end
+```
+
+### Further Reading
+
+Natural assertions were inspired by the [wrong assertion
+library](http://rubygems.org/gems/wrong) by [Alex
+Chaffee](http://rubygems.org/profiles/alexch) and [Steve
+Conover](http://rubygems.org/profiles/sconoversf).
 
 ## Configuration
 
@@ -354,27 +526,17 @@ unconditionally, then add the following line to your spec helper file:
     RSpec::Given.source_caching_disabled = true
 ```
 
-# Future Directions
-
-I really like the way the Given framework is working out.  I feel my
-tests are much more like specifications when I use it.  However, I'm
-not entirely happy with it.
-
-I would like to remove the need for the ".should" in all the _Then_
-clauses. In other words, instead of saying:
+Natural assertions are disabled by default. To globally configure
+natural assertions, add one of the following lines to your spec_helper
+file:
 
 ```ruby
-    Then { x.should == y }
+    RSpec::Given.use_natural_assertions         # Enable natural assertions
+    RSpec::Given.use_natural_assertions true    # Same as above
+    RSpec::Given.use_natural_assertions false   # Disable natural assertions
+    RSpec::Given.use_natural_assertions :always # Always process natural assertions
+                                                # ... even when should/expect are detected
 ```
-
-we could say:
-
-```ruby
-    Then { x == y }
-```
-
-I think the [wrong assertion library](http://rubygems.org/gems/wrong)
-has laid some groundwork in this area.
 
 # Links
 
