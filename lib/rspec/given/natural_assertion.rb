@@ -111,24 +111,35 @@ module RSpec
       end
 
       def extract_brace_block(sexp)
-        unless sexp.first == :program &&
-            sexp[1].first == :stmts_add &&
-            sexp[1][2].first == :method_add_block &&
-            (sexp[1][2][2].first == :brace_block || sexp[1][2][2].first == :do_block)
+        unless then_block?(sexp)
           source = Sorcerer.source(sexp)
-          fail RSpec::Given::InvalidThenError, "Unexpected code at #{source_line}\n#{source}"
+          fail InvalidThenError, "Unexpected code at #{source_line}\n#{source}"
         end
         sexp[1][2][2]
       end
 
-      def extract_first_statement(brace_block)
-        unless brace_block[2].first == :stmts_add &&
-            brace_block[2][1].first == :stmts_new
-          source = Sorcerer.source(brace_block)
-          fail RSpec::Given::InvalidThenError,
-            "Multiple statements in Then block at #{source_line}\n#{source}"
+      def then_block?(sexp)
+        sexp.first == :program &&
+          sexp[1].first == :stmts_add &&
+          sexp[1][2].first == :method_add_block &&
+          (sexp[1][2][2].first == :brace_block || sexp[1][2][2].first == :do_block)
+      end
+
+      def extract_first_statement(block_sexp)
+        unless contains_one_statement?(block_sexp)
+          source = Sorcerer.source(block_sexp)
+          fail InvalidThenError, "Multiple statements in Then block at #{source_line}\n#{source}"
         end
-        brace_block[2][2]
+        extract_statement_from_block(block_sexp)
+      end
+
+      def contains_one_statement?(block_sexp)
+        block_sexp[2].first == :stmts_add &&
+          block_sexp[2][1].first == :stmts_new
+      end
+
+      def extract_statement_from_block(block_sexp)
+        block_sexp[2][2]
       end
 
       def eval_sexp(sexp)
