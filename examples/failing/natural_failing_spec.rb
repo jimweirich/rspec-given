@@ -2,6 +2,8 @@ require 'rspec/given'
 require 'rspec/given/natural_assertion'
 
 describe "Natural Assertions" do
+  use_natural_assertions
+
   Given(:foo) { 1 }
   Given(:expected) { 2 }
   Given(:ary) { [1] }
@@ -12,10 +14,9 @@ describe "Natural Assertions" do
   Then { foo.should == 2 }
   Then { foo != 1 }
   Then { foo.should_not == 1 }
-  Then { foo.should_not be_nil }
+  Then { foo.should be_nil }
   Then { ary.empty? }
-  Then { true }
-  And  { !null.nil? }
+  Then { !null.nil? }
   Then { fail "OUCH" }
   Then { ! empty.empty? }
   Then {
