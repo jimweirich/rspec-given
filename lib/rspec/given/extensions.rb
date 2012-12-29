@@ -82,7 +82,7 @@ module RSpec
       def _rg_evaluate(block)
         unless instance_eval(&block)
           nassert = NaturalAssertion.new(block, binding, self.class._rg_lines)
-          if ! nassert.using_rspec_assertion?
+          if ! nassert.using_rspec_assertion? && nassert.has_content?
             ::RSpec::Expectations.fail_with nassert.message
           end
         end

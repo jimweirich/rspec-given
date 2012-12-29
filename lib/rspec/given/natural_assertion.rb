@@ -28,8 +28,14 @@ module RSpec
         set_file_and_line
       end
 
+      VOID_SEXP = [:stmts_add, [:stmts_new], [:void_stmt]]
+
       def using_rspec_assertion?
         using_should? || using_expect?
+      end
+
+      def has_content?
+        assertion_sexp != VOID_SEXP
       end
 
       def message

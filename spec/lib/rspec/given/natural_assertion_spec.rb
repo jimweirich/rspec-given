@@ -9,6 +9,22 @@ describe RSpec::Given::NaturalAssertion do
   Given(:lines) { RSpec::Given::LineExtractor.new }
   Given(:nassert) { RSpec::Given::NaturalAssertion.new(block, bind, lines) }
 
+  describe "#content?" do
+    context "with empty block" do
+      Given(:block) {
+        lambda { }
+      }
+      Then { nassert.should_not have_content }
+    end
+
+    context "with block returning false" do
+      Given(:block) {
+        lambda { false }
+      }
+      Then { nassert.should have_content }
+    end
+  end
+
   describe "detecting RSpec Assertions" do
     context "with should" do
       Given(:block) {
