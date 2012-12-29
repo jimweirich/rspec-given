@@ -115,7 +115,6 @@ module RSpec
             sexp[1].first == :stmts_add &&
             sexp[1][2].first == :method_add_block &&
             (sexp[1][2][2].first == :brace_block || sexp[1][2][2].first == :do_block)
-          puts "DBG: sexp=#{sexp.inspect}"
           source = Sorcerer.source(sexp)
           fail RSpec::Given::InvalidThenError, "Unexpected code at #{source_line}\n#{source}"
         end
