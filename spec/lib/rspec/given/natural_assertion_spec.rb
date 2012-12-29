@@ -107,6 +107,16 @@ describe RSpec::Given::NaturalAssertion do
       Then { msg.should =~ /\b1 +<- +a\b/ }
     end
 
+    context "with equals assertion with do/end" do
+      Given(:block) {
+        lambda do a == 2 end
+      }
+      Then { msg.should =~ /\bexpected: +1\b/ }
+      Then { msg.should =~ /\bto equal: +2\b/ }
+      Then { msg.should =~ /\bfalse +<- +a == 2\b/ }
+      Then { msg.should =~ /\b1 +<- +a\b/ }
+    end
+
     context "with not-equals assertion" do
       Given(:block) {
         lambda { a != 1 }
