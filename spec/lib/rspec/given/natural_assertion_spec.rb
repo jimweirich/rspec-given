@@ -189,4 +189,26 @@ describe RSpec::Given::NaturalAssertion do
       Then { msg.should =~ /\bnil +<- +ary$/ }
     end
   end
+
+  describe "bad Then blocks" do
+    context "with multiple statements" do
+      Given(:block) {
+        lambda {  }
+      }
+      When(:result) { nassert.message }
+#      Then { result.should have_failed(RSpec::Given::InvalidThenError) }
+    end
+
+    context "with multiple statements" do
+      Given(:block) {
+        lambda {
+          ary = nil
+          ary[1] == 3
+        }
+      }
+      When(:result) { nassert.message }
+      Then { result.should have_failed(RSpec::Given::InvalidThenError, /multiple.*statements/i) }
+    end
+
+  end
 end

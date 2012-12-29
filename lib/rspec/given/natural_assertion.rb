@@ -4,6 +4,8 @@ require 'sorcerer'
 module RSpec
   module Given
 
+    InvalidThenError = Class.new(StandardError)
+
     class EvalErr
       def initialize(str)
         @string = str
@@ -28,7 +30,7 @@ module RSpec
         set_file_and_line
       end
 
-      VOID_SEXP = [:stmts_add, [:stmts_new], [:void_stmt]]
+      VOID_SEXP = [:void_stmt]
 
       def using_rspec_assertion?
         using_should? || using_expect?
@@ -39,7 +41,7 @@ module RSpec
       end
 
       def message
-        @output = "Then expression failed at #{@code_file}:#{@code_line}\n"
+        @output = "Then expression failed at #{source_line}\n"
         explain_failure
         display_pairs(expression_value_pairs)
         @output << "\n"
@@ -68,9 +70,8 @@ module RSpec
       }
 
       def explain_failure
-        sexp = assertion_sexp[2]
-        if sexp.first == :binary && msg = BINARY_EXPLAINATIONS[sexp[2]]
-          @output << explain_expected("expected", sexp[1], msg, sexp[3])
+        if assertion_sexp.first == :binary && msg = BINARY_EXPLAINATIONS[assertion_sexp[2]]
+          @output << explain_expected("expected", assertion_sexp[1], msg, assertion_sexp[3])
         end
       end
 
@@ -105,7 +106,29 @@ module RSpec
       end
 
       def extract_test_expression(sexp)
-        sexp[1][2][2][2]
+        brace_block = extract_brace_block(sexp)
+        extract_first_statement(brace_block)
+      end
+
+      def extract_brace_block(sexp)
+        unless sexp.first == :program &&
+            sexp[1].first == :stmts_add &&
+            sexp[1][2].first == :method_add_block &&
+            sexp[1][2][2].first == :brace_block
+          source = Sorcerer.source(sexp)
+          fail RSpec::Given::InvalidThenError, "Unexpected code at #{source_line}\n#{source}"
+        end
+        sexp[1][2][2]
+      end
+
+      def extract_first_statement(brace_block)
+        unless brace_block[2].first == :stmts_add &&
+            brace_block[2][1].first == :stmts_new
+          source = Sorcerer.source(brace_block)
+          fail RSpec::Given::InvalidThenError,
+            "Multiple statements in Then block at #{source_line}\n#{source}"
+        end
+        brace_block[2][2]
       end
 
       def eval_sexp(sexp)
@@ -135,6 +158,9 @@ module RSpec
         pairs.map { |x,v| v.size }.select { |n| n < WRAP_WIDTH }.max || 10
       end
 
+      def source_line
+        "#{@code_file}:#{@code_line}"
+      end
     end
 
   end
