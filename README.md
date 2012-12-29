@@ -261,7 +261,7 @@ The _And_ clause is similar to _Then_, but does not form its own RSpec
 example. This means that _And_ clauses reuse the setup from a sibling
 _Then_ clause. Using a single _Then_ an multiple _And_ clauses in an
 example group means the setup for that group is run only once (for the
-_Then_ clause) and reused for all the _And_s. This can be a
+_Then_ clause) and reused for all the _And_ clauses. This can be a
 significant speed savings where the setup for an example group is
 expensive.
 
@@ -326,6 +326,9 @@ Notes:
    option).
 
 ## Natural Assertions
+
+**NOTE:** <em>Natural assertions are an experimental feature of
+RSpec/Given. They are currently disabled by default.</em>
 
 RSpec/Given now supports the use of "natural assertions" in _Then_,
 _And_, and _Invariant_ blocks. Natural assertions are just Ruby
@@ -393,13 +396,10 @@ Keep the following in mind when using Natural Assertions.
   _Then_ block will be considered when determining pass/fail for the
   assertion. If you _want_ to express a complex condition for the
   _Then_, you need to use ||, && or some other logical operation to
-  join the conditions into a single expression.
+  join the conditions into a single expression (and the failure
+  message will breakdown the values for each part).
 
-* Using natural assertions will add a dependency on the Sorcerer gem.
-  If you enable natural assertions without installing Sorcerer, you
-  will get an error message.
-
-* Natural assertions must be *idempotent* (that means they don't
+* Natural assertions must be **idempotent** (that means they don't
   change anything). Since the natural assertion error message contains
   the values of all the subexpressions, the expression and its
   subexpressions will be evaluated multiple times. If the block is not
@@ -416,10 +416,10 @@ That last point is important. If you write code like this:
   end
 ```
 
-Then the assertion will fail (because <code>ary.delete(1)</code) will
-return 1). Then when the error message is formated, the system reports
-that <code>ary.delete(1)</code> returns nil. You will scratch your
-head over that for a good while.
+Then the assertion will fail (because <code>ary.delete(1)</code> will
+initially return 1). But when the error message is formated, the
+system reports that <code>ary.delete(1)</code> returns nil. You will
+scratch your head over that for a good while.
 
 Instead, move the state changing code into a When block, then just
 assert what you need about the result from the when block. Something
@@ -460,26 +460,28 @@ Both the _Outer_ and _Inner_ contexts will use natural assertions. The
 _Disabled_ context overrides the setting inherited from _Outer_ and
 will not process natural assertions.
 
-See the *configuration* section below to see how to enable natural
+See the **configuration** section below to see how to enable natural
 assertions project wide.
 
 ### Processing Natural Assertions
 
-Natural assertions only kick in when:
+When natural assertions are enabled, they are only used if:
 
-1. The block does not throw an RSpec assertion failure (or any
+1. The block does not throw an RSpec assertion failure (or any other
    exception for that matter).
 
 1. The block returns false (blocks that return true pass the
-  assertion).
+   assertion and don't need a failure message).
 
-1. The block does not use the _should_ or _expect_ method.
+1. The block does not directly use RSpec's _should_ or _expect_
+   method.
 
-Detecting that last point (the usage of _should_ and _expect_) is done
-by examining the source of the block. It is not always possible to
-correctly determine if _should_ and _expect_ are used. You can always
-override the automatic detection by either forcing natural assertions
-(with :always) or disabling them (with false).
+Detecting that last point (the use of _should_ and _expect_) is done
+by examining the source of the block. However it is not always
+possible to correctly determine if _should_ and _expect_ are used
+merely from the source. Fortunately you can always override the
+automatic detection by either forcing natural assertions (with
+:always) or disabling them (with false).
 
 ```ruby
   # Then uses a non-RSpec version of "should" on
@@ -498,7 +500,7 @@ override the automatic detection by either forcing natural assertions
 
   # You can also just not use a Then for that condition.
   context "another sample" do
-    it do
+    it "checks validations" do
       check_validations(obj)
     end
   end
