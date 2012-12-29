@@ -8,5 +8,7 @@ RSpec.configure do |c|
   c.include(RSpec::Given::InstanceExtensions)
   c.include(RSpec::Given::HaveFailed)
 
+  c.backtrace_clean_patterns << /lib\/rspec\/given/
+
   RSpec::Given.detect_formatters(c)
 end
