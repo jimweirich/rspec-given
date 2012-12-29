@@ -392,11 +392,11 @@ comparison operators (==, !=, <, <=, >, >=) or matching operators (=~,
 
 Keep the following in mind when using Natural Assertions.
 
-* Only a single assertion per _Then_. Only the final expression of the
-  _Then_ block will be considered when determining pass/fail for the
-  assertion. If you _want_ to express a complex condition for the
-  _Then_, you need to use ||, && or some other logical operation to
-  join the conditions into a single expression (and the failure
+* Only a single expression/assertion per _Then_. The single expression
+  of the _Then_ block will be considered when determining pass/fail
+  for the assertion. If you _want_ to express a complex condition for
+  the _Then_, you need to use ||, && or some other logical operation
+  to join the conditions into a single expression (and the failure
   message will breakdown the values for each part).
 
 * Natural assertions must be **idempotent** (that means they don't
