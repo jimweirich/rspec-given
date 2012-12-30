@@ -7,4 +7,5 @@ group :dev do
   gem 'bluecloth'
   gem 'ghpreview'
   gem 'flog'
+  gem 'flay'
 end
