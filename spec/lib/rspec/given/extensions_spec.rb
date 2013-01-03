@@ -120,16 +120,16 @@ describe RSpec::Given::ClassExtensions do
 
   describe "inherited options" do
     context "Outer" do
-      _rg_context_info[:name] = "Outer"
-      _rg_context_info[:outer] = true
+      _rgc_context_info[:name] = "Outer"
+      _rgc_context_info[:outer] = true
 
       Then { _rg_info(:name).should == "Outer" }
       Then { _rg_info(:outer).should == true }
       Then { _rg_info(:inner).should == nil }
 
       context "Inner" do
-        _rg_context_info[:name] = "Inner"
-        _rg_context_info[:inner] = true
+        _rgc_context_info[:name] = "Inner"
+        _rgc_context_info[:inner] = true
 
         Then { _rg_info(:name).should == "Inner" }
         Then { _rg_info(:outer).should == true }

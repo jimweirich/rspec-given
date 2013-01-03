@@ -14,7 +14,7 @@ module RSpec
       # outermost.
       def _rg_inner_contexts    # :nodoc:
         self.class.ancestors.select { |context|
-          context.respond_to?(:_rg_givens)
+          context.respond_to?(:_rgc_givens)
         }
       end
 
@@ -28,7 +28,7 @@ module RSpec
       # defining context.
       def _rg_info(keyword)     # :nodoc:
         _rg_inner_contexts.each do |context|
-          h = context._rg_context_info
+          h = context._rgc_context_info
           if h.has_key?(keyword)
             return h[keyword]
           end
@@ -67,7 +67,7 @@ module RSpec
         return if defined?(@_rg_ran) && @_rg_ran
         @_rg_ran = true
         _rg_contexts.each do |context|
-          context._rg_givens.each do |block|
+          context._rgc_givens.each do |block|
             instance_eval(&block)
           end
         end
@@ -77,18 +77,18 @@ module RSpec
       # describe/context blocks, starting with the outermost context.
       def _rg_check_invariants  # :nodoc:
         _rg_contexts.each do |context|
-          context._rg_invariants.each do |block|
+          context._rgc_invariants.each do |block|
             _rg_evaluate(block)
           end
         end
       end
 
       def _rg_check_ands  # :nodoc:
-        return if self.class._rg_context_info[:and_ran]
-        self.class._rg_and_blocks.each do |block|
+        return if self.class._rgc_context_info[:and_ran]
+        self.class._rgc_and_blocks.each do |block|
           _rg_evaluate(block)
         end
-        self.class._rg_context_info[:and_ran] = true
+        self.class._rgc_context_info[:and_ran] = true
       end
 
       # Implement the run-time semantics of the Then clause.
@@ -103,7 +103,7 @@ module RSpec
       def _rg_evaluate(block)   # :nodoc:
         passed = instance_eval(&block)
         if ! passed && _rg_na_configured?
-          nassert = NaturalAssertion.new(block, binding, self.class._rg_lines)
+          nassert = NaturalAssertion.new(block, binding, self.class._rgc_lines)
           ::RSpec::Expectations.fail_with nassert.message if _rg_need_na_message?(nassert)
         end
       end
@@ -113,31 +113,31 @@ module RSpec
 
       # List of all givens directly in the current describe/context
       # block.
-      def _rg_givens            # :nodoc:
-        @_rg_givens ||= []
+      def _rgc_givens            # :nodoc:
+        @_rgc_givens ||= []
       end
 
       # List of all invariants directly in the current
       # describe/context block.
-      def _rg_invariants        # :nodoc:
-        @_rg_invariants ||= []
+      def _rgc_invariants        # :nodoc:
+        @_rgc_invariants ||= []
       end
 
-      def _rg_and_blocks
-        @_rg_and_blocks ||= []
+      def _rgc_and_blocks
+        @_rgc_and_blocks ||= []
       end
 
-      def _rg_context_info
-        @_rg_context_info ||= {}
+      def _rgc_context_info
+        @_rgc_context_info ||= {}
       end
 
-      def _rg_lines
-        @_rg_lines ||= LineExtractor.new
+      def _rgc_lines
+        @_rgc_lines ||= LineExtractor.new
       end
 
       # Trigger the evaluation of a Given! block by referencing its
       # name.
-      def _rg_trigger_given(name) # :nodoc:
+      def _rgc_trigger_given(name) # :nodoc:
         Proc.new { send(name) }
       end
 
@@ -177,7 +177,7 @@ module RSpec
         if args.first.is_a?(Symbol)
           let(args.first, &block)
         else
-          _rg_givens << block
+          _rgc_givens << block
         end
       end
 
@@ -190,7 +190,7 @@ module RSpec
       #
       def Given!(name, &block)
         let!(name, &block)
-        _rg_givens << _rg_trigger_given(name)
+        _rgc_givens << _rgc_trigger_given(name)
       end
 
       # Declare the code that is under test.
@@ -229,29 +229,29 @@ module RSpec
       def Then(&block)
         env = block.binding
         file, line = eval "[__FILE__, __LINE__]", env
-        description = _rg_lines.line(file, line) unless RSpec::Given.source_caching_disabled
+        description = _rgc_lines.line(file, line) unless RSpec::Given.source_caching_disabled
         if description
           cmd = "it(description)"
         else
           cmd = "specify"
         end
         eval %{#{cmd} do _rg_then(&block) end}, binding, file, line
-        _rg_context_info[:then_defined] = true
+        _rgc_context_info[:then_defined] = true
       end
 
       # Establish an invariant that must be true for all Then blocks
       # in the current (and nested) scopes.
       def Invariant(&block)
-        _rg_invariants << block
+        _rgc_invariants << block
       end
 
       def And(&block)
-        fail "And defined without a Then" unless _rg_context_info[:then_defined]
-        _rg_and_blocks << block
+        fail "And defined without a Then" unless _rgc_context_info[:then_defined]
+        _rgc_and_blocks << block
       end
 
       def use_natural_assertions(enabled=true)
-        _rg_context_info[:natural_assertions_enabled] = enabled
+        _rgc_context_info[:natural_assertions_enabled] = enabled
       end
     end
   end
