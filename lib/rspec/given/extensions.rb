@@ -24,7 +24,9 @@ module RSpec
         _rg_inner_contexts.reverse
       end
 
-      def _rg_info(keyword)
+      # Return the context information for keyword from the innermost
+      # defining context.
+      def _rg_info(keyword)     # :nodoc:
         _rg_inner_contexts.each do |context|
           h = context._rg_context_info
           if h.has_key?(keyword)
@@ -34,10 +36,28 @@ module RSpec
         nil
       end
 
-      def _rg_natural_assertions?(nassert)
+      # Should a natural assertion failure message be generated?
+      #
+      # A natural assertion failure message is generated if the
+      # assertion has non-empty content that doesn't use rspec
+      # assertions. The configuration options for natural assertions
+      # are checked and applied accordingly.
+      #
+      def _rg_need_na_message?(nassert) # :nodoc:
+        return false unless nassert.has_content?
+        use_na = _rg_na_configured?
+        return true if use_na == :always
+        return false if nassert.using_rspec_assertion?
+        use_na
+      end
+
+      # Return the configuration value for natural assertions.
+      #
+      # If natural assertions are not configured in the contexts, use
+      # the global configuration value.
+      def _rg_na_configured?    # :nodoc:
         info_value = _rg_info(:natural_assertions_enabled)
-        use_na = info_value.nil? ? RSpec::Given.natural_assertions_enabled? : info_value
-        (! nassert.using_rspec_assertion? && use_na) || (use_na == :always)
+        info_value.nil? ? RSpec::Given.natural_assertions_enabled? : info_value
       end
 
       # Establish all the Given preconditions the current and
@@ -79,12 +99,12 @@ module RSpec
         _rg_check_ands
       end
 
-      def _rg_evaluate(block)
-        unless instance_eval(&block)
+      # Evaluate a Then, And, or Invariant assertion.
+      def _rg_evaluate(block)   # :nodoc:
+        passed = instance_eval(&block)
+        if ! passed && _rg_na_configured?
           nassert = NaturalAssertion.new(block, binding, self.class._rg_lines)
-          if ! nassert.using_rspec_assertion? && nassert.has_content?
-            ::RSpec::Expectations.fail_with nassert.message
-          end
+          ::RSpec::Expectations.fail_with nassert.message if _rg_need_na_message?(nassert)
         end
       end
     end
