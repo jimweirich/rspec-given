@@ -1,5 +1,13 @@
 module RSpec
   module Given
+    def self.matcher_called
+      @matcher_called
+    end
+
+    def self.matcher_called=(value)
+      @matcher_called = value
+    end
+
     def self.source_caching_disabled
       @_rg_source_caching_disabled
     end

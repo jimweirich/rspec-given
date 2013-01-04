@@ -15,4 +15,5 @@ else
   require 'rspec/given/core'
   require 'rspec/given/have_failed'
   require 'rspec/given/configure'
+  require 'rspec/given/monkey'
 end

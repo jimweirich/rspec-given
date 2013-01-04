@@ -1,5 +1,6 @@
 require 'ripper'
 require 'sorcerer'
+require 'rspec/given/monkey'
 
 module RSpec
   module Given

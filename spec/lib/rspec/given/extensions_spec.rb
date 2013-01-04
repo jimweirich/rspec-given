@@ -167,7 +167,19 @@ describe RSpec::Given::ClassExtensions do
 
       context "with rspec assertion" do
         Given(:rspec) { true }
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then {
+          if RSpec::Given::MONKEY
+            # If RSpec was successfully patched to record matchers,
+            # then the "need NA" logic will ignore possible matches in
+            # the source code.
+            _rg_need_na_message?(nassert).should be_true
+          else
+            # If RSpec was not successfully patched to record
+            # matchers, then the "need NA" logic will check for
+            # should/expect in the source.
+            _rg_need_na_message?(nassert).should be_false
+          end
+        }
       end
 
       context "without rspec assertion" do

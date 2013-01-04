@@ -47,7 +47,7 @@ module RSpec
         return false unless nassert.has_content?
         use_na = _rg_na_configured?
         return true if use_na == :always
-        return false if nassert.using_rspec_assertion?
+        return false if !RSpec::Given::MONKEY && nassert.using_rspec_assertion?
         use_na
       end
 
@@ -101,8 +101,9 @@ module RSpec
 
       # Evaluate a Then, And, or Invariant assertion.
       def _rg_evaluate(block)   # :nodoc:
+        RSpec::Given.matcher_called = false
         passed = instance_eval(&block)
-        if ! passed && _rg_na_configured?
+        if ! passed && _rg_na_configured? && ! RSpec::Given.matcher_called
           nassert = NaturalAssertion.new(block, binding, self.class._rgc_lines)
           ::RSpec::Expectations.fail_with nassert.message if _rg_need_na_message?(nassert)
         end
