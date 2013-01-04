@@ -98,7 +98,7 @@ module RSpec
       end
 
       def source
-        @line_extractor.line(@code_file, @code_line)
+        @source ||= @line_extractor.line(@code_file, @code_line)
       end
 
       def set_file_and_line
