@@ -12,4 +12,6 @@ describe RSpec::Given::Failure do
   Then { lambda { failure != 0 }.should raise_error(StandardError, "Oops") }
   Then { lambda { failure =~ 0 }.should raise_error(StandardError, "Oops") }
   Then { lambda { ! failure }.should raise_error(StandardError, "Oops") }
+
+  Then { failure.is_a?(RSpec::Given::Failure).should be_true }
 end
