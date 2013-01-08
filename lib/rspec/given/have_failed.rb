@@ -58,6 +58,7 @@ module RSpec
       def have_failed(error=Exception, message=nil, &block)
         HaveFailedMatcher.new(error, message, &block)
       end
+      alias have_raised have_failed
     end
   end
 end

@@ -1,11 +1,5 @@
 require 'spec_helper'
 
-describe RSpec::Given::HaveFailed::HaveFailedMatcher do
-  context "with no args" do
-    Given(:havefailed) { RSpec::Given::HaveFailed::HaveFailedMatcher.new }
-  end
-end
-
 describe "#have_failed" do
   CustomError = Class.new(StandardError)
   DifferentError = Class.new(StandardError)
@@ -16,12 +10,19 @@ describe "#have_failed" do
 
     Then { result.should raise_error(CustomError, "Ouch") }
     Then { result.should have_failed(CustomError, "Ouch") }
+    Then { result.should have_raised(CustomError, "Ouch") }
 
     Then { lambda { result.should be_nil }.should raise_error(CustomError, "Ouch") }
     Then { lambda { result.should == 0 }.should raise_error(CustomError, "Ouch") }
     Then { lambda { result.should_not == 0 }.should raise_error(CustomError, "Ouch") }
 
     Then { lambda { result.should_not have_failed }.should raise_error(ExpectationError) }
+  end
+
+  context "with a standard failure" do
+    When(:result) { fail "Ouch" }
+
+    Then { result.should raise_error(StandardError, "Ouch") }
   end
 
   context "with a different failure" do
