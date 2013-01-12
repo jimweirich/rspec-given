@@ -24,6 +24,10 @@ module RSpec
               super(lambda { })
             end
           end
+
+          def to_s
+            "<Failure matching #{@expected_error}: #{@expected_message.inspect}>"
+          end
         end
 
       else
@@ -35,6 +39,10 @@ module RSpec
             else
               super(lambda { })
             end
+          end
+
+          def to_s
+            "<FailureMatcher on #{@expected_error}: #{@expected_message.inspect}>"
           end
         end
 
@@ -59,6 +67,9 @@ module RSpec
         HaveFailedMatcher.new(error, message, &block)
       end
       alias have_raised have_failed
+
+      def failure(error=Exception, message=nil, &block)
+      end
     end
   end
 end

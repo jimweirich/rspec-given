@@ -23,6 +23,16 @@ describe "Natural Assertions" do
     (puts "Ha ha world", ! true)
   }
 
+  describe "Error Examples" do
+    When(:result) { fail "OUCH" }
+    Then { result == :ok }
+  end
+
+  describe "Non-Error Failures" do
+    When(:result) { :ok }
+    Then { result == have_failed(StandardError, /^O/) }
+  end
+
   context "Incorrect non-idempotent conditions" do
     Given(:ary) { [1, 2, 3] }
     Then { ary.delete(1) == nil }

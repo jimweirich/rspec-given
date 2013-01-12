@@ -14,8 +14,28 @@ module RSpec
         klass == Failure
       end
 
-      def method_missing(sym, *args, &block)
+      def ==(other)
+        if other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+          other.matches?(self)
+        else
+          die
+        end
+      end
+
+      def !=(other)
+        if other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+          ! other.matches?(self)
+        else
+          die
+        end
+      end
+
+      def die
         ::Kernel.raise @exception
+      end
+
+      def method_missing(sym, *args, &block)
+        die
       end
     end
   end
