@@ -473,38 +473,11 @@ When natural assertions are enabled, they are only used if:
 1. The block returns false (blocks that return true pass the
    assertion and don't need a failure message).
 
-1. The block does not directly use RSpec's _should_ or _expect_
-   method.
+1. The block does not use RSpec's _should_ or _expect_ methods.
 
 Detecting that last point (the use of _should_ and _expect_) is done
-by examining the source of the block. However it is not always
-possible to correctly determine if _should_ and _expect_ are used
-merely from the source. Fortunately you can always override the
-automatic detection by either forcing natural assertions (with
-:always) or disabling them (with false).
-
-```ruby
-  # Then uses a non-RSpec version of "should" on
-  context "sample" do
-    use_natural_assertions :always
-    Then { obj.should }    # Non-rspec should is called
-  end
-```
-
-```ruby
-  # Then does not call should directly, so disable natural assertions
-  context "sample" do
-    use_natural_assertions false
-    Then { check_validations(obj) }   # check_validations calls "should" internally
-  end
-
-  # You can also just not use a Then for that condition.
-  context "another sample" do
-    it "checks validations" do
-      check_validations(obj)
-    end
-  end
-```
+by modifying the RSpec runtime to report uses of _should_ and
+_expect_.
 
 ### Further Reading
 
