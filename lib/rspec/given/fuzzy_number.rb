@@ -2,7 +2,7 @@
 module RSpec
   module Given
     module Fuzzy
-      class FuzzyNumber         # :nodoc:
+      class FuzzyNumber
 
         DEFAULT_EPSILON = 10 * Float::EPSILON
 
@@ -13,14 +13,17 @@ module RSpec
           @delta_amount = exact_value * DEFAULT_EPSILON
         end
 
+        # Low limit of the fuzzy number.
         def low_limit
           exact_value - delta_amount
         end
 
+        # High limit of the fuzzy number.
         def high_limit
           exact_value + delta_amount
         end
 
+        # True if the other number is in range of the fuzzy number.
         def ==(other)
           (other - exact_value).abs <= delta_amount
         end
@@ -29,15 +32,20 @@ module RSpec
           "<Approximately #{exact_value} +/- #{delta_amount}>"
         end
 
+        # Set the delta for a fuzzy number.
         def delta(delta)
           @delta_amount = delta.abs
           self
         end
 
+        # Specifying a percentage of the exact number to be used in
+        # setting the delta.
         def percent(percentage)
           delta(exact_value * (percentage / 100.0))
         end
 
+        # Specifying the number of epsilons to be used in setting the
+        # delta.
         def epsilon(neps)
           delta(exact_value * (neps * Float::EPSILON))
         end
