@@ -25,7 +25,7 @@ module RSpec
         end
 
         def percent(percentage)
-          @delta = @number = (percentage / 100.0)
+          @delta = @number * (percentage / 100.0)
           self
         end
 
