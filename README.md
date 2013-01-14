@@ -399,12 +399,14 @@ Keep the following in mind when using Natural Assertions.
   to join the conditions into a single expression (and the failure
   message will breakdown the values for each part).
 
-* Natural assertions must be **idempotent** (that means they don't
-  change anything). Since the natural assertion error message contains
+* Then clauses need be **idempotent**. This is true in general, but it
+  is particularly important for Natural assertions to obey this
+  restriction. This means that assertions in a Then clause should not
+  change anything. Since the natural assertion error message contains
   the values of all the subexpressions, the expression and its
-  subexpressions will be evaluated multiple times. If the block is not
-  idempotent, you will get changing answers as the subexpressions are
-  evaluated.
+  subexpressions will be evaluated multiple times. If the Then clause
+  is not idempotent, you will get changing answers as the
+  subexpressions are evaluated.
 
 That last point is important. If you write code like this:
 
@@ -432,6 +434,9 @@ like this is good:
     Then { result == nil }
   end
 ```
+
+It is good to note that non-idempotent assertions will also cause
+problems with And clauses.
 
 ### Mixing Natural Assertions and RSpec Assertions
 
@@ -462,6 +467,63 @@ will not process natural assertions.
 
 See the **configuration** section below to see how to enable natural
 assertions project wide.
+
+### Matchers and Natural Assertions
+
+In RSpec, matchers are used to provide nice, readable error messages
+when an assertion is not met. Natural assertions provide
+self-explanatory failure messages for most things without requiring
+any special matchers from the programmer.
+
+In the rare case that some extra information would be hepful, it is
+useful to create special objects that respond to the == operator.
+
+#### Asserting Nearly Equal
+
+Operations on floating point numbers rarely create numbers that are
+exactly equal, therefore it is useful to assert that two floating
+point numbers are nearly equal.
+
+For example, the following asserts that the square root of 10 is about
+3.1523 with an accuracy of 0.1 percent.
+
+```ruby
+    Then { Math.sqrt(10) == about(3.1623).percent(1) }
+```
+
+As long as the real value of <code>Math.sqrt(10)</code> is within plus
+or minus 1% of 3.1623 (i.e. 3.1623 +/- 0.0031623), then the assertion
+will pass.
+
+There are several ways of creating approximate numbers:
+
+* <code>about(n).delta(d)</code> -- A fuzzy number matching the range
+  (n-d)..(n+d)
+
+* <code>about(n).percent(p)</code> -- A fuzzy number matching the
+  range (n-(n*p/100)) .. (n+(n*p/100))
+
+* <code>about(n).epsilon(neps)</code> -- A fuzzy number matching the
+  range (n-(neps*e)) .. (n+(neps*e)), where e is the difference
+  between 1.0 and the next smallest floating point number.
+
+* <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
+
+#### Detecting Exceptions
+
+The RSpec matcher used for detecting exceptions will work with natural
+assertions out of the box. Just check for equality against the
+<code>have_failed</code> return value.
+
+For example, the following two Then clauses are equivalent:
+
+```ruby
+    # Using an RSpec matcher
+    Then { result.should have_failed(StandardError, /message/) }
+
+    # Using natural assertions
+    Then { result == have_failed(StandardError, /message/) }
+```
 
 ### Processing Natural Assertions
 
