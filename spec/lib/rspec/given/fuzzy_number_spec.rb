@@ -4,20 +4,38 @@ describe RSpec::Given::Fuzzy::FuzzyNumber do
   use_natural_assertions
   include RSpec::Given::Fuzzy
 
+  describe "attributes" do
+    Given(:number) { about(10).delta(0.0001) }
+    Then { number.exact_value == 10 }
+    Then { number.delta_amount == 0.0001 }
+    Then { number.low_limit == (10 - 0.0001) }
+    Then { number.high_limit == (10 + 0.0001) }
+  end
 
   describe "fixed deltas" do
-    context "when created with explicit delta" do
-      Given(:exact_number) { 10 }
-      Given(:number) { about(exact_number).delta(0.001) }
+    Given(:exact_number) { 10 }
+    Given(:number) { about(exact_number).delta(0.001) }
 
-      Then { exact_number == number }
+    Then { exact_number == number }
 
-      Then { (exact_number + 0.001) == number }
-      Then { (exact_number - 0.001) == number }
+    Then { (exact_number + 0.001) == number }
+    Then { (exact_number - 0.001) == number }
 
-      Then { (exact_number + 0.001001) != number }
-      Then { (exact_number - 0.001001) != number }
-    end
+    Then { (exact_number + 0.001001) != number }
+    Then { (exact_number - 0.001001) != number }
+  end
+
+  describe "negative deltas" do
+    Given(:exact_number) { 10 }
+    Given(:number) { about(exact_number).delta(-0.001) }
+
+    Then { exact_number == number }
+
+    Then { (exact_number + 0.001) == number }
+    Then { (exact_number - 0.001) == number }
+
+    Then { (exact_number + 0.001001) != number }
+    Then { (exact_number - 0.001001) != number }
   end
 
   describe "percentage deltas" do
@@ -33,7 +51,7 @@ describe RSpec::Given::Fuzzy::FuzzyNumber do
     Then { (exact_number - 0.25001) != number }
   end
 
-  describe "small epsilon deltas" do
+  describe "epsilon deltas" do
     Given(:neps) { 10 }
     Given(:hi_in_range) { 1 + neps*Float::EPSILON }
     Given(:lo_in_range) { 1 - neps*Float::EPSILON }

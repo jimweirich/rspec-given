@@ -6,32 +6,40 @@ module RSpec
 
         DEFAULT_EPSILON = 10 * Float::EPSILON
 
-        def initialize(number)
-          @number = number
-          @delta = number * DEFAULT_EPSILON
+        attr_reader :exact_value, :delta_amount
+
+        def initialize(exact_value)
+          @exact_value = exact_value
+          @delta_amount = exact_value * DEFAULT_EPSILON
+        end
+
+        def low_limit
+          exact_value - delta_amount
+        end
+
+        def high_limit
+          exact_value + delta_amount
         end
 
         def ==(other)
-          (other - @number).abs <= @delta
+          (other - exact_value).abs <= delta_amount
         end
 
         def to_s
-          "<Approximately #{@number} +/- #{@delta}>"
+          "<Approximately #{exact_value} +/- #{delta_amount}>"
         end
 
         def delta(delta)
-          @delta = delta
+          @delta_amount = delta.abs
           self
         end
 
         def percent(percentage)
-          @delta = @number * (percentage / 100.0)
-          self
+          delta(exact_value * (percentage / 100.0))
         end
 
         def epsilon(neps)
-          @delta = @number * (neps * Float::EPSILON)
-          self
+          delta(exact_value * (neps * Float::EPSILON))
         end
       end
 
