@@ -305,14 +305,19 @@ stick with _Then_ clauses.
 
 The _Invariant_ clause is a new idea that doesn't have an analog in
 RSpec or Test::Unit. The invariant allows you specify things that must
-always be true in the scope of the invariant. In the stack example,
-<tt>empty?</tt> is defined in term of <tt>size</tt>. Whenever
-<tt>size</tt> is 0, <tt>empty?</tt> should be true. Whenever
-<tt>size</tt> is non-zero, <tt>empty?</tt> should be false.
+always be true in the scope of the invariant. In the stack example, the method
+<tt>empty?</tt> is defined in term of <tt>size</tt>.
+
+```ruby
+  Invariant { stack.empty? == (stack.depth == 0) }
+```
+
+This invariant states that <code>empty?</code> is true if and only if
+the stack depth is zero, and that assertion is checked at every _Then_
+clause that is in the same scope.
 
 You can conceptually think of an _Invariant_ clause as a _Then_ block
 that automatically gets added to every _Then_ within its scope.
-
 Invariants nested within a context only apply to the _Then_ clauses
 that are in the scope of that context.
 
