@@ -23,6 +23,8 @@ describe "Natural Assertions" do
     (puts "Ha ha world", ! true)
   }
 
+  Then { Math.sqrt(10) == about(3.1623).percent(0.0001) }
+
   describe "Error Examples" do
     When(:result) { fail "OUCH" }
     Then { result == :ok }
