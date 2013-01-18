@@ -57,6 +57,59 @@ describe RSpec::Given::ClassExtensions do
 
   end
 
+  describe "Given/Given!/before ordering" do
+    before { trace << :before_outer }
+    Given { trace << :given_outer }
+    Given!(:x_outer) { trace << :given_bang_outer }
+    before { trace << :before2_outer }
+    When { trace << :when_outer }
+    When(:result_outer) { trace << :when_result_outer }
+
+    Then {
+      trace.should == [
+        :before_outer, :before2_outer,
+        :given_outer, :given_bang_outer,
+        :when_outer,
+        :when_result_outer,
+      ]
+    }
+
+    context "with a nested When" do
+      before { trace << :before_inner }
+      Given { trace << :given_inner }
+      Given!(:x_inner) { trace << :given_bang_inner }
+      When(:result_inner) { trace << :when_result_inner }
+      When { trace << :when_inner }
+
+      Then {
+        trace.should == [
+          :before_outer, :before2_outer,
+          :given_outer, :given_bang_outer,
+          :given_inner, :given_bang_inner,
+          :when_outer, :when_result_outer,
+          :before_inner,
+          :when_result_inner, :when_inner,
+        ]
+      }
+    end
+
+    context "without a nested When" do
+      before { trace << :before_inner }
+      Given { trace << :given_inner }
+      Given!(:x_inner) { trace << :given_bang_inner }
+
+      Then {
+        trace.should == [
+          :before_outer, :before2_outer,
+          :given_outer, :given_bang_outer,
+          :given_inner, :given_bang_inner,
+          :when_outer, :when_result_outer,
+          :before_inner,
+        ]
+      }
+    end
+  end
+
   describe "When without result" do
     Given { trace << :given }
     When { trace << :when }
