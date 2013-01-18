@@ -190,7 +190,7 @@ module RSpec
       #   Given!(:name) { ... code ... }
       #
       def Given!(name, &block)
-        let!(name, &block)
+        let(name, &block)
         _rgc_givens << _rgc_trigger_given(name)
       end
 

@@ -48,6 +48,13 @@ describe RSpec::Given::ClassExtensions do
       Then { trace.should == [:given] }
       Then { a; trace.should == [:given] }
     end
+
+    context "when preceeded by a Given block" do
+      Given { trace << :given }
+      Given!(:other) { trace << :given_bang }
+      Then { trace.should == [:given, :given_bang] }
+    end
+
   end
 
   describe "When without result" do
