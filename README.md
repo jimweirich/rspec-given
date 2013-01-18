@@ -330,10 +330,40 @@ Notes:
    represented in the RSpec formatted output (e.g. the '--format html'
    option).
 
+## Execution Ordering
+
+When running the test for a specific _Then_ clause, the following will
+be true:
+
+* The _Given_ clauses will be run in the order that they are
+  specified, from the outermost scope to the innermost scope
+  containing the _Then_.
+
+* All of the _Given_ clauses in all of the relevant scopes will run
+  before the first (outermost) _When_ clause in those same scopes.
+  That means that the _When_ code can assume that the givens have been
+  established, even if the givens are in a more nested scope than the
+  When.
+
+* _When_ clauses and RSpec _before_ blocks will be executed in the
+  order that they are specified, from the outermost block to the
+  innermost block.  This makes _before_ blocks an excellent choice
+  when writing narrative tests to specify actions that happen between
+  the "whens" of a narrative.
+
+Note that the ordering between _Given_ clauses and _before_ blocks are
+a not strongly specified. Hoisting a _When_ clause out of an inner
+scope to an outer scope may change the ordering of when the _Given_
+clause runs in relation to a _before_ block (the hoisting will cause
+the givens to possibly run earlier).  Because of this, do not split
+order dependent code between _Given_ clauses and _before_ blocks.
+
 ## Natural Assertions
 
 **NOTE:** <em>Natural assertions are an experimental feature of
-RSpec/Given. They are currently disabled by default.</em>
+RSpec/Given. They are currently disabled by default. They can be
+enabled by a simple configuration option (see "use_natural_assertions"
+below).</em>
 
 RSpec/Given now supports the use of "natural assertions" in _Then_,
 _And_, and _Invariant_ blocks. Natural assertions are just Ruby
