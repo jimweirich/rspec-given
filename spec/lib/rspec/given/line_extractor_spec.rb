@@ -30,7 +30,6 @@ module RSpec
         }
         Given(:expected_line) { "  for all good men\n" }
         Then { result.should == expected_line }
-         And { cache.to_s.should == "<LineExtractor>" }
       end
 
       context "when the line doesn't exist" do
@@ -66,6 +65,11 @@ module RSpec
           "end\n"
         }
         Then { result.should == "  Then do\n    x\n  end\n" }
+      end
+
+      describe "converting to a string" do
+        Given(:input) { "" }
+        Then { cache.to_s.should =~ /line *extractor/i }
       end
     end
   end
