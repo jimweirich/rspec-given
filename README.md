@@ -335,9 +335,10 @@ Notes:
 When running the test for a specific _Then_ clause, the following will
 be true:
 
-* The _Given_ clauses will be run in the order that they are
+* The non-lazy _Given_ clauses will be run in the order that they are
   specified, from the outermost scope to the innermost scope
-  containing the _Then_.
+  containing the _Then_. (The lazy _Given_ clauses will be run upon
+  demand).
 
 * All of the _Given_ clauses in all of the relevant scopes will run
   before the first (outermost) _When_ clause in those same scopes.
@@ -347,21 +348,21 @@ be true:
 
 * _When_ clauses and RSpec _before_ blocks will be executed in the
   order that they are specified, from the outermost block to the
-  innermost block.  This makes _before_ blocks an excellent choice
-  when writing narrative tests to specify actions that happen between
-  the "whens" of a narrative.
+  innermost block. This makes _before_ blocks an excellent choice when
+  writing narrative tests to specify actions that happen between the
+  "whens" of a narrative-style test.
 
 Note that the ordering between _Given_ clauses and _before_ blocks are
-a not strongly specified. Hoisting a _When_ clause out of an inner
-scope to an outer scope may change the ordering of when the _Given_
-clause runs in relation to a _before_ block (the hoisting will cause
-the givens to possibly run earlier).  Because of this, do not split
-order dependent code between _Given_ clauses and _before_ blocks.
+not strongly specified. Hoisting a _When_ clause out of an inner scope
+to an outer scope may change the ordering of when the _Given_ clause
+runs in relation to a _before_ block (the hoisting will cause the
+givens to possibly run earlier). Because of this, do not split order
+dependent code between _Given_ clauses and _before_ blocks.
 
 ## Natural Assertions
 
-**NOTE:** <em>Natural assertions are an experimental feature of
-RSpec/Given. They are currently disabled by default. They can be
+**NOTE:** <em>Natural assertions are currently an experimental feature
+of RSpec/Given. They are currently disabled by default, but can be
 enabled by a simple configuration option (see "use_natural_assertions"
 below).</em>
 
@@ -379,6 +380,10 @@ natural assertions:
 
 Natural assertions must be enabled, either globally or on a per
 context basis, to be recognized.
+
+Here's a heads up: If you use natural assertions, but fail to enable
+them, all your specs will mysteriously pass. This is why the **red**
+part of _Red/Green/Refactor_ is so important.
 
 ### Failure Messages with Natural Assertions
 
