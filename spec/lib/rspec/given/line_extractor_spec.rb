@@ -30,6 +30,7 @@ module RSpec
         }
         Given(:expected_line) { "  for all good men\n" }
         Then { result.should == expected_line }
+         And { cache.to_s.should == "<LineExtractor>" }
       end
 
       context "when the line doesn't exist" do
