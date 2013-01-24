@@ -39,6 +39,11 @@ describe "#have_failed" do
     Then { expect { result.should have_failed(DifferentError) }.to raise_error(ExpectationError) }
   end
 
+  context "with a pending exception" do
+    When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending ... please ignore" }
+    Then { ::RSpec::Expectations.fail_with "This spec should have been pending" }
+  end
+
   context "with a non-failure" do
     When(:result) { :ok }
     Then { result.should_not have_failed }

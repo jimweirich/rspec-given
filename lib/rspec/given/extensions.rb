@@ -206,6 +206,8 @@ module RSpec
             begin
               _rg_establish_givens
               instance_eval(&block)
+            rescue RSpec::Core::Pending::PendingDeclaredInExample => ex
+              raise
             rescue Exception => ex
               Failure.new(ex)
             end
