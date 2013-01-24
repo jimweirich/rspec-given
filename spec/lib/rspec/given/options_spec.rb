@@ -24,6 +24,16 @@ describe "Configuration Options" do
   end
 
   describe "Global natural assertion configuration" do
+    unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+      before do
+        pending "Natural assertions are not supported in JRuby"
+      end
+    end
+
+    before do
+      RSpec::Given.use_natural_assertions false
+    end
+
     Given(:rspec) { false }
     Given(:content) { true }
     Given(:nassert) { stub(:using_rspec_assertion? => rspec, :has_content? => content) }
@@ -36,7 +46,7 @@ describe "Configuration Options" do
       Then { _rg_need_na_message?(nassert).should be_false }
 
       context "overridden locally" do
-        use_natural_assertions
+        use_natural_assertions_if_supported
         Then { _rg_need_na_message?(nassert).should be_true }
       end
     end
@@ -110,7 +120,7 @@ describe "Configuration Options" do
       Then { _rg_need_na_message?(nassert).should be_false }
 
       context "overridden locally" do
-        use_natural_assertions true
+        use_natural_assertions_if_supported(true)
         Then { _rg_need_na_message?(nassert).should be_true }
       end
 

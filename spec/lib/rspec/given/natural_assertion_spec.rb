@@ -1,6 +1,10 @@
 require 'rspec/given'
 
 describe RSpec::Given::NaturalAssertion do
+  before do
+    pending "Natural Assertions disabled for JRuby" unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+  end
+
   Given(:bind) {
     a = 1
     s = "Hello"
@@ -206,6 +210,7 @@ describe RSpec::Given::NaturalAssertion do
         lambda {  }
       }
       When(:result) { nassert.message }
+# FIX: WHY IS THIS COMMENTED OUT?
 #      Then { result.should have_failed(RSpec::Given::InvalidThenError) }
     end
 

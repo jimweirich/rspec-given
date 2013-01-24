@@ -54,7 +54,6 @@ describe RSpec::Given::ClassExtensions do
       Given!(:other) { trace << :given_bang }
       Then { trace.should == [:given, :given_bang] }
     end
-
   end
 
   describe "Given/Given!/before ordering" do
@@ -178,4 +177,18 @@ describe RSpec::Given::ClassExtensions do
     And { trace.should == [:given, :then, :and] }
   end
 
+end
+
+describe "use_natural_assertions" do
+  context "when in JRuby" do
+    CONTEXT = self
+
+    When(:result) { CONTEXT.use_natural_assertions }
+
+    if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+      Then { result.should_not have_failed(ArgumentError) }
+    else
+      Then { result.should have_failed(ArgumentError) }
+    end
+  end
 end

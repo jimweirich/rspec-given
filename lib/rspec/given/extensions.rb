@@ -254,6 +254,7 @@ module RSpec
       end
 
       def use_natural_assertions(enabled=true)
+        RSpec::Given.ok_to_use_natural_assertions(enabled)
         _rgc_context_info[:natural_assertions_enabled] = enabled
       end
     end

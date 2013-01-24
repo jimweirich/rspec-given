@@ -1,6 +1,8 @@
-require 'ripper'
-require 'sorcerer'
-require 'rspec/given/monkey'
+if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+  require 'ripper'
+  require 'sorcerer'
+  require 'rspec/given/monkey'
+end
 
 module RSpec
   module Given
@@ -160,7 +162,7 @@ module RSpec
         width = suggest_width(pairs)
         pairs.each do |x, v|
           fmt = (v.size > WRAP_WIDTH) ?
-            "  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n" :
+          "  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n" :
             "  %-#{width+2}s <- %s\n"
           @output << sprintf(fmt, v, x)
         end

@@ -1,5 +1,7 @@
 module RSpec
   module Given
+    NATURAL_ASSERTIONS_SUPPORTED = ! defined?(JRUBY_VERSION)
+
     def self.matcher_called
       @matcher_called
     end
@@ -22,7 +24,14 @@ module RSpec
     end
 
     def self.use_natural_assertions(enabled=true)
+      ok_to_use_natural_assertions(enabled)
       @natural_assertions_enabled = enabled
+    end
+
+    def self.ok_to_use_natural_assertions(enabled)
+      if enabled && ! NATURAL_ASSERTIONS_SUPPORTED
+        fail ArgumentError, "Natural Assertions are disabled for JRuby"
+      end
     end
 
     def self.natural_assertions_enabled?
