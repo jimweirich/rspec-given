@@ -353,15 +353,16 @@ be true:
   "whens" of a narrative-style test.
 
 Note that the ordering between _Given_ clauses and _before_ blocks are
-not strongly specified. Hoisting a _Given_ clause out of an inner scope
-to an outer scope may change the ordering of when the _Given_ clause
-runs in relation to a _before_ block (the hoisting will cause the
-givens to possibly run earlier). Because of this, do not split order
-dependent code between _Given_ clauses and _before_ blocks.
+not strongly specified. Hoisting a _When_ clause out of an inner scope
+to an outer scope may change the order of execution between related
+_Given_ clauses and any _before_ blocks (hoisting the _When_ clause
+might cause the related _Given_ clauses to possibly run earlier).
+Because of this, do not split order dependent code between _Given_
+clauses and _before_ blocks.
 
 ## Natural Assertions
 
-**NOTE:** <em>Natural assertions are an experimental feature
+**NOTE:** <em>Natural assertions are currently an experimental feature
 of RSpec/Given. They are currently disabled by default, but can be
 enabled by a simple configuration option (see "use_natural_assertions"
 below).</em>
@@ -567,8 +568,8 @@ For example, the following two Then clauses are equivalent:
 
 ### Processing Natural Assertions
 
-When natural assertions are enabled, they are only used if one of the
-following is true:
+When natural assertions are enabled, they are only used if all of the
+following are true:
 
 1. The block does not throw an RSpec assertion failure (or any other
    exception for that matter).
