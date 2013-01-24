@@ -17,7 +17,7 @@ RSpec specifications.
 
 ## Status
 
-_rspec-given_ is ready for production use.
+rspec-given is ready for production use.
 
 ## Example
 
@@ -118,7 +118,7 @@ for side effects.  Since there is no accessor, the code block is
 executed immediately (i.e. no lazy evaluation).
 
 The preconditions are run in order of definition.  Nested contexts
-will inherit the preconditions from the enclosing context, with out
+will inherit the preconditions from the enclosing context, with outer
 preconditions running before inner preconditions.
 
 #### Given examples:
@@ -127,8 +127,8 @@ preconditions running before inner preconditions.
     Given(:stack) { Stack.new }
 ```
 
-The block for the given clause is lazily run if 'stack' is ever
-referenced in the test and the value of the block is bound to 'stack'.
+The block for the given clause is lazily run and its value bound to
+'stack' if 'stack' is ever referenced in the test.
 The first reference to 'stack' in the specification will cause the
 code block to execute. Futher references to 'stack' will reuse the
 previously generated value.
@@ -259,7 +259,7 @@ be empty. If it is not empty, the test will fail.
 
 The _And_ clause is similar to _Then_, but does not form its own RSpec
 example. This means that _And_ clauses reuse the setup from a sibling
-_Then_ clause. Using a single _Then_ an multiple _And_ clauses in an
+_Then_ clause. Using a single _Then_ and multiple _And_ clauses in an
 example group means the setup for that group is run only once (for the
 _Then_ clause) and reused for all the _And_ clauses. This can be a
 significant speed savings where the setup for an example group is
@@ -267,30 +267,30 @@ expensive.
 
 Some things to keep in mind about _And_ clauses:
 
-1. There must be at least one _Then_ in the example group and it must
-   be declared before the _And_ clauses. Forgetting the _Then_ clause
-   is an error.
+* There must be at least one _Then_ in the example group and it must
+  be declared before the _And_ clauses. Forgetting the _Then_ clause
+  is an error.
 
-1. The code in the _And_ clause is run immediately after the first
-   (executed) _Then_ of an example group.
+* The code in the _And_ clause is run immediately after the first
+  (executed) _Then_ of an example group.
 
-1. And assertion failures in a _Then_ clause or a _And_ clause will
-   cause all the subsequent _And_ clauses to be skipped.
+* An assertion failure in a _Then_ clause or an _And_ clause will
+  cause all the subsequent _And_ clauses to be skipped.
 
-1. Since _And_ clauses do not form their own RSpec examples, they are
-   not represented in the formatted output of RSpec. That means _And_
-   clauses do not produce dots in the Progress format, nor do they
-   appear in the documentation, html or textmate formats (options
-   -fhtml, -fdoc, or -ftextmate).
+* Since _And_ clauses do not form their own RSpec examples, they are
+  not represented in the formatted output of RSpec. That means _And_
+  clauses do not produce dots in the Progress format, nor do they
+  appear in the documentation, html or textmate formats (options
+  -fhtml, -fdoc, or -ftextmate).
 
-1. Like _Then_ clauses, _And_ clauses must be idempotent. That means
-   they should not execute any code that changes global program state.
-   (See the section on the _Then_ clause).
+* Like _Then_ clauses, _And_ clauses must be idempotent. That means
+  they should not execute any code that changes global program state.
+  (See the section on the _Then_ clause).
 
 The choice to use an _And_ clause is primarily a speed consideration.
 If an example group has expensive setup and there are a lot of _Then_
 clauses, then choosing to make some of the _Then_ clauses into _And_
-clause will speed up the spec. Otherwise it is probably better to
+clauses will speed up the spec. Otherwise it is probably better to
 stick with _Then_ clauses.
 
 #### Then/And examples:
@@ -326,9 +326,9 @@ used in contexts that define that accessor.
 
 Notes:
 
-1. Since Invariants do not form their own RSpec example, they are not
-   represented in the RSpec formatted output (e.g. the '--format html'
-   option).
+* Since Invariants do not form their own RSpec example, they are not
+  represented in the RSpec formatted output (e.g. the '--format html'
+  option).
 
 ## Execution Ordering
 
@@ -353,7 +353,7 @@ be true:
   "whens" of a narrative-style test.
 
 Note that the ordering between _Given_ clauses and _before_ blocks are
-not strongly specified. Hoisting a _When_ clause out of an inner scope
+not strongly specified. Hoisting a _Given_ clause out of an inner scope
 to an outer scope may change the ordering of when the _Given_ clause
 runs in relation to a _before_ block (the hoisting will cause the
 givens to possibly run earlier). Because of this, do not split order
@@ -361,7 +361,7 @@ dependent code between _Given_ clauses and _before_ blocks.
 
 ## Natural Assertions
 
-**NOTE:** <em>Natural assertions are currently an experimental feature
+**NOTE:** <em>Natural assertions are an experimental feature
 of RSpec/Given. They are currently disabled by default, but can be
 enabled by a simple configuration option (see "use_natural_assertions"
 below).</em>
@@ -423,26 +423,26 @@ broken down into subexpressions and values for each subexpression.
 This gives you all the information you need to figure out exactly what
 part of the expression is causing the failure.
 
-Natural expressions will give additional information (e.g. "expected:
+Natural assertions will give additional information (e.g. "expected:
 3 to equal: 2") for top level expressions involving any of the
 comparison operators (==, !=, <, <=, >, >=) or matching operators (=~,
 !~).
 
 ### Caveats on Natural Assertions
 
-Keep the following in mind when using Natural Assertions.
+Keep the following in mind when using natural assertions.
 
 * Only a single expression/assertion per _Then_. The single expression
   of the _Then_ block will be considered when determining pass/fail
   for the assertion. If you _want_ to express a complex condition for
   the _Then_, you need to use ||, && or some other logical operation
   to join the conditions into a single expression (and the failure
-  message will breakdown the values for each part).
+  message will break down the values for each part).
 
 * Then clauses need be **idempotent**. This is true in general, but it
-  is particularly important for Natural assertions to obey this
+  is particularly important for natural assertions to obey this
   restriction. This means that assertions in a Then clause should not
-  change anything. Since the natural assertion error message contains
+  change anything. Since the Natural Assertion error message contains
   the values of all the subexpressions, the expression and its
   subexpressions will be evaluated multiple times. If the Then clause
   is not idempotent, you will get changing answers as the
@@ -463,8 +463,8 @@ initially return 1). But when the error message is formated, the
 system reports that <code>ary.delete(1)</code> returns nil. You will
 scratch your head over that for a good while.
 
-Instead, move the state changing code into a When block, then just
-assert what you need about the result from the when block. Something
+Instead, move the state changing code into a _When(:result)_ block, then
+assert what you need to about :result. Something
 like this is good:
 
 ```ruby
@@ -515,7 +515,7 @@ when an assertion is not met. Natural assertions provide
 self-explanatory failure messages for most things without requiring
 any special matchers from the programmer.
 
-In the rare case that some extra information would be hepful, it is
+In the rare case that some extra information would be helpful, it is
 useful to create special objects that respond to the == operator.
 
 #### Asserting Nearly Equal
@@ -525,7 +525,7 @@ exactly equal, therefore it is useful to assert that two floating
 point numbers are nearly equal.
 
 For example, the following asserts that the square root of 10 is about
-3.1523 with an accuracy of 0.1 percent.
+3.1523 with an accuracy of 1 percent.
 
 ```ruby
     Then { Math.sqrt(10) == about(3.1623).percent(1) }
@@ -567,7 +567,8 @@ For example, the following two Then clauses are equivalent:
 
 ### Processing Natural Assertions
 
-When natural assertions are enabled, they are only used if:
+When natural assertions are enabled, they are only used if one of the
+following is true:
 
 1. The block does not throw an RSpec assertion failure (or any other
    exception for that matter).
@@ -593,8 +594,8 @@ Conover](http://rubygems.org/profiles/sconoversf).
 Just require 'rspec/given' in the spec helper of your project and it
 is ready to go.
 
-If the RSpec format option document, html or textmate are chosen,
-RSpec/Given will automatically add addition source code information to
+If the RSpec format option document, html or textmate is chosen,
+RSpec/Given will automatically add additional source code information to
 the examples to produce better looking output. If you don't care about
 the pretty output and wish to disable source code caching
 unconditionally, then add the following line to your spec helper file:
