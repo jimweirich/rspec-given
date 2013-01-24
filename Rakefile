@@ -93,6 +93,13 @@ task :verify_rspec2 do
   end
 end
 
+task :load_check do
+  SRC_FILES = FileList['lib/rspec/given/*.rb'].exclude(/rspec1/)
+  SRC_FILES.each do |fn|
+    sh %{ruby -Ilib -e 'load "#{fn}"'}
+  end
+end
+
 # Formatting the README ----------------------------------------------
 
 directory 'html'
