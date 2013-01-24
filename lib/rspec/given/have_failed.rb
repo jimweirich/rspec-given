@@ -1,3 +1,5 @@
+require 'rspec'
+
 module RSpec
   module Given
     module HaveFailed

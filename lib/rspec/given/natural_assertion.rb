@@ -1,3 +1,6 @@
+require 'rspec'
+require 'rspec/given/module_methods'
+
 if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
   require 'ripper'
   require 'sorcerer'
