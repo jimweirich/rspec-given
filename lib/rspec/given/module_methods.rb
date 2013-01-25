@@ -1,13 +1,14 @@
 module RSpec
   module Given
+    # Does this platform support natural assertions?
     NATURAL_ASSERTIONS_SUPPORTED = ! defined?(JRUBY_VERSION)
 
     def self.matcher_called
-      @matcher_called
+      @_matcher_called
     end
 
     def self.matcher_called=(value)
-      @matcher_called = value
+      @_matcher_called = value
     end
 
     def self.source_caching_disabled
@@ -18,24 +19,36 @@ module RSpec
       @_rg_source_caching_disabled = value
     end
 
+    # Detect the formatting requested in the given configuration object.
+    #
+    # If the format requires it, source caching will be enabled.
     def self.detect_formatters(c)
       format_active = c.formatters.any? { |f| f.class.name !~ /ProgressFormatter/ }
       RSpec::Given.source_caching_disabled = ! format_active
     end
 
+    # Globally enable/disable natural assertions.
+    #
+    # There is a similar function in Extensions that works at a
+    # describe or context scope.
     def self.use_natural_assertions(enabled=true)
       ok_to_use_natural_assertions(enabled)
       @natural_assertions_enabled = enabled
     end
 
+    # TRUE if natural assertions are globally enabled?
+    def self.natural_assertions_enabled?
+      @natural_assertions_enabled
+    end
+
+    # Is is OK to use natural assertions on this platform.
+    #
+    # An error is raised if the the platform does not support natural
+    # assertions and the flag is attempting to enable them.
     def self.ok_to_use_natural_assertions(enabled)
       if enabled && ! NATURAL_ASSERTIONS_SUPPORTED
         fail ArgumentError, "Natural Assertions are disabled for JRuby"
       end
-    end
-
-    def self.natural_assertions_enabled?
-      @natural_assertions_enabled
     end
   end
 end
