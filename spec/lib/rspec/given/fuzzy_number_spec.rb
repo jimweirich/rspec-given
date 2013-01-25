@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe RSpec::Given::Fuzzy::FuzzyNumber do
-  before do
-    pending "Natural Assertions disabled for JRuby" unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
-  end
-
   use_natural_assertions_if_supported
   include RSpec::Given::Fuzzy
 
