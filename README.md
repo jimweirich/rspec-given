@@ -583,6 +583,16 @@ Detecting that last point (the use of _should_ and _expect_) is done
 by modifying the RSpec runtime to report uses of _should_ and
 _expect_.
 
+### Platform Support
+
+Natural assertions use the Ripper library to parse the failing
+condition and find all the sub-expression values upon a failure.
+Currently Ripper is not supported on JRuby 1.7.2. Charles Nutter has
+said that Ripper support is coming soon and may arrive as early as
+version 1.7.3. Until then, natural assertions are disabled when
+running under JRuby. Never fear, JRuby supports all the other features
+of rspec-given and will work just fine.
+
 ### Further Reading
 
 Natural assertions were inspired by the [wrong assertion
