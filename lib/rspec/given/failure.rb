@@ -15,7 +15,7 @@ module RSpec
       end
 
       def ==(other)
-        if other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+        if failed_matcher?(other)
           other.matches?(self)
         else
           die
@@ -23,20 +23,27 @@ module RSpec
       end
 
       def !=(other)
-        if other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+        if failed_matcher?(other)
           ! other.matches?(self)
         else
           die
         end
       end
 
+      def method_missing(sym, *args, &block)
+        die
+      end
+
+      private
+
       def die
         ::Kernel.raise @exception
       end
 
-      def method_missing(sym, *args, &block)
-        die
+      def failed_matcher?(other)
+        other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
       end
+
     end
   end
 end
