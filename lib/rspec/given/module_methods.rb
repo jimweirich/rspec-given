@@ -51,12 +51,17 @@ module RSpec
       end
     end
 
-    # Fail a spec with the given messages.
+    # Fail an example with the given messages.
     #
     # This should be the only place we reference the RSpec function.
     # Everywhere else in rspec-given should be calling this function.
     def self.fail_with(*args)
       ::RSpec::Expectations.fail_with(*args)
+    end
+
+    # Error object used by RSpec to indicate a pending example.
+    def self.pending_error
+      RSpec::Core::Pending::PendingDeclaredInExample
     end
   end
 end

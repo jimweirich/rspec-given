@@ -144,9 +144,9 @@ module RSpec
 
       # *DEPRECATED:*
       #
-      # The Scenario command is deprecated. Using Scenario in a spec
-      # will result in a warning message. Eventually the command will
-      # be removed.
+      # The Scenario command is deprecated. Using Scenario in an
+      # example will result in a warning message. Eventually the
+      # command will be removed.
       #
       # Declare a scenario to contain Given/When/Then declarations.  A
       # Scenario is essentially an RSpec context, with the additional
@@ -206,7 +206,7 @@ module RSpec
             begin
               _rg_establish_givens
               instance_eval(&block)
-            rescue RSpec::Core::Pending::PendingDeclaredInExample => ex
+            rescue RSpec::Given.pending_error => ex
               raise
             rescue Exception => ex
               Failure.new(ex)

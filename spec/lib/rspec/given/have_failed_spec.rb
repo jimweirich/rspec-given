@@ -40,8 +40,8 @@ describe "#have_failed" do
   end
 
   context "with a pending exception" do
-    When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending ... please ignore" }
-    Then { RSpec::Given.fail_with "This spec should have been pending" }
+    When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending in example ... please ignore" }
+    Then { RSpec::Given.fail_with "This example should have been pending" }
   end
 
   context "with a non-failure" do
