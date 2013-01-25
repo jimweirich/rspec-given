@@ -41,7 +41,7 @@ describe "#have_failed" do
 
   context "with a pending exception" do
     When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending ... please ignore" }
-    Then { ::RSpec::Expectations.fail_with "This spec should have been pending" }
+    Then { RSpec::Given.fail_with "This spec should have been pending" }
   end
 
   context "with a non-failure" do

@@ -50,5 +50,13 @@ module RSpec
         fail ArgumentError, "Natural Assertions are disabled for JRuby"
       end
     end
+
+    # Fail a spec with the given messages.
+    #
+    # This should be the only place we reference the RSpec function.
+    # Everywhere else in rspec-given should be calling this function.
+    def self.fail_with(*args)
+      ::RSpec::Expectations.fail_with(*args)
+    end
   end
 end

@@ -105,7 +105,7 @@ module RSpec
         passed = instance_eval(&block)
         if ! passed && _rg_na_configured? && ! RSpec::Given.matcher_called
           nassert = NaturalAssertion.new(block, binding, self.class._rgc_lines)
-          ::RSpec::Expectations.fail_with nassert.message if _rg_need_na_message?(nassert)
+          RSpec::Given.fail_with nassert.message if _rg_need_na_message?(nassert)
         end
       end
     end
