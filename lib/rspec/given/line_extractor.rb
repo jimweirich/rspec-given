@@ -36,7 +36,7 @@ module RSpec
 
       def indentation_level(string)
         string =~ /^(\s*)\S/
-        $1.size
+        $1.nil? ? 1000000 : $1.size
       end
     end
   end

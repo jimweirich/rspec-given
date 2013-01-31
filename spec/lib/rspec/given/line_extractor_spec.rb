@@ -14,12 +14,11 @@ module RSpec
         end
       end
 
-      Given(:file) { "MIT-LICENSE" }
       Given(:line) { 2 }
       Given(:file_cache) { FauxFileCache.new(input) }
-      Given(:cache) { LineExtractor.new(file_cache) }
+      Given(:extractor) { LineExtractor.new(file_cache) }
 
-      When(:result) { cache.line(file, line) }
+      When(:result) { extractor.line("FILENAME", line) }
 
       describe "reading a line" do
         Given(:input) {
@@ -56,6 +55,17 @@ module RSpec
         Then { result.should == "  Then {\n    x\n  }\n" }
       end
 
+      context "when the Then is has blank lines" do
+        Given(:input) {
+          "describe 'foobar' do\n" +
+          "  Then {\n\n" +
+          "    x\n" +
+          "  }\n" +
+          "end\n"
+        }
+        Then { result.should == "  Then {\n\n    x\n  }\n" }
+      end
+
       context "when the Then is split over several lines with do/end" do
         Given(:input) {
           "describe 'foobar' do\n" +
@@ -69,7 +79,7 @@ module RSpec
 
       describe "converting to a string" do
         Given(:input) { "" }
-        Then { cache.to_s.should =~ /line *extractor/i }
+        Then { extractor.to_s.should =~ /line *extractor/i }
       end
     end
   end
