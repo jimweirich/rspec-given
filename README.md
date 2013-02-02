@@ -519,11 +519,12 @@ any special matchers from the programmer.
 In the rare case that some extra information would be helpful, it is
 useful to create special objects that respond to the == operator.
 
-#### Asserting Nearly Equal
+#### Asserting Nearly Equal with Fuzzy Numbers
 
 Operations on floating point numbers rarely create numbers that are
 exactly equal, therefore it is useful to assert that two floating
-point numbers are nearly equal.
+point numbers are nearly equal. We do that by creating a fuzzy number
+that has a looser interpretation of what it means to be equal.
 
 For example, the following asserts that the square root of 10 is about
 3.1523 with an accuracy of 1 percent.
@@ -533,7 +534,7 @@ For example, the following asserts that the square root of 10 is about
 ```
 
 As long as the real value of <code>Math.sqrt(10)</code> is within plus
-or minus 1% of 3.1623 (i.e. 3.1623 +/- 0.0031623), then the assertion
+or minus 1% of 3.1623 (i.e. 3.1623 +/- 0.031623), then the assertion
 will pass.
 
 There are several ways of creating fuzzy numbers:
@@ -551,17 +552,17 @@ There are several ways of creating fuzzy numbers:
 * <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
 
 If the file <code>rspec/given/fuzzy_shortcuts</code> is required, then
-the following unicode shortcut methods have been added to Numeric to
-create fuzzy numbers.
+the following unicode shortcut methods are added to Numeric to create
+fuzzy numbers.
 
-* <code>n.±(del)</code> is an alias for <code>about(n).delta(del)</code>
+* <code>n.±(del)</code> is the same as <code>about(n).delta(del)</code>
 
-* <code>n.‰(percentage)</code> is an alias for <code>about(n).percent(percentage)</code>
+* <code>n.‰(percentage)</code> is the same as <code>about(n).percent(percentage)</code>
 
-* <code>n.∂(neps)</code> is an alias for <code>about(n).epsilon(neps)</code>
+* <code>n.€(neps)</code> is the same as <code>about(n).epsilon(neps)</code>
 
-* <code>n.±</code>, <code>n.‰</code>, and <code>n.∂</code> are all
-  aliases for <code>about(n)</code>
+* <code>n.±</code>, <code>n.‰</code>, and <code>n.€</code> are all
+  the same as <code>about(n)</code>
 
 #### Detecting Exceptions
 

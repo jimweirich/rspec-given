@@ -14,9 +14,9 @@ describe "Numeric Extensions" do
 
   Then { n.±(0.001).exactly_equals?(delta_n) }
   Then { n.‰(5).exactly_equals?(percent_n) }
-  Then { n.∂(20).exactly_equals?(epsilon_n) }
+  Then { n.€(20).exactly_equals?(epsilon_n) }
 
   Then { n.±.exactly_equals?(about_n) }
   Then { n.‰.exactly_equals?(about_n) }
-  Then { n.∂.exactly_equals?(about_n) }
+  Then { n.€.exactly_equals?(about_n) }
 end

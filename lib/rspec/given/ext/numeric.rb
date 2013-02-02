@@ -16,7 +16,7 @@ module RSpec
           result
         end
 
-        def ∂(neps=nil)
+        def €(neps=nil)
           result = RSpec::Given::Fuzzy::FuzzyNumber.new(self)
           result.epsilon(neps) if neps
           result
