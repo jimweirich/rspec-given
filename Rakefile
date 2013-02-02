@@ -82,13 +82,13 @@ task :failing => [:verify_rspec2] do
 end
 
 task :verify_rspec1 do
-  sh "type spec >/dev/null 2>&1", verbose: false do |status|
+  sh "type spec >/dev/null 2>&1", :verbose => false do |status|
     fail "You need to install RSpec 1 in order to test against it." unless status
   end
 end
 
 task :verify_rspec2 do
-  sh "type rspec >/dev/null 2>&1", verbose: false do |status|
+  sh "type rspec >/dev/null 2>&1", :verbose => false do |status|
     fail "You need to install RSpec 2 in order to test against it." unless status
   end
 end
