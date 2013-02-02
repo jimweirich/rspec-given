@@ -12,6 +12,19 @@ describe RSpec::Given::Fuzzy::FuzzyNumber do
     Then { number.high_limit == (10 + 0.0001) }
   end
 
+  describe "#exactly_equals?" do
+    Given(:number) { about(10).delta(0.0001) }
+    Given(:same_number) { about(10).delta(0.0001) }
+    Given(:different_delta) { about(10).delta(0.001) }
+    Given(:different_exact) { about(11).delta(0.0001) }
+
+    Then { number.exactly_equals?(number) }
+    Then { number.exactly_equals?(same_number) }
+
+    Then { ! number.exactly_equals?(different_exact) }
+    Then { ! number.exactly_equals?(different_delta) }
+  end
+
   describe "fixed deltas" do
     Given(:exact_number) { 10 }
     Given(:number) { about(exact_number).delta(0.001) }

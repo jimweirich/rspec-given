@@ -13,6 +13,12 @@ module RSpec
           @delta_amount = exact_value * DEFAULT_EPSILON
         end
 
+        def exactly_equals?(other)
+          other.is_a?(self.class) &&
+            exact_value == other.exact_value &&
+            delta_amount == other.delta_amount
+        end
+
         # Low limit of the fuzzy number.
         def low_limit
           exact_value - delta_amount

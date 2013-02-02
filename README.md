@@ -536,7 +536,7 @@ As long as the real value of <code>Math.sqrt(10)</code> is within plus
 or minus 1% of 3.1623 (i.e. 3.1623 +/- 0.0031623), then the assertion
 will pass.
 
-There are several ways of creating approximate numbers:
+There are several ways of creating fuzzy numbers:
 
 * <code>about(n).delta(d)</code> -- A fuzzy number matching the range
   (n-d)..(n+d)
@@ -550,8 +550,9 @@ There are several ways of creating approximate numbers:
 
 * <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
 
-In addition, the following unicode methods have been added to Numeric
-and are aliases for the above:
+If the file <code>rspec/given/fuzzy_shortcuts</code> is required, then
+the following unicode shortcut methods have been added to Numeric to
+create fuzzy numbers.
 
 * <code>n.±(del)</code> is an alias for <code>about(n).delta(del)</code>
 
