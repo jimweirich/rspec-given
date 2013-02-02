@@ -550,6 +550,18 @@ There are several ways of creating approximate numbers:
 
 * <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
 
+In addition, the following unicode methods have been added to Numeric
+and are aliases for the above:
+
+* <code>n.±(del)</code> is an alias for <code>about(n).delta(del)</code>
+
+* <code>n.‰(percentage)</code> is an alias for <code>about(n).percent(percentage)</code>
+
+* <code>n.∂(neps)</code> is an alias for <code>about(n).epsilon(neps)</code>
+
+* <code>n.±</code>, <code>n.‰</code>, and <code>n.∂</code> are all
+  aliases for <code>about(n)</code>
+
 #### Detecting Exceptions
 
 The RSpec matcher used for detecting exceptions will work with natural
