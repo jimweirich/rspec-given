@@ -551,7 +551,7 @@ There are several ways of creating fuzzy numbers:
 
 * <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
 
-If the file <code>rspec/given/fuzzy_shortcuts</code> is required, then
+When the file <code>rspec/given/fuzzy_shortcuts</code> is required,
 the following unicode shortcut methods are added to Numeric to create
 fuzzy numbers.
 
