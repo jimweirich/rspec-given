@@ -78,7 +78,7 @@ module RSpec
       def _rg_check_invariants  # :nodoc:
         _rg_contexts.each do |context|
           context._rgc_invariants.each do |block|
-            _rg_evaluate("XInvariant", block)
+            _rg_evaluate("Invariant", block)
           end
         end
       end
@@ -86,7 +86,7 @@ module RSpec
       def _rg_check_ands  # :nodoc:
         return if self.class._rgc_context_info[:and_ran]
         self.class._rgc_and_blocks.each do |block|
-          _rg_evaluate("XAnd", block)
+          _rg_evaluate("And", block)
         end
         self.class._rgc_context_info[:and_ran] = true
       end

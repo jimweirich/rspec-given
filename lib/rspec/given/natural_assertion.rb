@@ -49,6 +49,7 @@ module RSpec
 
       def message
         @output = "#{@clause_type} expression failed at #{source_line}\n"
+        @output << "Failing expression: #{source.strip}\n" if @clause_type != "Then"
         explain_failure
         display_pairs(expression_value_pairs)
         @output << "\n"
