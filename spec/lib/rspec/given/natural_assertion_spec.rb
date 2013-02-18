@@ -11,7 +11,7 @@ describe RSpec::Given::NaturalAssertion do
     binding
   }
   Given(:lines) { RSpec::Given::LineExtractor.new }
-  Given(:nassert) { RSpec::Given::NaturalAssertion.new(block, bind, lines) }
+  Given(:nassert) { RSpec::Given::NaturalAssertion.new("Then", block, bind, lines) }
 
   describe "#content?" do
     context "with empty block" do
@@ -205,7 +205,7 @@ describe RSpec::Given::NaturalAssertion do
   end
 
   describe "bad Then blocks" do
-    context "with multiple statements" do
+    context "with no statements" do
       Given(:block) {
         lambda {  }
       }

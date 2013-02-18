@@ -29,7 +29,8 @@ module RSpec
 
     class NaturalAssertion
 
-      def initialize(block, env, line_extractor)
+      def initialize(clause_type, block, env, line_extractor)
+        @clause_type = clause_type
         @block = block
         @env = env
         @line_extractor = line_extractor
@@ -47,7 +48,7 @@ module RSpec
       end
 
       def message
-        @output = "Then expression failed at #{source_line}\n"
+        @output = "#{@clause_type} expression failed at #{source_line}\n"
         explain_failure
         display_pairs(expression_value_pairs)
         @output << "\n"

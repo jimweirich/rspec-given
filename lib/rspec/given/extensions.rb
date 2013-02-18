@@ -78,7 +78,7 @@ module RSpec
       def _rg_check_invariants  # :nodoc:
         _rg_contexts.each do |context|
           context._rgc_invariants.each do |block|
-            _rg_evaluate(block)
+            _rg_evaluate("XInvariant", block)
           end
         end
       end
@@ -86,7 +86,7 @@ module RSpec
       def _rg_check_ands  # :nodoc:
         return if self.class._rgc_context_info[:and_ran]
         self.class._rgc_and_blocks.each do |block|
-          _rg_evaluate(block)
+          _rg_evaluate("XAnd", block)
         end
         self.class._rgc_context_info[:and_ran] = true
       end
@@ -95,16 +95,16 @@ module RSpec
       def _rg_then(&block)      # :nodoc:
         _rg_establish_givens
         _rg_check_invariants
-        _rg_evaluate(block)
+        _rg_evaluate("Then", block)
         _rg_check_ands
       end
 
       # Evaluate a Then, And, or Invariant assertion.
-      def _rg_evaluate(block)   # :nodoc:
+      def _rg_evaluate(clause_type, block)   # :nodoc:
         RSpec::Given.matcher_called = false
         passed = instance_eval(&block)
         if ! passed && _rg_na_configured? && ! RSpec::Given.matcher_called
-          nassert = NaturalAssertion.new(block, binding, self.class._rgc_lines)
+          nassert = NaturalAssertion.new(clause_type, block, binding, self.class._rgc_lines)
           RSpec::Given.fail_with nassert.message if _rg_need_na_message?(nassert)
         end
       end
