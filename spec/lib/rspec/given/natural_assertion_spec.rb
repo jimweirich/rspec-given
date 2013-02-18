@@ -210,8 +210,7 @@ describe RSpec::Given::NaturalAssertion do
         lambda {  }
       }
       When(:result) { nassert.message }
-# FIX: WHY IS THIS COMMENTED OUT?
-#      Then { result.should have_failed(RSpec::Given::InvalidThenError) }
+      Then { result.should_not have_failed(RSpec::Given::InvalidThenError) }
     end
 
     context "with multiple statements" do

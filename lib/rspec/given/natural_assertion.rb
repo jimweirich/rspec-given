@@ -126,27 +126,40 @@ module RSpec
       end
 
       def then_block?(sexp)
-        sexp.first == :program &&
-          sexp[1].first == :stmts_add &&
-          sexp[1][2].first == :method_add_block &&
-          (sexp[1][2][2].first == :brace_block || sexp[1][2][2].first == :do_block)
+        delve(sexp,0) == :program &&
+          delve(sexp,1,0) == :stmts_add &&
+          delve(sexp,1,2,0) == :method_add_block &&
+          (delve(sexp,1,2,2,0) == :brace_block || delve(sexp,1,2,2,0) == :do_block)
       end
 
       def extract_first_statement(block_sexp)
-        unless contains_one_statement?(block_sexp)
+        if contains_multiple_statements?(block_sexp)
           source = Sorcerer.source(block_sexp)
           fail InvalidThenError, "Multiple statements in Then block at #{source_line}\n#{source}"
         end
         extract_statement_from_block(block_sexp)
       end
 
-      def contains_one_statement?(block_sexp)
-        block_sexp[2].first == :stmts_add &&
-          block_sexp[2][1].first == :stmts_new
+      def contains_multiple_statements?(block_sexp)
+        !(delve(block_sexp,2,0) == :stmts_add &&
+          delve(block_sexp,2,1,0) == :stmts_new)
       end
 
       def extract_statement_from_block(block_sexp)
-        block_sexp[2][2]
+        delve(block_sexp,2,2)
+      end
+
+      # Safely dive into an array with a list of indicies. Return nil
+      # if the element doesn't exist, or if the intermediate result is
+      # not indexable.
+      def delve(ary, *indicies)
+        result = ary
+        while !indicies.empty? && result
+          return nil unless result.respond_to?(:[])
+          i = indicies.shift
+          result = result[i]
+        end
+        result
       end
 
       def eval_sexp(sexp)
