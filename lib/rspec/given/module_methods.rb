@@ -1,7 +1,8 @@
 module RSpec
   module Given
     # Does this platform support natural assertions?
-    NATURAL_ASSERTIONS_SUPPORTED = ! defined?(JRUBY_VERSION)
+    RBX_IN_USE = (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx')
+    NATURAL_ASSERTIONS_SUPPORTED = ! defined?(JRUBY_VERSION) && ! RBX_IN_USE
 
     def self.matcher_called
       @_matcher_called
