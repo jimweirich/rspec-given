@@ -2,7 +2,7 @@
 
 | Master |
 | :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://secure.travis-ci.org/jimweirich/rspec-given) |
+| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
 Covering rspec-given, version 2.4.0.
 
