@@ -42,7 +42,7 @@ describe Stack do
   Given(:stack) { stack_with(initial_contents) }
   Invariant { stack.empty?.should == (stack.depth == 0) }
 
-  context "when empty" do
+  context "with no items" do
     Given(:initial_contents) { [] }
     Then { stack.depth.should == 0 }
 
