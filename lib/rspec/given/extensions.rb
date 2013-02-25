@@ -228,11 +228,12 @@ module RSpec
       #
       # :call-seq:
       #   Then { ... assertion ... }
+      #   Then("description") { ... assertion ... }
       #
-      def Then(&block)
+      def Then(description=nil, &block)
         env = block.binding
         file, line = eval "[__FILE__, __LINE__]", env
-        description = _rgc_lines.line(file, line) unless RSpec::Given.source_caching_disabled
+        description ||= _rgc_lines.line(file, line) unless RSpec::Given.source_caching_disabled
         if description
           cmd = "it(description)"
         else
