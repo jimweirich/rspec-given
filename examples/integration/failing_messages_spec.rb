@@ -28,11 +28,11 @@ describe "Failing Messages" do
   context "when breaking down expressions" do
     Given(:failing_test) { "eval_subexpression_spec.rb" }
     Then { ios.err == "" }
-    Then { ios.out =~ /false *<- array\[index\]\.upcase == value$/ }
-    Then { ios.out =~ /"B" *<- array\[index\].upcase$/ }
-    Then { ios.out =~ /"b" *<- array\[index\]$/ }
-    Then { ios.out =~ /\["a", "b", "c"\] *<- array$/ }
-    Then { ios.out =~ /1 *<- index$/ }
-    Then { ios.out =~ /"X" *<- value$/ }
+    And  { ios.out =~ /false *<- array\[index\]\.upcase == value$/ }
+    And  { ios.out =~ /"B" *<- array\[index\].upcase$/ }
+    And  { ios.out =~ /"b" *<- array\[index\]$/ }
+    And  { ios.out =~ /\["a", "b", "c"\] *<- array$/ }
+    And  { ios.out =~ /1 *<- index$/ }
+    And  { ios.out =~ /"X" *<- value$/ }
   end
 end
