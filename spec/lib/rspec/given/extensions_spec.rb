@@ -170,6 +170,16 @@ describe RSpec::Given::ClassExtensions do
     And { trace.should == [:given, :then] }
   end
 
+  describe "Then referencing givens" do
+    Given(:given_value) { :ok }
+    Then { given_value == :ok }
+  end
+
+  describe "Then referencing when results" do
+    When(:result) { :ok }
+    Then { result == :ok }
+  end
+
   describe "And" do
     Given { trace << :given }
     Then { trace << :then }
