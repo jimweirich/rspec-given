@@ -29,10 +29,11 @@ module RSpec
 
     class NaturalAssertion
 
-      def initialize(clause_type, block, env, line_extractor)
+      def initialize(clause_type, block, env, example, line_extractor)
         @clause_type = clause_type
         @block = block
         @env = env
+        @example = example
         @line_extractor = line_extractor
         set_file_and_line
       end
@@ -54,6 +55,10 @@ module RSpec
         display_pairs(expression_value_pairs)
         @output << "\n"
         @output
+      end
+
+      def evaluate(expr_string)
+        eval_with_binding(expr_string, @env)
       end
 
       private
@@ -168,10 +173,16 @@ module RSpec
         eval_in(expr, @env)
       end
 
-      def eval_in(exp, binding)
-        eval(exp, binding).inspect
+      def eval_in(exp_string, binding)
+        eval_with_binding(exp_string, binding).inspect
       rescue StandardError => ex
         EvalErr.new("#{ex.class}: #{ex.message}")
+      end
+
+      def eval_with_binding(exp_string, binding)
+        exp_proc = "proc { #{exp_string} }"
+        blk = eval(exp_proc, @block.binding)
+        @example.instance_eval(&blk)
       end
 
       WRAP_WIDTH = 20
