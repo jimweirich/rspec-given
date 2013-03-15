@@ -645,6 +645,19 @@ file:
                                                 # ... even when should/expect are detected
 ```
 
+# History
+
+* Version 2.4.1
+
+  * Fix bug where constants from nested modules were not properly
+    accessed.
+
+* Version 2.4.0
+
+  * Add fuzzy number helper methods (with unicode method shortcuts).
+
+  * Fix bug caused by blank lines in Thens.
+
 # Links
 
 * Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
