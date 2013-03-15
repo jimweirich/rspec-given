@@ -2,7 +2,7 @@ require 'example_helper'
 require 'open3'
 
 describe "Failing Messages" do
-  use_natural_assertions
+  use_natural_assertions_if_supported
 
   IOS = Struct.new(:out, :err)
 

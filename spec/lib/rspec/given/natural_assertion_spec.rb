@@ -49,28 +49,25 @@ RSpec.configure do |c|
 end
 
 describe "Environmental Access" do
-  use_natural_assertions
-
   X = 1
   Given(:a) { 2 }
   FauxThen { X + a }
 
-  Then { block_result == 3 }
-  Then { na.evaluate("X") == 1 }
-  Then { na.evaluate("a") == 2 }
-  Then { na.evaluate("X+a") == 3 }
+  Then { block_result.should == 3 }
+  Then { na.evaluate("X").should == 1 }
+  Then { na.evaluate("a").should == 2 }
+  Then { na.evaluate("X+a").should == 3 }
 end
 
 module Nested
   X = 1
   describe "Environmental Access with Nested modules" do
-    use_natural_assertions
     Given(:a) { 2 }
     FauxThen { X + a }
-    Then { block_result == 3 }
-    Then { na.evaluate("a") == 2 }
-    Then { na.evaluate("X") == 1 }
-    Then { na.evaluate("a+X") == 3 }
+    Then { block_result.should == 3 }
+    Then { na.evaluate("a").should == 2 }
+    Then { na.evaluate("X").should == 1 }
+    Then { na.evaluate("a+X").should == 3 }
   end
 end
 
