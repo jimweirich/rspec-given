@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, version 2.4.0.
+Covering rspec-given, version 2.4.1.
 
 rspec-given is an RSpec extension to allow Given/When/Then notation in
 RSpec specifications.  It is a natural extension of the experimental
