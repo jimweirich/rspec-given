@@ -29,10 +29,9 @@ module RSpec
 
     class NaturalAssertion
 
-      def initialize(clause_type, block, env, example, line_extractor)
+      def initialize(clause_type, block, example, line_extractor)
         @clause_type = clause_type
         @block = block
-        @env = env
         @example = example
         @line_extractor = line_extractor
         set_file_and_line
@@ -58,7 +57,7 @@ module RSpec
       end
 
       def evaluate(expr_string)
-        eval_with_binding(expr_string, @env)
+        eval_in_context(expr_string)
       end
 
       private
@@ -97,7 +96,7 @@ module RSpec
 
       def expression_value_pairs
         assertion_subexpressions.map { |exp|
-          [exp, eval_in(exp, @env)]
+          [exp, eval_string(exp)]
         }
       end
 
@@ -170,16 +169,16 @@ module RSpec
 
       def eval_sexp(sexp)
         expr = Sorcerer.source(sexp)
-        eval_in(expr, @env)
+        eval_string(expr)
       end
 
-      def eval_in(exp_string, binding)
-        eval_with_binding(exp_string, binding).inspect
+      def eval_string(exp_string)
+        eval_in_context(exp_string).inspect
       rescue StandardError => ex
         EvalErr.new("#{ex.class}: #{ex.message}")
       end
 
-      def eval_with_binding(exp_string, binding)
+      def eval_in_context(exp_string)
         exp_proc = "proc { #{exp_string} }"
         blk = eval(exp_proc, @block.binding)
         @example.instance_eval(&blk)
