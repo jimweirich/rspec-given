@@ -37,7 +37,7 @@ module Faux
 
     def na
       block = self.class.the_block
-      nassert = RSpec::Given::NaturalAssertion.new("FauxThen", block, self, self.class._rgc_lines)
+      RSpec::Given::NaturalAssertion.new("FauxThen", block, self, self.class._rgc_lines)
     end
   end
 end
