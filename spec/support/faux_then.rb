@@ -39,6 +39,10 @@ module Faux
       block = self.class.the_block
       RSpec::Given::NaturalAssertion.new("FauxThen", block, self, self.class._rgc_lines)
     end
+
+    def ev
+      RSpec::Given::Evaluator.new(self, self.class.the_block)
+    end
   end
 end
 

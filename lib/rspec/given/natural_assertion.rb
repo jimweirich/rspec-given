@@ -1,5 +1,6 @@
 require 'rspec'
 require 'rspec/given/module_methods'
+require 'rspec/given/evaluator'
 
 if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
   require 'ripper'
@@ -12,27 +13,11 @@ module RSpec
 
     InvalidThenError = Class.new(StandardError)
 
-    class EvalErr
-      def initialize(str)
-        @string = str
-      end
-      def size
-        inspect.size
-      end
-      def to_s
-        @string
-      end
-      def inspect
-        @string
-      end
-    end
-
     class NaturalAssertion
 
       def initialize(clause_type, block, example, line_extractor)
         @clause_type = clause_type
-        @block = block
-        @example = example
+        @evaluator = Evaluator.new(example, block)
         @line_extractor = line_extractor
         set_file_and_line(block)
       end
@@ -54,10 +39,6 @@ module RSpec
         display_pairs(expression_value_pairs)
         @output << "\n"
         @output
-      end
-
-      def evaluate(expr_string)
-        eval_in_context(expr_string)
       end
 
       private
@@ -96,7 +77,7 @@ module RSpec
 
       def expression_value_pairs
         assertion_subexpressions.map { |exp|
-          [exp, eval_string(exp)]
+          [exp, @evaluator.eval_string(exp)]
         }
       end
 
@@ -168,20 +149,8 @@ module RSpec
       end
 
       def eval_sexp(sexp)
-        expr = Sorcerer.source(sexp)
-        eval_string(expr)
-      end
-
-      def eval_string(exp_string)
-        eval_in_context(exp_string).inspect
-      rescue StandardError => ex
-        EvalErr.new("#{ex.class}: #{ex.message}")
-      end
-
-      def eval_in_context(exp_string)
-        exp_proc = "proc { #{exp_string} }"
-        blk = eval(exp_proc, @block.binding)
-        @example.instance_eval(&blk)
+        expr_string = Sorcerer.source(sexp)
+        @evaluator.eval_string(expr_string)
       end
 
       WRAP_WIDTH = 20

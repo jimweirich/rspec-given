@@ -1,29 +1,6 @@
 require 'rspec/given'
 require 'spec_helper'
 
-describe "Environmental Access" do
-  X = 1
-  Given(:a) { 2 }
-  FauxThen { X + a }
-
-  Then { block_result.should == 3 }
-  Then { na.evaluate("X").should == 1 }
-  Then { na.evaluate("a").should == 2 }
-  Then { na.evaluate("X+a").should == 3 }
-end
-
-module Nested
-  X = 1
-  describe "Environmental Access with Nested modules" do
-    Given(:a) { 2 }
-    FauxThen { X + a }
-    Then { block_result.should == 3 }
-    Then { na.evaluate("a").should == 2 }
-    Then { na.evaluate("X").should == 1 }
-    Then { na.evaluate("a+X").should == 3 }
-  end
-end
-
 describe RSpec::Given::NaturalAssertion do
   before do
     pending "Natural Assertions disabled for JRuby" unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
