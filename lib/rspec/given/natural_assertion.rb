@@ -34,7 +34,7 @@ module RSpec
         @block = block
         @example = example
         @line_extractor = line_extractor
-        set_file_and_line
+        set_file_and_line(block)
       end
 
       VOID_SEXP = [:void_stmt]
@@ -112,8 +112,8 @@ module RSpec
         @source ||= @line_extractor.line(@code_file, @code_line)
       end
 
-      def set_file_and_line
-        @code_file, @code_line = eval "[__FILE__, __LINE__]", @block.binding
+      def set_file_and_line(block)
+        @code_file, @code_line = eval "[__FILE__, __LINE__]", block.binding
         @code_line = @code_line.to_i
       end
 
