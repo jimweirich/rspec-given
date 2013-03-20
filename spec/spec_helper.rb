@@ -17,10 +17,10 @@ RSpec.configure do |c|
 end
 
 
-# The Faux module defines a FauxThen that is used to setup an
-# environment identical to the real Then blocks in order to setup a
-# realistic NaturalAssertion object that can be used for making
-# assertions.
+# The Faux module defines a FauxThen method that is used to setup an
+# environment identical to the real Then blocks. This makes it easy to
+# create realistic NaturalAssertion and Evaluator objects that can be
+# used for making assertions.
 #
 # Typical Usage:
 #
@@ -33,7 +33,7 @@ end
 #
 # The FauxThen sets up two special values:
 #
-# * result_block -- is the result of evaluating the FauxThen block
+# * block_result -- is the result of evaluating the FauxThen block
 # * na -- is a the natural assertion object whose context is the
 #         FauxThen block.
 #
