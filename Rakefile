@@ -2,6 +2,7 @@
 
 require 'rake/clean'
 require './lib/rspec/given/version'
+require './lib/rspec/given/module_methods'
 
 CLEAN.include("pkg/rspec-given-*").exclude("pkg/*.gem")
 CLOBBER.include("*.gemspec", "html", "README", "README.old")
@@ -69,6 +70,11 @@ end
 EXAMPLES = FileList['examples/**/*_spec.rb'].
   exclude('examples/failing/*.rb').
   exclude('examples/integration/failing/*.rb')
+
+unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+  EXAMPLES.exclude("examples/stack/*.rb")
+end
+
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 
 desc "Run the examples in RSpec 2"
