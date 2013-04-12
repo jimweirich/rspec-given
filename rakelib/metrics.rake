@@ -14,6 +14,7 @@ task :check_flay do
   end
 end
 
+desc "Run complexity metrics"
 task :flog, [:all] => :check_flog do |t, args|
   flags = args.all ? "--all" : ""
   nobundle do
@@ -21,6 +22,7 @@ task :flog, [:all] => :check_flog do |t, args|
   end
 end
 
+desc "Run duplication metrics"
 task :flay => :check_flay do
   nobundle do
     sh "flay #{METRICS_FILES}"
