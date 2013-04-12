@@ -1,10 +1,28 @@
+require './rakelib/bundler_fix'
+
 METRICS_FILES = FileList['lib/**/*.rb']
 
-task :flog, [:all] do |t, args|
-  flags = args.all ? "--all" : ""
-  sh "flog #{flags} #{METRICS_FILES}"
+task :check_flog do
+  sh "type flog >/dev/null 2>&1", :verbose => false do |status|
+    fail "Install flog to generate complexity metrics" unless status
+  end
 end
 
-task :flay do
-  sh "flay #{METRICS_FILES}"
+task :check_flay do
+  sh "type flay >/dev/null 2>&1", :verbose => false do |status|
+    fail "Install flay to generate complexity metrics" unless status
+  end
+end
+
+task :flog, [:all] => :check_flog do |t, args|
+  flags = args.all ? "--all" : ""
+  nobundle do
+    sh "flog #{flags} #{METRICS_FILES}"
+  end
+end
+
+task :flay => :check_flay do
+  nobundle do
+    sh "flay #{METRICS_FILES}"
+  end
 end

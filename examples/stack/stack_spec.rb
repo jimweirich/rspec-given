@@ -2,25 +2,24 @@ require 'rspec/given'
 require 'example_helper'
 require 'stack'
 
+RSpec::Given.use_natural_assertions
+
 describe Stack do
-  def stack_with(initial_contents)
-    stack = Stack.new
-    initial_contents.each do |item| stack.push(item) end
-    stack
-  end
+  Given(:stack) { Stack.new }
+  Given(:initial_contents) { [] }
+  Given { initial_contents.each do |item| stack.push(item) end }
 
-  Given(:stack) { stack_with(initial_contents) }
-  Invariant { stack.empty?.should == (stack.depth == 0) }
+  Invariant { stack.empty? == (stack.depth == 0) }
 
-  context "when empty" do
+  context "with an empty stack" do
     Given(:initial_contents) { [] }
-    Then { stack.depth.should == 0 }
+    Then { stack.depth == 0 }
 
     context "when pushing" do
       When { stack.push(:an_item) }
 
-      Then { stack.depth.should == 1 }
-      Then { stack.top.should == :an_item }
+      Then { stack.depth == 1 }
+      Then { stack.top == :an_item }
     end
 
     context "when popping" do
@@ -35,8 +34,8 @@ describe Stack do
     context "when popping" do
       When(:pop_result) { stack.pop }
 
-      Then { pop_result.should == :an_item }
-      Then { stack.depth.should == 0 }
+      Then { pop_result == :an_item }
+      Then { stack.depth == 0 }
     end
   end
 
@@ -47,16 +46,16 @@ describe Stack do
     context "when pushing" do
       When { stack.push(:new_item) }
 
-      Then { stack.top.should == :new_item }
-      Then { stack.depth.should == original_depth + 1 }
+      Then { stack.top == :new_item }
+      Then { stack.depth == original_depth + 1 }
     end
 
     context "when popping" do
       When(:pop_result) { stack.pop }
 
-      Then { pop_result.should == :top_item }
-      Then { stack.top.should == :second_item }
-      Then { stack.depth.should == original_depth - 1 }
+      Then { pop_result == :top_item }
+      Then { stack.top == :second_item }
+      Then { stack.depth == original_depth - 1 }
     end
   end
 end
