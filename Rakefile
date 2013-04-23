@@ -9,12 +9,6 @@ CLOBBER.include("*.gemspec", "html", "README", "README.old")
 
 # README Formatting --------------------------------------------------
 
-begin
-  require 'bluecloth'
-rescue LoadError => ex
-  puts "WARNING: BlueCloth not available"
-end
-
 task :default => :ex2
 
 def version
@@ -102,7 +96,7 @@ task :verify_rspec2 do
 end
 
 task :load_check do
-  SRC_FILES = FileList['lib/rspec/given/*.rb'].exclude(/rspec1/)
+  SRC_FILES = FileList['lib/rspec/given/*.rb'].exclude(%r(rspec1))
   SRC_FILES.each do |fn|
     sh %{ruby -Ilib -e 'load "#{fn}"'}
   end
@@ -114,7 +108,9 @@ directory 'html'
 
 desc "Display the README file"
 task :readme => ["README.md"] do
-  sh "ghpreview README.md"
+  Bundler.with_clean_env do
+    sh "ghpreview README.md"
+  end
 end
 
 desc "Generate an RDoc README"
@@ -153,9 +149,13 @@ end
 
 # RDoc ---------------------------------------------------------------
 begin
-  gem "rdoc"
   require 'rdoc/task'
-  RDOC_ENABLED = true
+  if RDoc::VERSION > "2.4.2"
+    RDOC_ENABLED = true
+  else
+    puts "Version of RDoc is too old, please gem install a later version"
+    RDOC_ENABLED = false
+  end
 rescue LoadError => ex
   RDOC_ENABLED = false
 end
@@ -211,7 +211,7 @@ if RDOC_ENABLED
     rdoc.title    = "RSpec/Given -- A Given/When/Then extension for RSpec"
     rdoc.options = [
       '--line-numbers',
-      '--main' , 'README',
+      '--main' , 'doc/main.rdoc',
       '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
     ]
     rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED

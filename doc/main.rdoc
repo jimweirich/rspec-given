@@ -1,0 +1,7 @@
+= Given/When/Then for RSpec
+
+rspec-given is an RSpec extension to allow Given/When/Then notation in
+RSpec specifications.  It is a natural extension of the experimental
+work done on the Given framework.
+
+For more information see http://github.com/jimweirich/rspec-given

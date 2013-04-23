@@ -9,6 +9,7 @@ else
     'lib/*.rb',
     'lib/**/*.rb',
     'test/**/*.rb',
+    'spec/**/*.rb',
     'examples/**/*',
     'doc/**/*',
   ]
@@ -35,10 +36,6 @@ EOF
 
     s.add_dependency("rspec", ">= 2.11")
     s.add_dependency("sorcerer", ">= 0.3.7")
-
-    s.add_development_dependency("bluecloth")
-    s.add_development_dependency("rdoc", "> 2.4.2")
-    s.add_development_dependency("ghpreview", ">= 0.0.1")
 
     s.required_ruby_version = '>= 1.9.2'
 
