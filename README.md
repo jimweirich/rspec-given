@@ -644,6 +644,11 @@ file:
                                                 # ... even when should/expect are detected
 ```
 
+# License
+
+RSpec-Given is available under the MIT License.  See the MIT-LICENSE
+file in the source distribution.
+
 # History
 
 * Version 2.4.1

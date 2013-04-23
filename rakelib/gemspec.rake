@@ -38,6 +38,7 @@ EOF
     s.add_dependency("sorcerer", ">= 0.3.7")
 
     s.required_ruby_version = '>= 1.9.2'
+    s.license = "MIT"
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
