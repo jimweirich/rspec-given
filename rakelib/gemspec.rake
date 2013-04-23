@@ -30,7 +30,7 @@ EOF
     s.require_path = 'lib'                         # Use these for libraries.
     s.rdoc_options = [
       '--line-numbers', '--inline-source',
-      '--main' , 'README.md',
+      '--main' , 'doc/main.rdoc',
       '--title', 'RSpec Given Extensions'
     ]
 
