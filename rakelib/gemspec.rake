@@ -34,7 +34,7 @@ EOF
       '--title', 'RSpec Given Extensions'
     ]
 
-    s.add_dependency("rspec", ">= 2.11")
+    s.add_dependency("rspec", ">= 2.12")
     s.add_dependency("sorcerer", ">= 0.3.7")
 
     s.required_ruby_version = '>= 1.9.2'
