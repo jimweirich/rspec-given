@@ -143,6 +143,19 @@ describe RSpec::Given::NaturalAssertion do
       Then { msg.should =~ /\bNoMethodError.+NilClass\n +<- +ary\[1\]$/ }
       Then { msg.should =~ /\bnil +<- +ary$/ }
     end
+
+    context "with value with newlines" do
+      class FunkyInspect
+        def inspect
+          "XXXX\nYYYY"
+        end
+      end
+      Given(:zzzz) { FunkyInspect.new }
+      FauxThen { zzzz == nil }
+      Then { msg.should =~ /\n  XXXX\n/ }
+      Then { msg.should =~ /\n  YYYY\n/ }
+      Then { msg.should =~ /\n +<- zzzz$/ }
+    end
   end
 
   describe "bad Then blocks" do

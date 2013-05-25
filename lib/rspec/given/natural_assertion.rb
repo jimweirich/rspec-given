@@ -158,7 +158,8 @@ module RSpec
       def display_pairs(pairs)
         width = suggest_width(pairs)
         pairs.each do |x, v|
-          fmt = (v.size > WRAP_WIDTH) ?
+          v = v.to_s.gsub(/\n/, "\n  ")
+          fmt = (v.size > WRAP_WIDTH) || (v =~ /\n/) ?
           "  %-#{width+2}s\n  #{' '*(width+2)} <- %s\n" :
             "  %-#{width+2}s <- %s\n"
           @output << sprintf(fmt, v, x)
