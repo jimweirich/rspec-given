@@ -651,6 +651,15 @@ file in the source distribution.
 
 # History
 
+* Version 2.4.2
+
+  * Minor adjustment to natural assertion error messages to better
+    handle multi-line values.
+
+  * Remove flog, flay and other development tools from the bundle and
+    gemspec. The Rakefile was updated to suggest installing them if
+    they are not there.
+
 * Version 2.4.1
 
   * Fix bug where constants from nested modules were not properly
