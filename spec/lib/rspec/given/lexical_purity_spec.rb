@@ -3,7 +3,8 @@ require 'spec_helper'
 LEXICAL_PURITY_GLOBAL_CONSTANT = 3
 
 describe "Lexical Purity" do
-  use_natural_assertions
+  use_natural_assertions_if_supported
+
   A = 1
   Given(:avalue) { 1 }
   context "nested" do
