@@ -156,12 +156,12 @@ module RSpec
       WRAP_WIDTH = 20
 
       def display_pairs(pairs)
-        width = suggest_width(pairs)
+        width = suggest_width(pairs) + 4
         pairs.each do |x, v|
           v = adjust_indentation(v)
           fmt = multi_line?(v) ?
-          "%-#{width+2}s\n  #{' '*(width+2)} <- %s\n" :
-            "%-#{width+2}s <- %s\n"
+            "%-#{width}s\n#{' '*width} <- %s\n" :
+            "%-#{width}s <- %s\n"
           @output << sprintf(fmt, v, x)
         end
       end
@@ -175,7 +175,13 @@ module RSpec
       end
 
       def suggest_width(pairs)
-        pairs.map { |x,v| v.size }.select { |n| n < WRAP_WIDTH }.max || 10
+        pairs.map { |x,v|
+          max_line_length(v)
+        }.select { |n| n < WRAP_WIDTH }.max || 10
+      end
+
+      def max_line_length(string)
+        string.to_s.split(/\n/).map { |s| s.size }.max
       end
 
       def source_line

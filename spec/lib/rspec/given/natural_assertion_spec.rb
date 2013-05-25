@@ -149,12 +149,16 @@ describe RSpec::Given::NaturalAssertion do
         def inspect
           "XXXX\nYYYY"
         end
+        def ok?
+          false
+        end
       end
       Given(:zzzz) { FunkyInspect.new }
-      FauxThen { zzzz == nil }
+      FauxThen { zzzz.ok? }
+      Then { msg.should =~ /\n  false   <- zzzz\.ok\?/ }
       Then { msg.should =~ /\n  XXXX\n/ }
       Then { msg.should =~ /\n  YYYY\n/ }
-      Then { msg.should =~ /\n +<- zzzz$/ }
+      Then { msg.should =~ /\n          <- zzzz$/ }
     end
   end
 
