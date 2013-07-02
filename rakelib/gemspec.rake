@@ -23,8 +23,8 @@ else
     s.version = RSpec::Given::VERSION
     s.summary = "Given/When/Then Specification Extensions for RSpec."
     s.description = <<EOF
-Given is an RSpec extension that allows explicit definition of the
-pre and post-conditions for code under test.
+Given is an RSpec extension that allows the use of Given/When/Then
+terminology when defining specifications.
 EOF
     s.files = PKG_FILES.to_a
     s.require_path = 'lib'                         # Use these for libraries.
