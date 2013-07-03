@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
-require 'rspec/given'
-require 'rspec/given/fuzzy_shortcuts'
+require 'given'
+require 'given/fuzzy_shortcuts'
 
 describe "Numeric Extensions" do
   use_natural_assertions_if_supported

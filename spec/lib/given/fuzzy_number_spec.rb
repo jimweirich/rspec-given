@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe RSpec::Given::Fuzzy::FuzzyNumber do
+describe Given::Fuzzy::FuzzyNumber do
   use_natural_assertions_if_supported
-  include RSpec::Given::Fuzzy
+  include Given::Fuzzy
 
   describe "attributes" do
     Given(:number) { about(10).delta(0.0001) }

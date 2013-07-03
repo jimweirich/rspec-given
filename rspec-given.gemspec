@@ -5,25 +5,25 @@ version: !ruby/object:Gem::Version
 platform: ruby
 authors:
 - Jim Weirich
-autorequire: 
+autorequire:
 bindir: bin
 cert_chain: []
-date: 2013-07-08 00:00:00.000000000 Z
+date: 2013-07-02 00:00:00.000000000 Z
 dependencies:
 - !ruby/object:Gem::Dependency
-  name: rspec
+  name: minitest
   requirement: !ruby/object:Gem::Requirement
     requirements:
-    - - '>='
+    - - ~>
       - !ruby/object:Gem::Version
-        version: '2.12'
+        version: '5.0'
   type: :runtime
   prerelease: false
   version_requirements: !ruby/object:Gem::Requirement
     requirements:
-    - - '>='
+    - - ~>
       - !ruby/object:Gem::Version
-        version: '2.12'
+        version: '5.0'
 - !ruby/object:Gem::Dependency
   name: sorcerer
   requirement: !ruby/object:Gem::Requirement
@@ -116,7 +116,7 @@ homepage: http://github.com/jimweirich/rspec-given
 licenses:
 - MIT
 metadata: {}
-post_install_message: 
+post_install_message:
 rdoc_options:
 - --line-numbers
 - --inline-source
@@ -139,7 +139,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 rubyforge_project: given
 rubygems_version: 2.0.3
-signing_key: 
+signing_key:
 specification_version: 4
 summary: Given/When/Then Specification Extensions for RSpec.
 test_files: []

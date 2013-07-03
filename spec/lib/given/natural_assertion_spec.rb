@@ -1,9 +1,9 @@
 require 'rspec/given'
 require 'spec_helper'
 
-describe RSpec::Given::NaturalAssertion do
+describe Given::NaturalAssertion do
   before do
-    pending "Natural Assertions disabled for JRuby" unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+    pending "Natural Assertions disabled for JRuby" unless Given::NATURAL_ASSERTIONS_SUPPORTED
   end
 
   describe "#content?" do
@@ -166,7 +166,7 @@ describe RSpec::Given::NaturalAssertion do
     context "with no statements" do
       FauxThen {  }
       When(:result) { na.message }
-      Then { result.should_not have_failed(RSpec::Given::InvalidThenError) }
+      Then { result.should_not have_failed(Given::InvalidThenError) }
     end
 
     context "with multiple statements" do
@@ -175,7 +175,7 @@ describe RSpec::Given::NaturalAssertion do
         ary[1] == 3
       }
       When(:result) { na.message }
-      Then { result.should have_failed(RSpec::Given::InvalidThenError, /multiple.*statements/i) }
+      Then { result.should have_failed(Given::InvalidThenError, /multiple.*statements/i) }
     end
 
   end

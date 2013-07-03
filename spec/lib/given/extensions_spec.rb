@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RSpec::Given::ClassExtensions do
+describe Given::ClassExtensions do
   let(:trace) { [] }
 
   describe "Given with var" do

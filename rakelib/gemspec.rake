@@ -1,5 +1,5 @@
 require 'rubygems/package_task'
-require './lib/rspec/given/version'
+require './lib/given/version'
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"
@@ -20,7 +20,7 @@ else
     #### Basic information.
 
     s.name = 'rspec-given'
-    s.version = RSpec::Given::VERSION
+    s.version = Given::VERSION
     s.summary = "Given/When/Then Specification Extensions for RSpec."
     s.description = <<EOF
 Given is an RSpec extension that allows the use of Given/When/Then
@@ -34,7 +34,7 @@ EOF
       '--title', 'RSpec Given Extensions'
     ]
 
-    s.add_dependency("rspec", ">= 2.12")
+    s.add_dependency("minitest", "~> 5.0")
     s.add_dependency("sorcerer", ">= 0.3.7")
 
     s.required_ruby_version = '>= 1.9.2'

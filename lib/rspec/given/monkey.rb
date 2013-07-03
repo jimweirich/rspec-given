@@ -1,5 +1,5 @@
 require 'rspec'
-require 'rspec/given/module_methods'
+require 'given/module_methods'
 
 # Monkey patch RSpec to detect matchers used in expectations.
 
@@ -16,7 +16,7 @@ unless defined?(RSpec::Given::MONKEY)
           class << self
             alias _rg_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
-              RSpec::Given.matcher_called = true
+              ::Given.matcher_called = true
               _rg_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end
@@ -26,7 +26,7 @@ unless defined?(RSpec::Given::MONKEY)
           class << self
             alias _rg_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
-              RSpec::Given.matcher_called = true
+              ::Given.matcher_called = true
               _rg_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end

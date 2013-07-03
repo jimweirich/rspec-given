@@ -2,7 +2,7 @@ require 'rspec/given'
 require 'example_helper'
 require 'stack'
 
-RSpec::Given.use_natural_assertions
+Given.use_natural_assertions
 
 describe Stack do
   Given(:stack) { Stack.new }

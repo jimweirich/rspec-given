@@ -26,6 +26,6 @@ end
 describe "Evaluator with error object" do
   FauxThen { 1 }
   When(:result) { ev.eval_string("fail 'XYZ'") }
-  Then { result.class.should == RSpec::Given::EvalErr }
+  Then { result.class.should == Given::EvalErr }
   Then { result.inspect.should == "RuntimeError: XYZ" }
 end
