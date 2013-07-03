@@ -9,7 +9,7 @@ CLOBBER.include("*.gemspec", "html", "README", "README.old")
 
 # README Formatting --------------------------------------------------
 
-task :default => :ex2
+task :default => :examples
 
 def version
   Given::VERSION
@@ -44,21 +44,15 @@ end
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
-task :examples => [:specs, :examples1, :examples2]
+task :examples => [:specs, :rs_examples]
 
 desc "Run the RSpec 2 specs and examples"
-task :ex2 => [:specs, :examples2]
+task :examples => [:specs, :rs_examples, :mt_examples]
 
 desc "Run the specs"
 task :specs do
   puts "Running specs"
   sh "rspec spec"
-end
-
-desc "Run the examples in RSpec 1"
-task :examples1 => [:verify_rspec1] do
-  puts "Running examples (with RSpec2)"
-  sh "spec examples/stack/stack_spec1.rb"
 end
 
 EXAMPLES = FileList['examples/**/*_spec.rb'].
@@ -72,9 +66,16 @@ end
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 
 desc "Run the examples in RSpec 2"
-task :examples2 => [:verify_rspec2] do
+task :rs_examples => [:verify_rspec2] do
   puts "Running examples (with RSpec2)"
   sh "rspec #{EXAMPLES}"
+end
+
+desc "Run the examples in Minitest"
+task :mt_examples do
+  puts "Running examples (with Minitest)"
+  ENV['FRAMEWORK'] = 'Minitest'
+  sh "ruby -Ilib:examples #{EXAMPLES}"
 end
 
 desc "Run failing examples"
