@@ -16,7 +16,7 @@ unless defined?(RSpec::Given::MONKEY)
           class << self
             alias _gvn_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
-              ::Given.matcher_called = true
+              ::Given.framework.explicitly_asserted
               _gvn_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end
@@ -26,7 +26,7 @@ unless defined?(RSpec::Given::MONKEY)
           class << self
             alias _gvn_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
-              ::Given.matcher_called = true
+              ::Given.framework.explicitly_asserted
               _gvn_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end

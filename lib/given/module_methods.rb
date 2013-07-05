@@ -6,12 +6,12 @@ module Given
 
   NATURAL_ASSERTIONS_SUPPORTED = ! (JRUBY_IN_USE || RBX_IN_USE)
 
-  def self.matcher_called
-    @_gvn_matcher_called
+  def self.framework
+    @_gvn_framework
   end
 
-  def self.matcher_called=(value)
-    @_gvn_matcher_called = value
+  def self.framework=(framework)
+    @_gvn_framework = framework
   end
 
   def self.source_caching_disabled
