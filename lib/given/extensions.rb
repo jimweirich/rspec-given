@@ -11,23 +11,23 @@ module Given
 
     # List of containing contexts in order from innermost to
     # outermost.
-    def _rg_inner_contexts    # :nodoc:
+    def _gvn_inner_contexts    # :nodoc:
       self.class.ancestors.select { |context|
-        context.respond_to?(:_rgc_givens)
+        context.respond_to?(:_Gvn_givens)
       }
     end
 
     # List of containing contexts in order from outermost to
     # innermost.
-    def _rg_contexts          # :nodoc:
-      _rg_inner_contexts.reverse
+    def _gvn_contexts          # :nodoc:
+      _gvn_inner_contexts.reverse
     end
 
     # Return the context information for keyword from the innermost
     # defining context.
-    def _rg_info(keyword)     # :nodoc:
-      _rg_inner_contexts.each do |context|
-        h = context._rgc_context_info
+    def _gvn_info(keyword)     # :nodoc:
+      _gvn_inner_contexts.each do |context|
+        h = context._Gvn_context_info
         if h.has_key?(keyword)
           return h[keyword]
         end
@@ -42,9 +42,9 @@ module Given
     # assertions. The configuration options for natural assertions are
     # checked and applied accordingly.
     #
-    def _rg_need_na_message?(nassert) # :nodoc:
+    def _gvn_need_na_message?(nassert) # :nodoc:
       return false unless nassert.has_content?
-      use_na = _rg_na_configured?
+      use_na = _gvn_na_configured?
       return true if use_na == :always
       # FIX: to make multi-framework
       # return false if !RSpec::Given::MONKEY && nassert.using_rspec_assertion?
@@ -55,19 +55,19 @@ module Given
     #
     # If natural assertions are not configured in the contexts, use
     # the global configuration value.
-    def _rg_na_configured?    # :nodoc:
-      info_value = _rg_info(:natural_assertions_enabled)
+    def _gvn_na_configured?    # :nodoc:
+      info_value = _gvn_info(:natural_assertions_enabled)
       info_value.nil? ? Given.natural_assertions_enabled? : info_value
     end
 
     # Establish all the Given preconditions the current and
     # surrounding describe/context blocks, starting with the
     # outermost context.
-    def _rg_establish_givens  # :nodoc:
-      return if defined?(@_rg_ran) && @_rg_ran
-      @_rg_ran = true
-      _rg_contexts.each do |context|
-        context._rgc_givens.each do |block|
+    def _gvn_establish_givens  # :nodoc:
+      return if defined?(@_gvn_ran) && @_gvn_ran
+      @_gvn_ran = true
+      _gvn_contexts.each do |context|
+        context._Gvn_givens.each do |block|
           instance_eval(&block)
         end
       end
@@ -75,38 +75,38 @@ module Given
 
     # Check all the invariants in the current and surrounding
     # describe/context blocks, starting with the outermost context.
-    def _rg_check_invariants  # :nodoc:
-      _rg_contexts.each do |context|
-        context._rgc_invariants.each do |block|
-          _rg_evaluate("Invariant", block)
+    def _gvn_check_invariants  # :nodoc:
+      _gvn_contexts.each do |context|
+        context._Gvn_invariants.each do |block|
+          _gvn_evaluate("Invariant", block)
         end
       end
     end
 
-    def _rg_check_ands  # :nodoc:
-      return if self.class._rgc_context_info[:and_ran]
-      self.class._rgc_and_blocks.each do |block|
-        _rg_evaluate("And", block)
+    def _gvn_check_ands  # :nodoc:
+      return if self.class._Gvn_context_info[:and_ran]
+      self.class._Gvn_and_blocks.each do |block|
+        _gvn_evaluate("And", block)
       end
-      self.class._rgc_context_info[:and_ran] = true
+      self.class._Gvn_context_info[:and_ran] = true
     end
 
     # Implement the run-time semantics of the Then clause.
-    def _rg_then(&block)      # :nodoc:
-      _rg_establish_givens
-      _rg_check_invariants
-      _rg_evaluate("Then", block)
-      _rg_check_ands
+    def _gvn_then(&block)      # :nodoc:
+      _gvn_establish_givens
+      _gvn_check_invariants
+      _gvn_evaluate("Then", block)
+      _gvn_check_ands
     end
 
     # Evaluate a Then, And, or Invariant assertion.
-    def _rg_evaluate(clause_type, block)   # :nodoc:
+    def _gvn_evaluate(clause_type, block)   # :nodoc:
       # FIX: to make multi-framework
       ::Given.matcher_called = false
       passed = instance_eval(&block)
-      if ! passed && _rg_na_configured? && ! Given.matcher_called
-        nassert = NaturalAssertion.new(clause_type, block, self, self.class._rgc_lines)
-        Given.fail_with nassert.message if _rg_need_na_message?(nassert)
+      if ! passed && _gvn_na_configured? && ! Given.matcher_called
+        nassert = NaturalAssertion.new(clause_type, block, self, self.class._Gvn_lines)
+        Given.fail_with nassert.message if _gvn_need_na_message?(nassert)
       end
     end
   end
@@ -115,31 +115,31 @@ module Given
 
     # List of all givens directly in the current describe/context
     # block.
-    def _rgc_givens            # :nodoc:
-      @_rgc_givens ||= []
+    def _Gvn_givens            # :nodoc:
+      @_Gvn_givens ||= []
     end
 
     # List of all invariants directly in the current
     # describe/context block.
-    def _rgc_invariants        # :nodoc:
-      @_rgc_invariants ||= []
+    def _Gvn_invariants        # :nodoc:
+      @_Gvn_invariants ||= []
     end
 
-    def _rgc_and_blocks
-      @_rgc_and_blocks ||= []
+    def _Gvn_and_blocks
+      @_Gvn_and_blocks ||= []
     end
 
-    def _rgc_context_info
-      @_rgc_context_info ||= {}
+    def _Gvn_context_info
+      @_Gvn_context_info ||= {}
     end
 
-    def _rgc_lines
-      @_rgc_lines ||= LineExtractor.new
+    def _Gvn_lines
+      @_Gvn_lines ||= LineExtractor.new
     end
 
     # Trigger the evaluation of a Given! block by referencing its
     # name.
-    def _rgc_trigger_given(name) # :nodoc:
+    def _Gvn_trigger_given(name) # :nodoc:
       Proc.new { send(name) }
     end
 
@@ -157,7 +157,7 @@ module Given
       if args.first.is_a?(Symbol)
         let(args.first, &block)
       else
-        _rgc_givens << block
+        _Gvn_givens << block
       end
     end
 
@@ -170,7 +170,7 @@ module Given
     #
     def Given!(name, &block)
       let(name, &block)
-      _rgc_givens << _rgc_trigger_given(name)
+      _Gvn_givens << _Gvn_trigger_given(name)
     end
 
     # Declare the code that is under test.
@@ -183,7 +183,7 @@ module Given
       if args.first.is_a?(Symbol)
         let(args.first) do
           begin
-            _rg_establish_givens
+            _gvn_establish_givens
             instance_eval(&block)
           rescue Given.pending_error => ex
             raise
@@ -191,10 +191,10 @@ module Given
             Failure.new(ex)
           end
         end
-        _gvn_before do __send__(args.first) end
+        _Gvn_before do __send__(args.first) end
       else
-        _gvn_before do
-          _rg_establish_givens
+        _Gvn_before do
+          _gvn_establish_givens
           instance_eval(&block)
         end
       end
@@ -212,30 +212,30 @@ module Given
     def Then(&block)
       env = block.binding
       file, line = eval "[__FILE__, __LINE__]", env
-      description = _rgc_lines.line(file, line) unless Given.source_caching_disabled
+      description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
       if description
         cmd = "it(description)"
       else
         cmd = "specify"
       end
-      eval %{#{cmd} do _rg_then(&block) end}, binding, file, line
-      _rgc_context_info[:then_defined] = true
+      eval %{#{cmd} do _gvn_then(&block) end}, binding, file, line
+      _Gvn_context_info[:then_defined] = true
     end
 
     # Establish an invariant that must be true for all Then blocks
     # in the current (and nested) scopes.
     def Invariant(&block)
-      _rgc_invariants << block
+      _Gvn_invariants << block
     end
 
     def And(&block)
-      fail "And defined without a Then" unless _rgc_context_info[:then_defined]
-      _rgc_and_blocks << block
+      fail "And defined without a Then" unless _Gvn_context_info[:then_defined]
+      _Gvn_and_blocks << block
     end
 
     def use_natural_assertions(enabled=true)
       Given.ok_to_use_natural_assertions(enabled)
-      _rgc_context_info[:natural_assertions_enabled] = enabled
+      _Gvn_context_info[:natural_assertions_enabled] = enabled
     end
   end
 end

@@ -6,7 +6,7 @@ require 'given/module_methods'
 
 # FIX: move to its own file.
 module BeforeHack
-  def _gvn_before(*args, &block)
+  def _Gvn_before(*args, &block)
     before(*args, &block)
   end
 end

@@ -14,20 +14,20 @@ unless defined?(RSpec::Given::MONKEY)
       module Expectations
         class PositiveExpectationHandler
           class << self
-            alias _rg_rspec_original_handle_matcher handle_matcher
+            alias _gvn_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
               ::Given.matcher_called = true
-              _rg_rspec_original_handle_matcher(actual, matcher, message, &block)
+              _gvn_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end
         end
 
         class NegativeExpectationHandler
           class << self
-            alias _rg_rspec_original_handle_matcher handle_matcher
+            alias _gvn_rspec_original_handle_matcher handle_matcher
             def handle_matcher(actual, matcher, message=nil, &block)
               ::Given.matcher_called = true
-              _rg_rspec_original_handle_matcher(actual, matcher, message, &block)
+              _gvn_rspec_original_handle_matcher(actual, matcher, message, &block)
             end
           end
         end

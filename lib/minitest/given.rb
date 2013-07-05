@@ -6,22 +6,22 @@ module Minitest
     alias original_setup_without_given setup
     def setup
       original_setup_without_given
-      _rg_establish_befores
+      _gvn_establish_befores
     end
-    def _rg_establish_befores
-      return if defined?(@_rg_ran_befores) && @_rg_ran_befores
-      @_rg_ran_befores = true
-      _rg_contexts.each do |context|
-        context._rgc_befores.each do |before_block|
+    def _gvn_establish_befores
+      return if defined?(@_gvn_ran_befores) && @_gvn_ran_befores
+      @_gvn_ran_befores = true
+      _gvn_contexts.each do |context|
+        context._Gvn_befores.each do |before_block|
           instance_eval(&before_block)
         end
       end
     end
-    def self._rgc_befores
-      @_rgc_befores ||= []
+    def self._Gvn_befores
+      @_Gvn_befores ||= []
     end
-    def self._gvn_before(&block)
-      _rgc_befores << block
+    def self._Gvn_before(&block)
+      _Gvn_befores << block
     end
   end
 end

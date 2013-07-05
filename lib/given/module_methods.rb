@@ -7,19 +7,19 @@ module Given
   NATURAL_ASSERTIONS_SUPPORTED = ! (JRUBY_IN_USE || RBX_IN_USE)
 
   def self.matcher_called
-    @_matcher_called
+    @_gvn_matcher_called
   end
 
   def self.matcher_called=(value)
-    @_matcher_called = value
+    @_gvn_matcher_called = value
   end
 
   def self.source_caching_disabled
-    @_rg_source_caching_disabled
+    @_gvn_source_caching_disabled
   end
 
   def self.source_caching_disabled=(value)
-    @_rg_source_caching_disabled = value
+    @_gvn_source_caching_disabled = value
   end
 
   # Detect the formatting requested in the given configuration object.

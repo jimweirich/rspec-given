@@ -5,20 +5,20 @@ describe "Configuration Options" do
 
   describe "inherited options" do
     context "Outer" do
-      _rgc_context_info[:name] = "Outer"
-      _rgc_context_info[:outer] = true
+      _Gvn_context_info[:name] = "Outer"
+      _Gvn_context_info[:outer] = true
 
-      Then { _rg_info(:name).should == "Outer" }
-      Then { _rg_info(:outer).should == true }
-      Then { _rg_info(:inner).should == nil }
+      Then { _gvn_info(:name).should == "Outer" }
+      Then { _gvn_info(:outer).should == true }
+      Then { _gvn_info(:inner).should == nil }
 
       context "Inner" do
-        _rgc_context_info[:name] = "Inner"
-        _rgc_context_info[:inner] = true
+        _Gvn_context_info[:name] = "Inner"
+        _Gvn_context_info[:inner] = true
 
-        Then { _rg_info(:name).should == "Inner" }
-        Then { _rg_info(:outer).should == true }
-        Then { _rg_info(:inner).should == true }
+        Then { _gvn_info(:name).should == "Inner" }
+        Then { _gvn_info(:outer).should == true }
+        Then { _gvn_info(:inner).should == true }
       end
     end
   end
@@ -43,21 +43,21 @@ describe "Configuration Options" do
     end
 
     context "with no explicit word on natural assertions" do
-      Then { _rg_need_na_message?(nassert).should be_false }
+      Then { _gvn_need_na_message?(nassert).should be_false }
 
       context "overridden locally" do
         use_natural_assertions_if_supported
-        Then { _rg_need_na_message?(nassert).should be_true }
+        Then { _gvn_need_na_message?(nassert).should be_true }
       end
     end
 
     context "with global configuration enabled" do
       When { Given.use_natural_assertions }
-      Then { _rg_need_na_message?(nassert).should be_true }
+      Then { _gvn_need_na_message?(nassert).should be_true }
 
       context "overridden locally" do
         use_natural_assertions false
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
 
       context "with rspec assertion" do
@@ -67,71 +67,71 @@ describe "Configuration Options" do
             # If RSpec was successfully patched to record matchers,
             # then the "need NA" logic will ignore possible matches in
             # the source code.
-            _rg_need_na_message?(nassert).should be_true
+            _gvn_need_na_message?(nassert).should be_true
           else
             # If RSpec was not successfully patched to record
             # matchers, then the "need NA" logic will check for
             # should/expect in the source.
-            _rg_need_na_message?(nassert).should be_false
+            _gvn_need_na_message?(nassert).should be_false
           end
         }
       end
 
       context "without rspec assertion" do
         Given(:rspec) { false }
-        Then { _rg_need_na_message?(nassert).should be_true }
+        Then { _gvn_need_na_message?(nassert).should be_true }
       end
 
       context "without rspec assertion and no content" do
         Given(:rspec) { false }
         Given(:content) { false }
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
     end
 
     context "with global configuration set to always" do
       When { Given.use_natural_assertions :always }
-      Then { _rg_need_na_message?(nassert).should be_true }
+      Then { _gvn_need_na_message?(nassert).should be_true }
 
       context "overridden locally" do
         use_natural_assertions false
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
 
       context "with rspec assertion" do
         Given(:rspec) { true }
-        Then { _rg_need_na_message?(nassert).should be_true }
+        Then { _gvn_need_na_message?(nassert).should be_true }
       end
 
       context "without rspec assertion" do
         Given(:rspec) { false }
-        Then { _rg_need_na_message?(nassert).should be_true }
+        Then { _gvn_need_na_message?(nassert).should be_true }
       end
 
       context "without rspec assertion and no content" do
         Given(:rspec) { false }
         Given(:content) { false }
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
     end
 
     context "with global configuration disabled" do
       When { Given.use_natural_assertions false }
-      Then { _rg_need_na_message?(nassert).should be_false }
+      Then { _gvn_need_na_message?(nassert).should be_false }
 
       context "overridden locally" do
         use_natural_assertions_if_supported(true)
-        Then { _rg_need_na_message?(nassert).should be_true }
+        Then { _gvn_need_na_message?(nassert).should be_true }
       end
 
       context "with rspec assertion" do
         Given(:rspec) { true }
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
 
       context "without rspec assertion" do
         Given(:rspec) { false }
-        Then { _rg_need_na_message?(nassert).should be_false }
+        Then { _gvn_need_na_message?(nassert).should be_false }
       end
     end
 

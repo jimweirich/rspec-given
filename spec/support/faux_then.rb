@@ -37,7 +37,7 @@ module Faux
 
     def na
       block = self.class.the_block
-      Given::NaturalAssertion.new("FauxThen", block, self, self.class._rgc_lines)
+      Given::NaturalAssertion.new("FauxThen", block, self, self.class._Gvn_lines)
     end
 
     def ev
