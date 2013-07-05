@@ -181,7 +181,7 @@ module Given
     #
     def When(*args, &block)
       if args.first.is_a?(Symbol)
-        let!(args.first) do
+        let(args.first) do
           begin
             _rg_establish_givens
             instance_eval(&block)
@@ -191,8 +191,9 @@ module Given
             Failure.new(ex)
           end
         end
+        _gvn_before do __send__(args.first) end
       else
-        before do
+        _gvn_before do
           _rg_establish_givens
           instance_eval(&block)
         end

@@ -16,9 +16,9 @@ module GivenAssertions
     actual.wont_match(pattern)
   end
 
-  def given_assert_raises(error, pattern=nil, &block)
+  def given_assert_raises(error, pattern=//, &block)
     ex = assert_raises(error, &block)
-    ex.message.must_match(pattern) if pattern
+    ex.message.must_match(pattern)
   end
 end
 
@@ -34,14 +34,5 @@ module NaturalAssertionControl
   end
 end
 
-module LetBang
-  def let!(name, &block)
-    let(name, &block)
-    # FIX: This is inadequate if more than one before block is defined.
-    before { __send__(name) }
-  end
-end
-
 Minitest::Spec.send(:include, GivenAssertions)
-Minitest::Spec.send(:extend, LetBang)
 include NaturalAssertionControl

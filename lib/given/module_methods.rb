@@ -60,8 +60,11 @@ module Given
   # Everywhere else in rspec-given should be calling this function.
   def self.fail_with(*args)
     # FIX: for multi-framework
-    ::RSpec::Expectations.fail_with(*args)
-    # raise Minitest::Assertion, args.join(" ")
+    if defined?(::RSpec::Expectations)
+      ::RSpec::Expectations.fail_with(*args)
+    else
+      raise Minitest::Assertion, args.join(" ")
+    end
   end
 
   # Error object used by RSpec to indicate a pending example.

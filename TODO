@@ -1,8 +1,13 @@
 Things to do to improve the minitest integration
 
+TODO:
+
 * General cleanup making sure files go where they need.
-* Move stuff out of minitest_helper to appropriate file.
-* Figure out why the minitest example count is so low.
 * Implement assertion counting for minitest
 * Make a separate gem for minitest (do we need one for given-core?)
 * Handle have_failed in minitest
+
+DONE:
+
+* Figure out why the minitest example count is so low.
+* Move stuff out of minitest_helper to appropriate file.

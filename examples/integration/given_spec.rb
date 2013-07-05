@@ -17,6 +17,14 @@ describe "Running Givens before Whens" do
         When { info << "when2" }
         Then { given_assert_equal ["outer1", "outer2", "inner1", "inner2", "when", "when2"], info}
       end
+
+      context "using two nested When" do
+        When { info << "when2a" }
+        When { info << "when2b" }
+        Then {
+          given_assert_equal ["outer1", "outer2", "inner1", "inner2", "when", "when2a", "when2b"], info
+        }
+      end
     end
   end
 
