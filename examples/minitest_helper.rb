@@ -15,6 +15,11 @@ module GivenAssertions
   def given_assert_not_match(pattern, actual)
     actual.wont_match(pattern)
   end
+
+  def given_assert_raises(error, pattern=nil, &block)
+    ex = assert_raises(error, &block)
+    ex.message.must_match(pattern) if pattern
+  end
 end
 
 module NaturalAssertionControl

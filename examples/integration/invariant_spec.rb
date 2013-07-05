@@ -1,23 +1,23 @@
-require 'rspec/given'
+require 'example_helper'
 
 describe "Invariants" do
   Given(:info) { [] }
 
   Invariant { info << "I1" }
 
-  Then { info.should == ["I1"] }
+  Then { given_assert_equal ["I1"], info }
 
   context "with nested invariants" do
     Invariant { info << "I2" }
 
-    Then { info.should == ["I1", "I2"] }
+    Then { given_assert_equal ["I1", "I2"], info }
   end
 
   context "with multiple invariants" do
     Invariant { info << "I2a" }
     Invariant { info << "I2b" }
 
-    Then { info.should == ["I1", "I2a", "I2b"] }
+    Then { given_assert_equal ["I1", "I2a", "I2b"], info }
   end
 
   context "with a when" do
@@ -25,7 +25,7 @@ describe "Invariants" do
 
     When(:when_info) { info.dup }
 
-    Then { info.should == ["I1", "I2"] }
-    Then { when_info.should == [] }
+    Then { given_assert_equal ["I1", "I2"], info }
+    Then { given_assert_equal [], when_info }
   end
 end

@@ -1,4 +1,4 @@
-require 'rspec-given'
+require 'example_helper'
 
 describe "Running Givens before Whens" do
   Given(:info) { [] }
@@ -11,11 +11,11 @@ describe "Running Givens before Whens" do
     context "inner with When" do
       Given { info << "inner1" }
       Given { info << "inner2" }
-      Then { info.should == ["outer1", "outer2", "inner1", "inner2", "when"] }
+      Then { given_assert_equal ["outer1", "outer2", "inner1", "inner2", "when"], info }
 
       context "using a nested When" do
         When { info << "when2" }
-        Then { info.should == ["outer1", "outer2", "inner1", "inner2", "when", "when2"] }
+        Then { given_assert_equal ["outer1", "outer2", "inner1", "inner2", "when", "when2"], info}
       end
     end
   end
@@ -26,27 +26,29 @@ describe "Running Givens before Whens" do
     context "inner with when" do
       Given { info << "inner1" }
       Given { info << "inner2" }
-      Then { info.should == ["outer1", "outer2", "inner1", "inner2", "when"] }
+      Then { given_assert_equal ["outer1", "outer2", "inner1", "inner2", "when"], info }
     end
   end
 
   context "using no whens" do
     Given { info << "inner1" }
     Given { info << "inner2" }
-    Then { info.should == ["outer1", "outer2", "inner1", "inner2"] }
+    Then { given_assert_equal ["outer1", "outer2", "inner1", "inner2"], info }
   end
 end
 
 describe "Lazy Givens" do
-  Given(:bomb) { fail "SHOULD NEVER BE CALLED" }
+  Given(:bomb) { fail StandardError, "SHOULD NEVER BE CALLED" }
 
   context "when called" do
-    Then { lambda { bomb }.should raise_error(StandardError, /NEVER/) }
+    Then {
+      given_assert_raises(StandardError, /NEVER/) { bomb }
+    }
   end
 
   context "when not called" do
     Given(:value) { :ok }
-    Then { value.should == :ok }
+    Then { given_assert_equal :ok, value }
   end
 end
 
@@ -57,7 +59,7 @@ describe "Non-Lazy Givens" do
 
   context "inner" do
     Given!(:a) { info << :given; "A VALUE" }
-    Then { info.should == [:given, :when] }
+    Then { given_assert_equal [:given, :when], info }
   end
 
 end

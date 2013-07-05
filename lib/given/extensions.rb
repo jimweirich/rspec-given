@@ -1,5 +1,6 @@
 require 'given/module_methods'
 require 'given/natural_assertion'
+require 'given/failure'
 
 module Given
 

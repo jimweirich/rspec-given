@@ -22,3 +22,7 @@ end
 def given_assert_not_match(pattern, actual)
   actual.should_not =~ pattern
 end
+
+def given_assert_raises(error, pattern=nil, &block)
+  block.should raise_error(error, pattern)
+end

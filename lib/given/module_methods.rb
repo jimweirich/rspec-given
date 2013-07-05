@@ -67,6 +67,12 @@ module Given
   # Error object used by RSpec to indicate a pending example.
   def self.pending_error
     # FIX: for multi-framework
-    RSpec::Core::Pending::PendingDeclaredInExample
+    if defined?(RSpec::Core::Pending::PendingDeclaredInExample)
+      RSpec::Core::Pending::PendingDeclaredInExample
+    elsif defined?(Minitest::Skip)
+      Minitest::Skip
+    else
+      :unknown_pending_error
+    end
   end
 end
