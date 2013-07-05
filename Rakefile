@@ -65,6 +65,12 @@ end
 
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 
+desc "Run the RSpec specs and examples"
+task :rs => [:specs, :rs_examples]
+
+desc "Run the Minitest tests and examples"
+task :mt => [:specs, :mt_examples]
+
 desc "Run the examples in RSpec 2"
 task :rs_examples => [:verify_rspec2] do
   puts "Running examples (with RSpec2)"
