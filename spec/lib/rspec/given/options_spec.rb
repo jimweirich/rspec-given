@@ -36,7 +36,7 @@ describe "Configuration Options" do
 
     Given(:rspec) { false }
     Given(:content) { true }
-    Given(:nassert) { stub(:using_rspec_assertion? => rspec, :has_content? => content) }
+    Given(:nassert) { double(:using_rspec_assertion? => rspec, :has_content? => content) }
 
     after do
       RSpec::Given.use_natural_assertions false

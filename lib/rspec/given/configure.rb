@@ -10,7 +10,11 @@ RSpec.configure do |c|
   c.include(RSpec::Given::HaveFailed)
   c.include(RSpec::Given::Fuzzy)
 
-  c.backtrace_clean_patterns << /lib\/rspec\/given/
+  if c.respond_to?(:backtrace_exclusion_patterns)
+    c.backtrace_exclusion_patterns << /lib\/rspec\/given/
+  else
+    c.backtrace_clean_patterns << /lib\/rspec\/given/
+  end
 
   RSpec::Given.detect_formatters(c)
 end

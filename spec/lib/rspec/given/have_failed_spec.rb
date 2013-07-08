@@ -35,7 +35,6 @@ describe "#have_failed" do
 
   context "with a different failure" do
     When(:result) { fail CustomError, "Ouch" }
-    Then { result.should_not have_failed(DifferentError) }
     Then { expect { result.should have_failed(DifferentError) }.to raise_error(ExpectationError) }
   end
 

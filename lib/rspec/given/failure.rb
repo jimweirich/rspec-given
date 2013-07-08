@@ -34,6 +34,10 @@ module RSpec
         die
       end
 
+      def respond_to?(method_name)
+        method_name == :call
+      end
+
       private
 
       def die

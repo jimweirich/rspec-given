@@ -5,7 +5,7 @@ describe "RSpec::Given.use_natural_assertions" do
     When(:result) { RSpec::Given.use_natural_assertions }
 
     if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
-      Then { result.should_not have_failed(ArgumentError) }
+      Then { result.should_not have_failed }
     else
       Then { result.should have_failed(ArgumentError) }
     end
