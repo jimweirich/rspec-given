@@ -423,7 +423,7 @@ analsysis of the expression that failed.
 For example, given the following failing specification:
 
 ```ruby
-  RSpec::Given.use_natural_assertions
+  Given.use_natural_assertions
 
   describe "Natural Assertions" do
     Given(:foo) { 1 }
@@ -662,11 +662,11 @@ natural assertions, add one of the following lines to your spec_helper
 file:
 
 ```ruby
-    RSpec::Given.use_natural_assertions         # Enable natural assertions
-    RSpec::Given.use_natural_assertions true    # Same as above
-    RSpec::Given.use_natural_assertions false   # Disable natural assertions
-    RSpec::Given.use_natural_assertions :always # Always process natural assertions
-                                                # ... even when should/expect are detected
+    Given.use_natural_assertions         # Enable natural assertions
+    Given.use_natural_assertions true    # Same as above
+    Given.use_natural_assertions false   # Disable natural assertions
+    Given.use_natural_assertions :always # Always process natural assertions
+                                         # ... even when should/expect are detected
 ```
 
 # License
@@ -679,6 +679,9 @@ file in the source distribution.
 * Version 3.0.0
 
   * Support for minitest added.
+
+  * Gems rspec-given and minitest-given both use the core
+    functionality of gem given_core.
 
 * Version 2.4.4
 
