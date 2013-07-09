@@ -195,7 +195,7 @@ describe "use_natural_assertions" do
 
     When(:result) { CONTEXT.use_natural_assertions }
 
-    if RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+    if ::Given::NATURAL_ASSERTIONS_SUPPORTED
       Then { result.should_not have_failed }
     else
       Then { result.should have_failed(ArgumentError) }

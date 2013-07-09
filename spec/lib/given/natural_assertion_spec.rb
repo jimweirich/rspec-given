@@ -166,7 +166,7 @@ describe Given::NaturalAssertion do
     context "with no statements" do
       FauxThen {  }
       When(:result) { na.message }
-      Then { result.should_not have_failed(Given::InvalidThenError) }
+      Then { result.should_not have_failed }
     end
 
     context "with multiple statements" do

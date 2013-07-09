@@ -34,6 +34,13 @@ module Given
       die
     end
 
+    def respond_to?(method_symbol)
+      method_symbol == :call ||
+        method_symbol == :== ||
+        method_symbol == :!= ||
+        method_symbol == :is_a?
+    end
+
     private
 
     def die
