@@ -15,7 +15,7 @@ module Given
     end
 
     def ==(other)
-      if failed_matcher?(other)
+      if failure_matcher?(other)
         other.matches?(self)
       else
         die
@@ -23,8 +23,8 @@ module Given
     end
 
     def !=(other)
-      if failed_matcher?(other)
-        ! other.matches?(self)
+      if failure_matcher?(other)
+        other.does_not_match?(self)
       else
         die
       end
@@ -47,9 +47,9 @@ module Given
       ::Kernel.raise @exception
     end
 
-    def failed_matcher?(other)
-      # FIX: for multi-framework
-      other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+    def failure_matcher?(other)
+      other.is_a?(::Given::FailureMatcher) ||
+        other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
     end
 
   end

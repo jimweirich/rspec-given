@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-describe "#have_failed" do
+module HaveFailedSpec
   CustomError = Class.new(StandardError)
   DifferentError = Class.new(StandardError)
   ExpectationError = RSpec::Expectations::ExpectationNotMetError
 
+  describe "#have_failed" do
   context "with a failure" do
     When(:result) { fail CustomError, "Ouch" }
 
@@ -40,7 +41,7 @@ describe "#have_failed" do
 
   context "with a pending exception" do
     When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending in example ... please ignore" }
-    Then { RSpec::Given.fail_with "This example should have been pending" }
+    Then { Given.fail_with "This example should have been pending" }
   end
 
   context "with a non-failure" do
@@ -55,15 +56,15 @@ describe "#have_failed" do
     context "with failure" do
       When(:result) { fail CustomError, "Ouch" }
       Then { result == have_failed(CustomError, "Ouch") }
-      Then { ! (result != have_failed(CustomError, "Ouch")) }
+      Then { ! (result != have_failed) }
       Then { expect { result == :something }.to raise_error(CustomError, "Ouch") }
     end
 
     context "with different failure" do
       When(:result) { fail DifferentError, "Ouch" }
       Then { ! (result == have_failed(CustomError, "Ouch")) }
-      Then { result != have_failed(CustomError, "Ouch") }
     end
 
   end
+end
 end

@@ -12,6 +12,7 @@ RSpec.configure do |c|
   c.extend(Given::ClassExtensions)
   c.include(Given::InstanceExtensions)
   c.include(Given::Fuzzy)
+  c.include(Given::FailureMethod)
   c.extend(BeforeHack)
   c.include(RSpec::Given::HaveFailed)
 

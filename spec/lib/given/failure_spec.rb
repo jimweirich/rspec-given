@@ -2,16 +2,48 @@ require 'spec_helper'
 require 'given/failure'
 
 describe Given::Failure do
+  OtherError = Class.new(StandardError)
+
   Given(:exception) { StandardError.new("Oops") }
   Given(:failure) { Given::Failure.new(exception) }
 
-  Then { lambda { failure.to_s }.should raise_error(StandardError, "Oops") }
-  Then { lambda { failure.call }.should raise_error(StandardError, "Oops") }
-  Then { lambda { failure.nil? }.should raise_error(StandardError, "Oops") }
-  Then { lambda { failure == 0 }.should raise_error(StandardError, "Oops") }
-  Then { lambda { failure != 0 }.should raise_error(StandardError, "Oops") }
-  Then { lambda { failure =~ 0 }.should raise_error(StandardError, "Oops") }
-  Then { lambda { ! failure }.should raise_error(StandardError, "Oops") }
-
   Then { failure.is_a?(Given::Failure).should be_true }
+
+  describe "general operations" do
+    Then { expect { failure.to_s }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure.call }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure.nil? }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure == 0 }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure != 0 }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure =~ 0 }.to raise_error(StandardError, "Oops") }
+    Then { expect { ! failure }.to raise_error(StandardError, "Oops") }
+  end
+
+  describe "should raise error" do
+    Then { failure.should raise_error(StandardError, "Oops") }
+    Then { failure.should raise_error(StandardError) }
+    Then { failure.should raise_error }
+  end
+
+  describe "== have_failed" do
+    Then { failure == have_failed(StandardError, "Oops") }
+    Then { failure == have_failed(StandardError) }
+    Then { failure == have_failed }
+  end
+
+  describe "!= have_failed" do
+    Then { failure != have_failed() }
+  end
+
+  describe "== Failure" do
+    Then { failure == Failure(StandardError, "Oops") }
+    Then { failure == Failure(StandardError) }
+    Then { failure == Failure() }
+  end
+
+  describe "!= Failure" do
+    Then { expect { failure != Object.new }.to raise_error(StandardError) }
+    Then { failure != Failure() }
+  end
+
 end

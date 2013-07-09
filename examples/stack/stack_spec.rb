@@ -25,6 +25,7 @@ describe Stack do
       When(:result) { stack.pop }
 # FIX: for multi-platform
 #      Then { result.should have_failed(Stack::UnderflowError, /empty/) }
+      Then { result == Failure(Stack::UnderflowError, /empty/) }
     end
   end
 
