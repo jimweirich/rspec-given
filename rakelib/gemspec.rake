@@ -16,18 +16,21 @@ else
   ]
   PKG_FILES.exclude('TAGS')
   GIVEN_CORE_FILES = FileList[*PKG_FILES].
-    exclude("lib/minitest/**/*").
     exclude("lib/given/minispec/**/*").
     exclude("lib/given/rspec/**/*").
+    exclude("lib/*-given.rb").
     exclude("lib/rspec/**/*").
+    exclude("lib/mini*/**/*").
     exclude("spec/**/*").
     exclude("examples/**/*")
   RSPEC_GIVEN_FILES = FileList[*PKG_FILES].
-    exclude("lib/minitest/**/*").
+    exclude("lib/mini*/**/*").
+    exclude("lib/mini*-given.rb").
     exclude("lib/given/**/*")
   MINISPEC_GIVEN_FILES = FileList[*PKG_FILES].
     exclude("spec/**/*").
-    exclude("lib/rspec/**/*").
+    exclude("lib/rspec-given.rb").
+    exclude("lib/rspec*/**/*").
     exclude("lib/given/**/*")
 
   RSPEC_GIVEN_SPEC = Gem::Specification.new do |s|
