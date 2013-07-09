@@ -1,9 +1,9 @@
 
 # The implementation of RaiseError changed between RSpec 2.11 and 2.12.
 if RSpec::Matchers::BuiltIn::RaiseError.instance_methods.include?(:does_not_match?)
-  require 'rspec/given/have_failed_212.rb'
+  require 'given/rspec/have_failed_212.rb'
 else
-  require 'rspec/given/have_failed_pre212.rb'
+  require 'given/rspec/have_failed_pre212.rb'
 end
 
 module RSpec
