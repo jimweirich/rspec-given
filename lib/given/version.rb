@@ -5,7 +5,7 @@ module Given
     VERSION_MINOR = 0,
     VERSION_BUILD = 0,
     BETA = 'beta',
-    BETA_NUMBER = 1,
+    BETA_NUMBER = 2,
   ]
   VERSION = VERSION_NUMBERS.join(".")
 end
