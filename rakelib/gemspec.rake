@@ -16,8 +16,6 @@ else
   ]
   PKG_FILES.exclude('TAGS')
   GIVEN_CORE_FILES = FileList[*PKG_FILES].
-    exclude("lib/given/minispec/**/*").
-    exclude("lib/given/rspec/**/*").
     exclude("lib/*-given.rb").
     exclude("lib/rspec/**/*").
     exclude("lib/mini*/**/*").
