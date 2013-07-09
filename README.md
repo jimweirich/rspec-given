@@ -44,7 +44,8 @@ things to watch out for:
 * Minitest/Given adds the missing "context" block to Minitest::Spec.
 
 * Only one before block is allowed in any given Minitest::Spec
-  describe block.
+  describe block. This doesn't effect the number of Givens you are
+  allowed to use, but it may surprise if you are use to RSpec.
 
 ## Example
 

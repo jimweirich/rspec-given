@@ -14,6 +14,7 @@ end
 require 'rspec/given/have_failed'
 require 'rspec/given/before_extensions'
 require 'rspec/given/framework'
+require 'rspec/given/use_natural_assertions'
 require 'rspec/given/configure'
 
 module Given
