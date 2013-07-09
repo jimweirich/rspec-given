@@ -80,7 +80,6 @@ end
 desc "Run the examples in Minitest"
 task :mt_examples do
   puts "Running examples (with Minitest)"
-  ENV['FRAMEWORK'] = 'Minitest'
   sh "ruby -Ilib:examples examples/loader.rb #{EXAMPLES}"
 end
 
