@@ -121,7 +121,7 @@ task :readme => ["README.md"] do
 end
 
 desc "Generate an RDoc README"
-file "README.md" => ["examples/stack/stack_spec.rb", "lib/rspec/given/version.rb"] do
+file "README.md" => ["examples/stack/stack_spec.rb", "lib/given/version.rb"] do
   open("README.md") do |ins|
     open("README.tmp", "w") do |outs|
       state = :copy

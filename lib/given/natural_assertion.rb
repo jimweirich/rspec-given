@@ -21,10 +21,6 @@ module Given
 
     VOID_SEXP = [:void_stmt]
 
-    def using_rspec_assertion?
-      using_should? || using_expect?
-    end
-
     def has_content?
       assertion_sexp != VOID_SEXP
     end
@@ -39,14 +35,6 @@ module Given
     end
 
     private
-
-    def using_should?
-      source =~ /\.\s*should(_not)?\b/
-    end
-
-    def using_expect?
-      source =~ /\bexpect\s*[({].*[)}]\s*\.\s*(not_)?to\b/
-    end
 
     BINARY_EXPLAINATIONS = {
       :== => "to equal",

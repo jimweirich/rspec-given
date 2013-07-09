@@ -38,17 +38,12 @@ module Given
     # Should a natural assertion failure message be generated?
     #
     # A natural assertion failure message is generated if the
-    # assertion has non-empty content that doesn't use the framework's
-    # assertions. The configuration options for natural assertions are
-    # checked and applied accordingly.
+    # assertion has non-empty content. The configuration options for
+    # natural assertions are checked and applied accordingly.
     #
     def _gvn_need_na_message?(nassert) # :nodoc:
       return false unless nassert.has_content?
-      use_na = _gvn_na_configured?
-      return true if use_na == :always
-      # FIX: to make multi-framework
-      # return false if !RSpec::Given::MONKEY && nassert.using_rspec_assertion?
-      use_na
+      _gvn_na_configured?
     end
 
     # Return the configuration value for natural assertions.

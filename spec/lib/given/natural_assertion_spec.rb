@@ -17,38 +17,6 @@ describe Given::NaturalAssertion do
     end
   end
 
-  describe "detecting RSpec Assertions" do
-    context "with should" do
-      FauxThen { a.should == 1 }
-      Then { na.should be_using_rspec_assertion }
-    end
-
-    context "with should_not" do
-      FauxThen { a.should_not == 1 }
-      Then { na.should be_using_rspec_assertion }
-    end
-
-    context "with expect/to" do
-      FauxThen { expect(a).to eq(1) }
-      Then { na.should be_using_rspec_assertion }
-    end
-
-    context "with expect/not_to" do
-      FauxThen { expect(a).not_to eq(1) }
-      Then { na.should be_using_rspec_assertion }
-    end
-
-    context "with expect and block" do
-      FauxThen { expect { a }.to eq(1) }
-      Then { na.should be_using_rspec_assertion }
-    end
-
-    context "with natural assertion" do
-      FauxThen { a == 1 }
-      Then { na.should_not be_using_rspec_assertion }
-    end
-  end
-
   describe "failure messages" do
     let(:msg) { na.message }
     Invariant { msg.should =~ /^FauxThen expression/ }

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'rspec'
-gem 'minitest', '~> 5.0'
+gem 'rspec',    '>= 2.12'
+gem 'minitest', '>= 4.3'
 gem 'sorcerer', '>= 0.3.7'
 gem 'flexmock'

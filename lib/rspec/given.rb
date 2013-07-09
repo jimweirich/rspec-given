@@ -8,6 +8,7 @@ end
 
 if Given::NATURAL_ASSERTIONS_SUPPORTED
   require 'rspec/given/monkey'
+  raise "Unsupported version of RSpec (unable to detect assertions)" unless RSpec::Given::MONKEY
 end
 
 require 'rspec/given/have_failed'
