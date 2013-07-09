@@ -68,8 +68,5 @@ module Given
       HaveFailedMatcher.new(error, message, &block)
     end
     alias have_raised have_failed
-
-    def failure(error=Exception, message=nil, &block)
-    end
   end
 end
