@@ -49,7 +49,7 @@ module Given
 
     def failed_matcher?(other)
       # FIX: for multi-framework
-      other.is_a?(::Given::HaveFailed::HaveFailedMatcher)
+      other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
     end
 
   end

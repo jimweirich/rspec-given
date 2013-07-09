@@ -1,8 +1,5 @@
 require 'rspec'
-require 'given/extensions'
-require 'given/fuzzy_number'
-require 'given/have_failed'
-require 'given/module_methods'
+require 'rspec/given'
 
 # FIX: move to its own file.
 module BeforeHack
@@ -14,9 +11,9 @@ end
 RSpec.configure do |c|
   c.extend(Given::ClassExtensions)
   c.include(Given::InstanceExtensions)
-  c.include(Given::HaveFailed)
   c.include(Given::Fuzzy)
   c.extend(BeforeHack)
+  c.include(RSpec::Given::HaveFailed)
 
   if c.respond_to?(:backtrace_exclusion_patterns)
     c.backtrace_exclusion_patterns << /lib\/rspec\/given/
