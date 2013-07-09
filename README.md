@@ -4,23 +4,47 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, version 3.0.0.beta.1.
+Covering rspec-given, minitest-given, and given-core, version 3.0.0.beta.1.
 
-rspec-given is an RSpec extension to allow Given/When/Then notation in
-RSpec specifications.  It is a natural extension of the experimental
-work done on the Given framework.
+rspec-given and minitest-given are extensions to your favorite testing
+framework to allow Given/When/Then notation when writing specs.
 
 # Why Given/When/Then
 
 RSpec has done a great job of making specifications more readable for
-humans.  However, I really like the given / when / then nature of
-Cucumber stories and would like to follow the same structure in my
-unit tests.  rspec-given allows a simple given/when/then structure
-RSpec specifications.
+humans. However, I really like the given/when/then nature of Cucumber
+stories and would like to follow the same structure in my unit tests.
+rspec-given (and now minitest-given) allows a simple given/when/then
+structure RSpec specifications.
 
 ## Status
 
-rspec-given is ready for production use.
+* rspec-given is ready for production use.
+* minitest-given is experimental.
+
+### RSpec/Given
+
+The rspec-given gem is the original given/when/then extension for
+RSpec. It now depends on a given_core gem for the basic functionality
+and then adds the RSpec specific code.
+
+* rspec-given now require RSpec version 2.12 or better.
+
+### Minitest/Given
+
+A new minitest-given gem allows Given/When/Then notation directly in
+Minitest::Spec specifications.
+
+When switching from RSpec/Given to Minitest/Given, here are some
+things to watch out for:
+
+* You need to use Minitest version 4.3 or better (yes, Minitest 5.x
+  should work as well).
+
+* Minitest/Given adds the missing "context" block to Minitest::Spec.
+
+* Only one before block is allowed in any given Minitest::Spec
+  describe block.
 
 ## Example
 
@@ -650,6 +674,19 @@ RSpec-Given is available under the MIT License.  See the MIT-LICENSE
 file in the source distribution.
 
 # History
+
+* Version 3.0.0
+
+  * Support for minitest added.
+
+* Version 2.4.4
+
+  * Support for RSpec 2.13 added.
+
+* Version 2.4.3
+
+  * Better natural assertion messages when dealing with multi-line
+    output.
 
 * Version 2.4.2
 

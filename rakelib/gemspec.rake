@@ -24,6 +24,7 @@ else
     exclude("lib/minitest/**/*").
     exclude("lib/given/**/*")
   MINITEST_GIVEN_FILES = FileList[*PKG_FILES].
+    exclude("spec/**/*").
     exclude("lib/rspec/**/*").
     exclude("lib/given/**/*")
 
@@ -43,7 +44,7 @@ EOF
       '--title', 'RSpec Given Extensions'
     ]
 
-    s.add_dependency("given-core", "= #{Given::VERSION}")
+    s.add_dependency("given_core", "= #{Given::VERSION}")
     s.add_dependency("rspec", ">= 2.12")
 
     s.required_ruby_version = '>= 1.9.2'
@@ -71,7 +72,7 @@ EOF
       '--title', 'Minitest Given Extensions'
     ]
 
-    s.add_dependency("given-core", "= #{Given::VERSION}")
+    s.add_dependency("given_core", "= #{Given::VERSION}")
     s.add_dependency("minitest", "> 4.3")
 
     s.required_ruby_version = '>= 1.9.2'
@@ -84,7 +85,7 @@ EOF
   end
 
   GIVEN_CORE_SPEC = Gem::Specification.new do |s|
-    s.name = 'given-core'
+    s.name = 'given_core'
     s.version = Given::VERSION
     s.summary = "Core engine for RSpec::Given and Minitest::Given."
     s.description = <<EOF
@@ -135,13 +136,13 @@ EOF
     open(t.name, "w") { |f| f.puts MINITEST_GIVEN_SPEC.to_yaml }
   end
 
-  file "given-core.gemspec" => ["rakelib/gemspec.rake"] do |t|
+  file "given_core.gemspec" => ["rakelib/gemspec.rake"] do |t|
     require 'yaml'
     open(t.name, "w") { |f| f.puts GIVEN_CORE_SPEC.to_yaml }
   end
 
   desc "Create a stand-alone gemspec"
-  task :gemspec => ["rspec-given.gemspec", "minitest-given.gemspec", "given-core.gemspec"]
+  task :gemspec => ["rspec-given.gemspec", "minitest-given.gemspec", "given_core.gemspec"]
 
   desc "Check Filelists"
   task :filelists do
