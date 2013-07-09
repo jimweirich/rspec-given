@@ -4,8 +4,6 @@ require 'given/evaluator'
 if Given::NATURAL_ASSERTIONS_SUPPORTED
   require 'ripper'
   require 'sorcerer'
-  # FIX: Move this to an rspec specific area
-  #  require 'rspec/given/monkey'
 end
 
 module Given

@@ -101,7 +101,6 @@ module Given
 
     # Evaluate a Then, And, or Invariant assertion.
     def _gvn_evaluate(clause_type, block)   # :nodoc:
-      # FIX: to make multi-framework
       Given.framework.start_evaluation
       passed = instance_eval(&block)
       if ! Given.framework.explicit_assertions? && _gvn_na_configured?

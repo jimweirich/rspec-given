@@ -59,23 +59,11 @@ module Given
   # This should be the only place we reference the RSpec function.
   # Everywhere else in rspec-given should be calling this function.
   def self.fail_with(*args)
-    # FIX: for multi-framework
-    if defined?(::RSpec::Expectations)
-      ::RSpec::Expectations.fail_with(*args)
-    else
-      raise Minitest::Assertion, args.join(" ")
-    end
+    Given.framework.fail_with(*args)
   end
 
   # Error object used by RSpec to indicate a pending example.
   def self.pending_error
-    # FIX: for multi-framework
-    if defined?(RSpec::Core::Pending::PendingDeclaredInExample)
-      RSpec::Core::Pending::PendingDeclaredInExample
-    elsif defined?(Minitest::Skip)
-      Minitest::Skip
-    else
-      :unknown_pending_error
-    end
+    Given.framework.pending_error
   end
 end

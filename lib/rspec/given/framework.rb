@@ -19,6 +19,14 @@ module RSpec
       def explicitly_asserted
         @matcher_called = true
       end
+
+      def fail_with(*args)
+        ::RSpec::Expectations.fail_with(*args)
+      end
+
+      def pending_error
+        RSpec::Core::Pending::PendingDeclaredInExample
+      end
     end
   end
 end

@@ -17,6 +17,14 @@ module Minitest
         example.assertions += 1
       end
 
+      def fail_with(*args)
+        raise Minitest::Assertion, args.join(" ")
+      end
+
+      def pending_error
+        Minitest::Skip
+      end
+
       private
 
       def example

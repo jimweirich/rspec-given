@@ -6,8 +6,12 @@ module RSpec
   end
 end
 
-require 'rspec/given/monkey'
+if Given::NATURAL_ASSERTIONS_SUPPORTED
+  require 'rspec/given/monkey'
+end
+
 require 'rspec/given/have_failed'
+require 'rspec/given/before_extensions'
 require 'rspec/given/framework'
 require 'rspec/given/configure'
 
