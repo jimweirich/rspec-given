@@ -77,6 +77,34 @@ See
 and
 [example_helper.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/example_helper.rb)
 
+## Installation
+
+### If you are using bundler
+
+Add `rspec-given` to the `:test` group in the `Gemfile`:
+
+```ruby
+group :test do
+  gem 'rspec-given'
+end
+```
+
+Download and install:
+
+`$ bundle`
+
+Then just require `rspec/given` in the `spec_helper` of your project and it is
+ready to go.
+
+### If you are not using bundler
+
+Install the gem:
+
+`$ gem install rspec-given`
+
+Then just require `rspec/given` in the `spec_helper` of your project and it is
+ready to go.
+
 ## Example
 
 Here is a specification written in the rspec-given framework:
@@ -714,9 +742,6 @@ Chaffee](http://rubygems.org/profiles/alexch) and [Steve
 Conover](http://rubygems.org/profiles/sconoversf).
 
 ## Configuration
-
-Just require 'rspec/given' in the spec helper of your project and it
-is ready to go.
 
 If the RSpec format option document, html or textmate is chosen,
 RSpec/Given will automatically add additional source code information to
