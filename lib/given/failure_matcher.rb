@@ -10,7 +10,7 @@ module Given
         @no_pattern = true
       elsif @expected_message_pattern.is_a?(String)
         @expected_message_pattern =
-          Regexp.new("\\A" + Regexp.quote(@expected_message_pattern) + "\\Z")
+          Regexp.new("\\A" + Regexp.quote(@expected_message_pattern) + "\\z")
       end
     end
 
@@ -44,8 +44,6 @@ module Given
         true
       end
     end
-
-    private
 
     def description
       result = "Expected failure with #{@expected_exception_class}"
