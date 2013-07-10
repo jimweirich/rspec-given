@@ -86,8 +86,6 @@ require 'rspec/given'
 require 'spec_helper'
 require 'stack'
 
-Given.use_natural_assertions
-
 describe Stack do
   def stack_with(initial_contents)
     stack = Stack.new
@@ -422,29 +420,56 @@ clauses and _before_ blocks.
 
 ## Natural Assertions
 
-**NOTE:** <em>Natural assertions are currently an experimental feature
-of RSpec/Given. They are currently disabled by default, but can be
-enabled by a simple configuration option (see "use_natural_assertions"
-below).</em>
-
 RSpec/Given now supports the use of "natural assertions" in _Then_,
 _And_, and _Invariant_ blocks. Natural assertions are just Ruby
 conditionals, without the _should_ or _expect_ methods that RSpec
-provides. Here are the Then/And examples from above, but written using
-natural assertions:
+provides. Here are the Then/And examples showing natural assertions:
+
+### Using Natural Assertions
 
 ```ruby
-  Then { pop_result == :top_item }
-  And  { stack.top == :second_item }
-  And  { stack.depth == original_depth - 1 }
+  Then { stack.top == :second_item }
+  Then { stack.depth == original_depth - 1 }
+  Then { result == Failure(Stack::UnderflowError, /empty/) }
 ```
 
-Natural assertions must be enabled, either globally or on a per
-context basis, to be recognized.
+### Using RSpec expect().to
 
-Here's a heads up: If you use natural assertions, but fail to enable
-them, all your specs will mysteriously pass. This is why the **red**
-part of _Red/Green/Refactor_ is so important.
+```ruby
+  Then { expect(stack.top).to eq(:second_item) }
+  Then { expect(stack.depth).to eq(original_depth - 1) }
+  Then { expect(result).to have_failed(Stack::UnderflowError, /empty/) }
+```
+
+### Using Minitest asserts
+
+```ruby
+  Then { assert_equal :second_item, stack.top }
+  Then { assert_equal original_depth - 1, stack.depth }
+  Then {
+    assert_raises(Stack::UnderflowError, /empty/) do
+      result.call()
+    end
+  }
+```
+
+### Using Minitest expectations
+
+```ruby
+  Then { stack.top.must_equal :second_item }
+  Then { stack.depth.must_equal original_depth - 1}
+  Then { result.must_raise(Stack::UnderflowError, /empty/) }
+```
+
+### Disabling Natural Assertions
+
+Natural assertions may be disabled, either globally or on a per
+context basis. See the **configuration** section below to see how to
+disable natural assertions project wide.
+
+Here's a heads up: If you use natural assertions, but configure Given
+to disable them, then all your specs will mysteriously pass. This is
+why the **red** part of _Red/Green/Refactor_ is so important.
 
 ### Failure Messages with Natural Assertions
 
@@ -558,13 +583,8 @@ Natural assertions, RSpec should assertions and Minitest assertions
 can be intermixed in a single test suite, even within a single
 context.
 
-To enable natural assertions in a context, call the
-_use_natural_assertions_ method in that context. For example:
-
 ```ruby
   context "Outer" do
-    use_natural_assertions
-
     context "Inner" do
       Then { a == b }               # Natural Assertions
       Then { a.should == b }        # RSpec style
@@ -583,7 +603,7 @@ Both the _Outer_ and _Inner_ contexts will use natural assertions. The
 _Disabled_ context overrides the setting inherited from _Outer_ and
 will not process natural assertions.
 
-See the **configuration** section below to see how to enable natural
+See the **configuration** section below to see how to disable natural
 assertions project wide.
 
 ### Matchers and Natural Assertions
@@ -668,7 +688,9 @@ following are true:
 1. The block returns false (blocks that return true pass the
    assertion and don't need a failure message).
 
-1. The block does not use RSpec's _should_ or _expect_ methods.
+1. The block does not use the native frameworks assertions or
+   expectations (e.g. RSpec's _should_ or _expect_ methods, or
+   Minitest's _assert\_xxx_ or _must\_xxx_ methods).
 
 Detecting that last point (the use of _should_ and _expect_) is done
 by modifying the RSpec runtime to report uses of _should_ and
@@ -678,11 +700,11 @@ _expect_.
 
 Natural assertions use the Ripper library to parse the failing
 condition and find all the sub-expression values upon a failure.
-Currently Ripper is not supported on JRuby 1.7.2. Charles Nutter has
-said that Ripper support is coming soon and may arrive as early as
-version 1.7.3. Until then, natural assertions are disabled when
-running under JRuby. Never fear, JRuby supports all the other features
-of rspec-given and will work just fine.
+Currently Ripper is not fully supported on JRuby 1.7.4. Charles Nutter
+has said that Ripper support is coming soon and may arrive soon. Until
+then, natural assertions are disabled when running under JRuby. Never
+fear, JRuby supports all the other features of rspec-given and will
+work just fine.
 
 ### Further Reading
 
