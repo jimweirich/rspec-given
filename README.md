@@ -1,8 +1,8 @@
 # Given/When/Then for RSpec and Minitest
 
-| Master |
-| :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
+| Master | Minispec |
+| :----: | :----: |
+| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) | [![Minispec Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=minispec)](https://travis-ci.org/jimweirich/rspec-given) |
 
 Covering rspec-given, minitest-given, and given-core, version 3.0.0.beta.1.
 
@@ -81,7 +81,7 @@ and
 
 ### If you are using bundler
 
-Add `rspec-given` to the `:test` group in the `Gemfile`:
+Add `rspec-given` (or `minitest-given`) to the `:test` group in the `Gemfile`:
 
 ```ruby
 group :test do
@@ -89,12 +89,18 @@ group :test do
 end
 ```
 
+```ruby
+group :test do
+  gem 'minitest-given'
+end
+```
+
 Download and install:
 
 `$ bundle`
 
-Then just require `rspec/given` in the `spec_helper` of your project and it is
-ready to go.
+Then just require `rspec/given` (or `minitest/given`) in the
+`spec_helper` of your project and it is ready to go.
 
 ### If you are not using bundler
 
@@ -102,8 +108,12 @@ Install the gem:
 
 `$ gem install rspec-given`
 
-Then just require `rspec/given` in the `spec_helper` of your project and it is
-ready to go.
+or
+
+`$ gem install minitest-given`
+
+Then just require `rspec/given` (or `minitest/given`) in the
+`spec_helper` of your project and it is ready to go.
 
 ## Example
 
@@ -603,7 +613,7 @@ like this is good:
 ```
 
 It is good to note that non-idempotent assertions will also cause
-problems with And clauses.
+problems with And and Invariant clauses.
 
 ### Mixing Natural Assertions and RSpec Assertions
 
@@ -776,8 +786,11 @@ License. See the MIT-LICENSE file in the source distribution.
 
   * Support for minitest added.
 
-  * Gems rspec-given and minitest-given both use the core
-    functionality of gem given_core.
+  * Introduced gem given_core to contain the common logic between the
+    RSpec and Minitest versions. Both the rspec-given gem and the
+    minitest-given gem have a dependency on given_core.
+
+  * Natural assertions are now enabled by default.
 
 * Version 2.4.4
 
