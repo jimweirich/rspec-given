@@ -126,14 +126,18 @@ module Given
       @_Gvn_invariants ||= []
     end
 
+    # List of the and blocks directly in the current describe/context
+    # block.
     def _Gvn_and_blocks         # :nodoc:
       @_Gvn_and_blocks ||= []
     end
 
+    # Context information ofr the current describe/context block.
     def _Gvn_context_info       # :nodoc:
       @_Gvn_context_info ||= {}
     end
 
+    # Line extractor for the context.
     def _Gvn_lines              # :nodoc:
       @_Gvn_lines ||= LineExtractor.new
     end
@@ -222,8 +226,7 @@ module Given
     #   Then { ... assertion ... }
     #
     def Then(&block)
-      env = block.binding
-      file, line = eval "[__FILE__, __LINE__]", env
+      file, line = eval "[__FILE__, __LINE__]", block.binding
       description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
       cmd = description ? "it(description)" : "specify"
       eval %{#{cmd} do _gvn_then(&block) end}, binding, file, line
