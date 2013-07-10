@@ -4,9 +4,9 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minispec-given, and given-core, version 3.0.0.beta.1.
+Covering rspec-given, minitest-given, and given-core, version 3.0.0.beta.1.
 
-rspec-given and minispec-given are extensions to your favorite testing
+rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
 
 # Why Given/When/Then
@@ -14,13 +14,13 @@ framework to allow Given/When/Then notation when writing specs.
 RSpec has done a great job of making specifications more readable for
 humans. However, I really like the given/when/then nature of Cucumber
 stories and would like to follow the same structure in my unit tests.
-rspec-given (and now minispec-given) allows a simple given/when/then
+rspec-given (and now minitest-given) allows a simple given/when/then
 structure RSpec specifications.
 
 ## Status
 
 * rspec-given is ready for production use.
-* minispec-given is experimental.
+* minitest-given is experimental.
 
 ### RSpec/Given
 
@@ -32,17 +32,17 @@ and then adds the RSpec specific code.
 
 ### Minitest/Given
 
-A new minispec-given gem allows Given/When/Then notation directly in
+A new minitest-given gem allows Given/When/Then notation directly in
 Minitest::Spec specifications.
 
-To use minispec-given, just place the following require at the top of
+To use minitest-given, just place the following require at the top of
 the file (or in a convenient spec_helper).
 
 ```ruby
-require 'minispec/given'
+require 'minitest/given'
 ```
 
-All the features of rspec-given are available in minispec-given.
+All the features of rspec-given are available in minitest-given.
 
 When switching from RSpec/Given to Minitest/Given, here are some
 things to watch out for:
@@ -68,7 +68,7 @@ if defined?(RSpec)
   require 'rspec/given'
 else
   require 'minitest/autorun'
-  require 'minispec/given'
+  require 'minitest/given'
 end
 ```
 
@@ -723,7 +723,7 @@ file in the source distribution.
 
   * Support for minitest added.
 
-  * Gems rspec-given and minispec-given both use the core
+  * Gems rspec-given and minitest-given both use the core
     functionality of gem given_core.
 
 * Version 2.4.4

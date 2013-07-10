@@ -5,6 +5,6 @@ if defined?(RSpec)
   require 'spec_helper'
 else
   require 'minitest/autorun'
-  require 'minispec/given'
+  require 'minitest/given'
   require 'minitest_helper'
 end

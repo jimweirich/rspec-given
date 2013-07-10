@@ -2,8 +2,8 @@
 # based on gem name.  If you are manually requiring rspec/given,
 # please use the canonical require file, ie.
 #
-#     require 'minispec/given'
+#     require 'minitest/given'
 #
 # Thanks.
 
-require 'given/minispec/all'
+require 'given/minitest/all'

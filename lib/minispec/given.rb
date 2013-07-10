@@ -1,1 +1,0 @@
-require 'given/minispec/all'

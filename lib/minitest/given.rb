@@ -1,1 +1,1 @@
-require 'given/minispec/all'
+require 'given/minitest/all'
