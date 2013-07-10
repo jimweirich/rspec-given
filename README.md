@@ -309,7 +309,7 @@ should use an empty _Then_ clause, like this:
 #### Then examples:
 
 ```ruby
-    Then { stack.should be_empty }
+    Then { stack.empty? }
 ```
 
 After the related block for the _When_ clause is run, the stack should
@@ -356,9 +356,9 @@ stick with _Then_ clauses.
 #### Then/And examples:
 
 ```ruby
-  Then { pop_result.should == :top_item }           # Required
-  And  { stack.top.should == :second_item }         # No Setup rerun
-  And  { stack.depth.should == original_depth - 1 } # ... for these
+  Then { pop_result == :top_item }           # Required
+  And  { stack.top == :second_item }         # No Setup rerun
+  And  { stack.depth == original_depth - 1 } # ... for these
 ```
 
 ### Invariant
@@ -554,10 +554,9 @@ problems with And clauses.
 
 ### Mixing Natural Assertions and RSpec Assertions
 
-Natural assertions and RSpec assertions for the most part can be
-intermixed in a single test suite, even within a single context.
-Because there are a few corner cases that might cause problems, they
-must be explicitly enabled before they will be considered.
+Natural assertions, RSpec should assertions and Minitest assertions
+can be intermixed in a single test suite, even within a single
+context.
 
 To enable natural assertions in a context, call the
 _use_natural_assertions_ method in that context. For example:
@@ -567,6 +566,11 @@ _use_natural_assertions_ method in that context. For example:
     use_natural_assertions
 
     context "Inner" do
+      Then { a == b }               # Natural Assertions
+      Then { a.should == b }        # RSpec style
+      Then { expect(a).to eq(b) }   # RSpec style
+      Then { assert_equal b, a }    # Minitest style
+      Then { a.must_equal b }       # Minitest style
     end
 
     context "Disabled" do
@@ -650,7 +654,7 @@ For example, the following two Then clauses are equivalent:
     Then { result.should have_failed(StandardError, /message/) }
 
     # Using natural assertions
-    Then { result == have_failed(StandardError, /message/) }
+    Then { result == Failure(StandardError, /message/) }
 ```
 
 ### Processing Natural Assertions
@@ -699,7 +703,7 @@ the pretty output and wish to disable source code caching
 unconditionally, then add the following line to your spec helper file:
 
 ```ruby
-    RSpec::Given.source_caching_disabled = true
+    Given.source_caching_disabled = true
 ```
 
 Natural assertions are disabled by default. To globally configure
