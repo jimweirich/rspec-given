@@ -35,6 +35,15 @@ and then adds the RSpec specific code.
 A new minispec-given gem allows Given/When/Then notation directly in
 Minitest::Spec specifications.
 
+To use minispec-given, just place the following require at the top of
+the file (or in a convenient spec_helper).
+
+```ruby
+require 'minispec/given'
+```
+
+All the features of rspec-given are available in minispec-given.
+
 When switching from RSpec/Given to Minitest/Given, here are some
 things to watch out for:
 
@@ -46,6 +55,27 @@ things to watch out for:
 * Only one before block is allowed in any given Minitest::Spec
   describe block. This doesn't effect the number of Givens you are
   allowed to use, but it may surprise if you are use to RSpec.
+
+### Auto Selecting
+
+If you exclusively use natural assertions in your specs, it's quite
+possible to write specs that run under both RSpec and Minitest::Spec.
+
+Use this at the start of your spec file:
+
+```ruby
+if defined?(RSpec)
+  require 'rspec/given'
+else
+  require 'minitest/autorun'
+  require 'minispec/given'
+end
+```
+
+See
+[stack_spec.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
+and
+[example_helper.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/example_helper.rb)
 
 ## Example
 
@@ -456,6 +486,19 @@ Natural assertions will give additional information (e.g. "expected:
 3 to equal: 2") for top level expressions involving any of the
 comparison operators (==, !=, <, <=, >, >=) or matching operators (=~,
 !~).
+
+### Checking for exceptions with Natural Assertions
+
+If you wish to see if the result of a _When_ clause is an exception,
+you can use the following:
+
+```ruby
+    When(:result) { stack.pop }
+    Then { result == Failure(UnderflowError, /empty/) }
+```
+
+The <code>Failure()</code> method accepts the same arguments as
+<code>have_failed</code> and <code>raise_error</code>.
 
 ### Caveats on Natural Assertions
 
