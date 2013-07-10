@@ -714,8 +714,8 @@ file:
 
 # License
 
-RSpec-Given is available under the MIT License.  See the MIT-LICENSE
-file in the source distribution.
+rspec-given, minitest-given and given_core are available under the MIT
+License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
