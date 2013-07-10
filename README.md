@@ -28,7 +28,7 @@ The rspec-given gem is the original given/when/then extension for
 RSpec. It now depends on a given_core gem for the basic functionality
 and then adds the RSpec specific code.
 
-* rspec-given now require RSpec version 2.12 or better.
+* rspec-given now requires RSpec version 2.12 or better.
 
 ### Minitest/Given
 
@@ -58,7 +58,7 @@ things to watch out for:
 
 ### Auto Selecting
 
-If you exclusively use natural assertions in your specs, it's quite
+If you use natural assertions exclusively in your specs, it's quite
 possible to write specs that run under both RSpec and Minitest::Spec.
 
 Use this at the start of your spec file:
