@@ -1,4 +1,4 @@
-# rspec-given
+# Given/When/Then for RSpec and Minitest
 
 | Master |
 | :----: |
