@@ -126,15 +126,15 @@ module Given
       @_Gvn_invariants ||= []
     end
 
-    def _Gvn_and_blocks
+    def _Gvn_and_blocks         # :nodoc:
       @_Gvn_and_blocks ||= []
     end
 
-    def _Gvn_context_info
+    def _Gvn_context_info       # :nodoc:
       @_Gvn_context_info ||= {}
     end
 
-    def _Gvn_lines
+    def _Gvn_lines              # :nodoc:
       @_Gvn_lines ||= LineExtractor.new
     end
 
@@ -182,23 +182,34 @@ module Given
     #
     def When(*args, &block)
       if args.first.is_a?(Symbol)
-        let(args.first) do
-          begin
-            _gvn_establish_givens
-            instance_eval(&block)
-          rescue Given.pending_error => ex
-            raise
-          rescue Exception => ex
-            Failure.new(ex)
-          end
-        end
-        _Gvn_before do __send__(args.first) end
+        _Gvn_when_actions_with_capture(args.first, block)
       else
-        _Gvn_before do
+        _Gvn_when_actions(block)
+      end
+    end
+
+    # Normal When clause actions.
+    def _Gvn_when_actions(block)        # :nodoc:
+      _Gvn_before do
+        _gvn_establish_givens
+        instance_eval(&block)
+      end
+    end
+
+    # Normal When clause actions except that exceptions are captured
+    # in a Failure object.
+    def _Gvn_when_actions_with_capture(name, block) # :nodoc:
+      let(name) do
+        begin
           _gvn_establish_givens
           instance_eval(&block)
+        rescue Given.pending_error => ex
+          raise
+        rescue Exception => ex
+          Failure.new(ex)
         end
       end
+      _Gvn_before do __send__(name) end
     end
 
     # Provide an assertion about the specification.
@@ -214,11 +225,7 @@ module Given
       env = block.binding
       file, line = eval "[__FILE__, __LINE__]", env
       description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
-      if description
-        cmd = "it(description)"
-      else
-        cmd = "specify"
-      end
+      cmd = description ? "it(description)" : "specify"
       eval %{#{cmd} do _gvn_then(&block) end}, binding, file, line
       _Gvn_context_info[:then_defined] = true
     end
@@ -229,11 +236,13 @@ module Given
       _Gvn_invariants << block
     end
 
+    # Provide an assertion that shares setup with a peer Then command.
     def And(&block)
       fail "And defined without a Then" unless _Gvn_context_info[:then_defined]
       _Gvn_and_blocks << block
     end
 
+    # Configure the use of natural assertions in this context.
     def use_natural_assertions(enabled=true)
       Given.ok_to_use_natural_assertions(enabled)
       _Gvn_context_info[:natural_assertions_enabled] = enabled
