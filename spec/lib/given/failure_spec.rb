@@ -2,7 +2,8 @@ require 'spec_helper'
 require 'given/failure'
 
 describe Given::Failure do
-  OtherError = Class.new(StandardError)
+  Given(:other_error) { Class.new(StandardError) }
+  Given(:custom_error) { Class.new(StandardError) }
 
   Given(:exception) { StandardError.new("Oops") }
   Given(:failure) { Given::Failure.new(exception) }
@@ -31,10 +32,6 @@ describe Given::Failure do
     Then { failure == have_failed }
   end
 
-  describe "!= have_failed" do
-    Then { failure != have_failed() }
-  end
-
   describe "== Failure" do
     Then { failure == Failure(StandardError, "Oops") }
     Then { failure == Failure(StandardError) }
@@ -43,7 +40,7 @@ describe Given::Failure do
 
   describe "!= Failure" do
     Then { expect { failure != Object.new }.to raise_error(StandardError) }
-    Then { failure != Failure() }
+    Then { failure != Failure(other_error) }
   end
 
 end

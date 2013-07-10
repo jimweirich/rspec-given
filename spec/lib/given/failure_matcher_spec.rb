@@ -8,6 +8,8 @@ module FailureMatcherSpec
   NotMetError = RSpec::Expectations::ExpectationNotMetError
 
   describe Given::FailureMatcher do
+    use_natural_assertions
+
     Given(:error) { CustomError.new("CUSTOM") }
 
     Given(:failure_result) { Given::Failure.new(error) }
@@ -65,13 +67,17 @@ module FailureMatcherSpec
     end
 
     describe "==" do
-      Then { failure_result == Failure(CustomError) }
+      Then { failure_result       == Failure() }
+      Then { failure_result       == Failure(CustomError) }
+      Then { Failure()            == failure_result }
       Then { Failure(CustomError) == failure_result }
     end
 
     describe "!=" do
       Then { failure_result != Failure(SubError) }
-      Then { Failure(SubError) == failure_result }
+      Then { Failure(SubError) != failure_result }
+      Then { Failure() != nil }
+      Then { nil != Failure() }
     end
   end
 end

@@ -14,9 +14,25 @@ module Given
       end
     end
 
+    def ==(other)
+      if other.respond_to?(:call)
+        matches?(other)
+      else
+        super
+      end
+    end
+
+    def !=(other)
+      if other.respond_to?(:call)
+        does_not_match?(other)
+      else
+        super
+      end
+    end
+
     def matches?(possible_failure)
       if possible_failure.respond_to?(:call)
-        make_sure_it_throws_an_exception(possible_failure)
+        match_or_fail(possible_failure)
       else
         Given.fail_with("#{description}, but nothing failed")
       end
@@ -24,7 +40,7 @@ module Given
 
     def does_not_match?(possible_failure)
       if possible_failure.respond_to?(:call)
-        false
+        mismatch_or_fail(possible_failure)
       else
         true
       end
@@ -38,21 +54,38 @@ module Given
 
     private
 
-    def make_sure_it_throws_an_exception(possible_failure)
+    def match_or_fail(possible_failure)
+      ex = extract_exception(possible_failure)
+      match_exception(ex) ||
+        Given.fail_with("#{description}, but got #{ex.inspect}")
+    end
+
+    def mismatch_or_fail(possible_failure)
+      ex = extract_exception(possible_failure)
+      (! match_exception(ex)) ||
+        Given.fail_with("#{unexpected_description}, but got #{ex.inspect}")
+    end
+
+    def match_exception(ex)
+      ex.is_a?(@expected_exception_class) && @expected_message_pattern =~ ex.message
+    end
+
+    def extract_exception(possible_failure)
       possible_failure.call
       Given.fail_with("Expected an exception")
+      return nil
     rescue Exception => ex
-      if ! ex.is_a?(@expected_exception_class)
-        Given.fail_with("#{description}, but got #{ex.inspect}")
-      elsif @expected_message_pattern !~ ex.message
-        Given.fail_with("#{description}, but got #{ex.inspect}")
-      else
-        true
-      end
+      return ex
     end
 
     def description
       result = "Expected failure with #{@expected_exception_class}"
+      result << " matching #{@expected_message_pattern.inspect}" unless @no_pattern
+      result
+    end
+
+    def unexpected_description
+      result = "Did not expect failure with #{@expected_exception_class}"
       result << " matching #{@expected_message_pattern.inspect}" unless @no_pattern
       result
     end
