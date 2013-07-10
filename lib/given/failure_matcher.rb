@@ -30,6 +30,12 @@ module Given
       end
     end
 
+    def inspect
+      result = "<Failure on #{@expected_exception_class}"
+      result << " matching #{@expected_message_pattern.inspect}" unless @no_pattern
+      result << ">"
+    end
+
     private
 
     def make_sure_it_throws_an_exception(possible_failure)
