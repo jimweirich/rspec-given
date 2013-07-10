@@ -57,7 +57,10 @@ end
 
 EXAMPLES = FileList['examples/**/*_spec.rb'].
   exclude('examples/failing/*.rb').
+  exclude('examples/minitest/*.rb').
   exclude('examples/integration/failing/*.rb')
+
+MT_EXAMPLES = FileList['examples/minitest/**/*_spec.rb']
 
 unless Given::NATURAL_ASSERTIONS_SUPPORTED
   EXAMPLES.exclude("examples/stack/*.rb")
@@ -80,7 +83,7 @@ end
 desc "Run the examples in Minitest"
 task :mt_examples do
   puts "Running examples (with Minitest)"
-  sh "ruby -Ilib:examples examples/loader.rb #{EXAMPLES}"
+  sh "ruby -Ilib:examples examples/loader.rb #{EXAMPLES} #{MT_EXAMPLES}"
 end
 
 desc "Run failing examples"

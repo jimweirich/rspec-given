@@ -6,6 +6,12 @@ module Given
   class Failure < BasicObject
     undef_method :==, :!=, :!
 
+    def must_raise(*args)
+      ::Minitest::Spec.current.assert_raises(*args) do
+        die
+      end
+    end
+
     def initialize(exception)
       @exception = exception
     end
@@ -49,7 +55,7 @@ module Given
 
     def failure_matcher?(other)
       other.is_a?(::Given::FailureMatcher) ||
-        other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher)
+        (defined?(::RSpec) && other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher))
     end
 
   end
