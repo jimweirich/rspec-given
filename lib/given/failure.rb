@@ -80,9 +80,8 @@ module Given
 
     # Is the comparison object a failure matcher?
     def failure_matcher?(other)
-      other.is_a?(::Given::FailureMatcher) ||
-        (defined?(::RSpec) && other.is_a?(::RSpec::Given::HaveFailed::HaveFailedMatcher))
+      other.respond_to?(:matches?) && other.respond_to?(:does_not_match?)
     end
-
   end
+
 end
