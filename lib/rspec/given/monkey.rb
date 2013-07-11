@@ -1,4 +1,5 @@
 require 'rspec'
+require 'rspec/expectations'
 require 'rspec/given/module_methods'
 
 # Monkey patch RSpec to detect matchers used in expectations.
