@@ -1,10 +1,10 @@
 # Given/When/Then for RSpec and Minitest
 
-| Master | Minispec |
-| :----: | :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) | [![Minispec Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=minispec)](https://travis-ci.org/jimweirich/rspec-given) |
+| Master |
+| :----: |
+| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.0.0.beta.1.
+Covering rspec-given, minitest-given, and given-core, version 3.0.0.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
