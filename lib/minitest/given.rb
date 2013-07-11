@@ -1,0 +1,1 @@
+require 'given/minitest/all'

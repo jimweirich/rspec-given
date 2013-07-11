@@ -1,18 +1,18 @@
 #!/usr/bin/ruby -wKU
 
 require 'rake/clean'
-require './lib/rspec/given/version'
-require './lib/rspec/given/module_methods'
+require './lib/given/version'
+require './lib/given/module_methods'
 
 CLEAN.include("pkg/rspec-given-*").exclude("pkg/*.gem")
 CLOBBER.include("*.gemspec", "html", "README", "README.old")
 
 # README Formatting --------------------------------------------------
 
-task :default => :ex2
+task :default => :examples
 
 def version
-  RSpec::Given::VERSION
+  Given::VERSION
 end
 
 def tag_name
@@ -44,10 +44,10 @@ end
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
-task :examples => [:specs, :examples1, :examples2]
+task :examples => [:specs, :rs_examples]
 
 desc "Run the RSpec 2 specs and examples"
-task :ex2 => [:specs, :examples2]
+task :examples => [:specs, :rs_examples, :mt_examples]
 
 desc "Run the specs"
 task :specs do
@@ -55,26 +55,35 @@ task :specs do
   sh "rspec spec"
 end
 
-desc "Run the examples in RSpec 1"
-task :examples1 => [:verify_rspec1] do
-  puts "Running examples (with RSpec2)"
-  sh "spec examples/stack/stack_spec1.rb"
-end
-
 EXAMPLES = FileList['examples/**/*_spec.rb'].
   exclude('examples/failing/*.rb').
+  exclude('examples/minitest/*.rb').
   exclude('examples/integration/failing/*.rb')
 
-unless RSpec::Given::NATURAL_ASSERTIONS_SUPPORTED
+MT_EXAMPLES = FileList['examples/minitest/**/*_spec.rb']
+
+unless Given::NATURAL_ASSERTIONS_SUPPORTED
   EXAMPLES.exclude("examples/stack/*.rb")
 end
 
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 
+desc "Run the RSpec specs and examples"
+task :rs => [:specs, :rs_examples]
+
+desc "Run the Minitest tests and examples"
+task :mt => [:specs, :mt_examples]
+
 desc "Run the examples in RSpec 2"
-task :examples2 => [:verify_rspec2] do
+task :rs_examples => [:verify_rspec2] do
   puts "Running examples (with RSpec2)"
   sh "rspec #{EXAMPLES}"
+end
+
+desc "Run the examples in Minitest"
+task :mt_examples do
+  puts "Running examples (with Minitest)"
+  sh "ruby -Ilib:examples examples/loader.rb #{EXAMPLES} #{MT_EXAMPLES}"
 end
 
 desc "Run failing examples"
@@ -114,7 +123,7 @@ task :readme => ["README.md"] do
 end
 
 desc "Generate an RDoc README"
-file "README.md" => ["examples/stack/stack_spec.rb", "lib/rspec/given/version.rb"] do
+file "README.md" => ["examples/stack/stack_spec.rb", "lib/given/version.rb"] do
   open("README.md") do |ins|
     open("README.tmp", "w") do |outs|
       state = :copy
@@ -122,7 +131,7 @@ file "README.md" => ["examples/stack/stack_spec.rb", "lib/rspec/given/version.rb
         case state
         when :copy
           if line =~ /rspec-given, version +\d+(\.(\d+|beta))+/i
-            line.gsub!(/version +\d+(\.(\d+|beta))+/i, "version #{RSpec::Given::VERSION}")
+            line.gsub!(/version +\d+(\.(\d+|beta))+/i, "version #{Given::VERSION}")
             outs.puts line
           elsif line =~ /^<pre>/
             state = :insert
@@ -212,7 +221,7 @@ if RDOC_ENABLED
     rdoc.options = [
       '--line-numbers',
       '--main' , 'doc/main.rdoc',
-      '--title', 'RSpec::Given - Given/When/Then Extensions for RSpec'
+      '--title', 'Given - Given/When/Then Extensions for RSpec'
     ]
     rdoc.options << '-SHN' << '-f' << 'darkfish' if DARKFISH_ENABLED
 

@@ -1,32 +1,87 @@
-# rspec-given
+# Given/When/Then for RSpec and Minitest
 
-| Master |
-| :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
+| Master | Minispec |
+| :----: | :----: |
+| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) | [![Minispec Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=minispec)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, version 2.4.4.
+Covering rspec-given, minitest-given, and given-core, version 3.0.0.beta.1.
 
-rspec-given is an RSpec extension to allow Given/When/Then notation in
-RSpec specifications.  It is a natural extension of the experimental
-work done on the Given framework.
+rspec-given and minitest-given are extensions to your favorite testing
+framework to allow Given/When/Then notation when writing specs.
 
 # Why Given/When/Then
 
 RSpec has done a great job of making specifications more readable for
-humans.  However, I really like the given / when / then nature of
-Cucumber stories and would like to follow the same structure in my
-unit tests.  rspec-given allows a simple given/when/then structure
-RSpec specifications.
+humans. However, I really like the given/when/then nature of Cucumber
+stories and would like to follow the same structure in my unit tests.
+rspec-given (and now minitest-given) allows a simple given/when/then
+structure RSpec specifications.
 
 ## Status
 
-rspec-given is ready for production use.
+* rspec-given is ready for production use.
+* minitest-given is experimental.
+
+### RSpec/Given
+
+The rspec-given gem is the original given/when/then extension for
+RSpec. It now depends on a given_core gem for the basic functionality
+and then adds the RSpec specific code.
+
+* rspec-given now requires RSpec version 2.12 or better.
+
+### Minitest/Given
+
+A new minitest-given gem allows Given/When/Then notation directly in
+Minitest::Spec specifications.
+
+To use minitest-given, just place the following require at the top of
+the file (or in a convenient spec_helper).
+
+```ruby
+require 'minitest/given'
+```
+
+All the features of rspec-given are available in minitest-given.
+
+When switching from RSpec/Given to Minitest/Given, here are some
+things to watch out for:
+
+* You need to use Minitest version 4.3 or better (yes, Minitest 5.x
+  should work as well).
+
+* Minitest/Given adds the missing "context" block to Minitest::Spec.
+
+* Only one before block is allowed in any given Minitest::Spec
+  describe block. This doesn't effect the number of Givens you are
+  allowed to use, but it may surprise if you are use to RSpec.
+
+### Auto Selecting
+
+If you use natural assertions exclusively in your specs, it's quite
+possible to write specs that run under both RSpec and Minitest::Spec.
+
+Use this at the start of your spec file:
+
+```ruby
+if defined?(RSpec)
+  require 'rspec/given'
+else
+  require 'minitest/autorun'
+  require 'minitest/given'
+end
+```
+
+See
+[stack_spec.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
+and
+[example_helper.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/example_helper.rb)
 
 ## Installation
 
 ### If you are using bundler
 
-Add `rspec-given` to the `:test` group in the `Gemfile`:
+Add `rspec-given` (or `minitest-given`) to the `:test` group in the `Gemfile`:
 
 ```ruby
 group :test do
@@ -34,12 +89,18 @@ group :test do
 end
 ```
 
+```ruby
+group :test do
+  gem 'minitest-given'
+end
+```
+
 Download and install:
 
 `$ bundle`
 
-Then just require `rspec/given` in the `spec_helper` of your project and it is
-ready to go.
+Then just require `rspec/given` (or `minitest/given`) in the
+`spec_helper` of your project and it is ready to go.
 
 ### If you are not using bundler
 
@@ -47,8 +108,12 @@ Install the gem:
 
 `$ gem install rspec-given`
 
-Then just require `rspec/given` in the `spec_helper` of your project and it is
-ready to go.
+or
+
+`$ gem install minitest-given`
+
+Then just require `rspec/given` (or `minitest/given`) in the
+`spec_helper` of your project and it is ready to go.
 
 ## Example
 
@@ -67,22 +132,22 @@ describe Stack do
   end
 
   Given(:stack) { stack_with(initial_contents) }
-  Invariant { stack.empty?.should == (stack.depth == 0) }
+  Invariant { stack.empty? == (stack.depth == 0) }
 
   context "with no items" do
     Given(:initial_contents) { [] }
-    Then { stack.depth.should == 0 }
+    Then { stack.depth == 0 }
 
     context "when pushing" do
       When { stack.push(:an_item) }
 
-      Then { stack.depth.should == 1 }
-      Then { stack.top.should == :an_item }
+      Then { stack.depth == 1 }
+      Then { stack.top == :an_item }
     end
 
     context "when popping" do
       When(:result) { stack.pop }
-      Then { result.should have_failed(Stack::UnderflowError, /empty/) }
+      Then { result == Failure(Stack::UnderflowError, /empty/) }
     end
   end
 
@@ -92,8 +157,8 @@ describe Stack do
     context "when popping" do
       When(:pop_result) { stack.pop }
 
-      Then { pop_result.should == :an_item }
-      Then { stack.depth.should == 0 }
+      Then { pop_result == :an_item }
+      Then { stack.depth == 0 }
     end
   end
 
@@ -104,16 +169,16 @@ describe Stack do
     context "when pushing" do
       When { stack.push(:new_item) }
 
-      Then { stack.top.should == :new_item }
-      Then { stack.depth.should == original_depth + 1 }
+      Then { stack.top == :new_item }
+      Then { stack.depth == original_depth + 1 }
     end
 
     context "when popping" do
       When(:pop_result) { stack.pop }
 
-      Then { pop_result.should == :top_item }
-      Then { stack.top.should == :second_item }
-      Then { stack.depth.should == original_depth - 1 }
+      Then { pop_result == :top_item }
+      Then { stack.top == :second_item }
+      Then { stack.depth == original_depth - 1 }
     end
   end
 end
@@ -280,7 +345,7 @@ should use an empty _Then_ clause, like this:
 #### Then examples:
 
 ```ruby
-    Then { stack.should be_empty }
+    Then { stack.empty? }
 ```
 
 After the related block for the _When_ clause is run, the stack should
@@ -327,9 +392,9 @@ stick with _Then_ clauses.
 #### Then/And examples:
 
 ```ruby
-  Then { pop_result.should == :top_item }           # Required
-  And  { stack.top.should == :second_item }         # No Setup rerun
-  And  { stack.depth.should == original_depth - 1 } # ... for these
+  Then { pop_result == :top_item }           # Required
+  And  { stack.top == :second_item }         # No Setup rerun
+  And  { stack.depth == original_depth - 1 } # ... for these
 ```
 
 ### Invariant
@@ -393,29 +458,56 @@ clauses and _before_ blocks.
 
 ## Natural Assertions
 
-**NOTE:** <em>Natural assertions are currently an experimental feature
-of RSpec/Given. They are currently disabled by default, but can be
-enabled by a simple configuration option (see "use_natural_assertions"
-below).</em>
-
 RSpec/Given now supports the use of "natural assertions" in _Then_,
 _And_, and _Invariant_ blocks. Natural assertions are just Ruby
 conditionals, without the _should_ or _expect_ methods that RSpec
-provides. Here are the Then/And examples from above, but written using
-natural assertions:
+provides. Here are the Then/And examples showing natural assertions:
+
+### Using Natural Assertions
 
 ```ruby
-  Then { pop_result == :top_item }
-  And  { stack.top == :second_item }
-  And  { stack.depth == original_depth - 1 }
+  Then { stack.top == :second_item }
+  Then { stack.depth == original_depth - 1 }
+  Then { result == Failure(Stack::UnderflowError, /empty/) }
 ```
 
-Natural assertions must be enabled, either globally or on a per
-context basis, to be recognized.
+### Using RSpec expect().to
 
-Here's a heads up: If you use natural assertions, but fail to enable
-them, all your specs will mysteriously pass. This is why the **red**
-part of _Red/Green/Refactor_ is so important.
+```ruby
+  Then { expect(stack.top).to eq(:second_item) }
+  Then { expect(stack.depth).to eq(original_depth - 1) }
+  Then { expect(result).to have_failed(Stack::UnderflowError, /empty/) }
+```
+
+### Using Minitest asserts
+
+```ruby
+  Then { assert_equal :second_item, stack.top }
+  Then { assert_equal original_depth - 1, stack.depth }
+  Then {
+    assert_raises(Stack::UnderflowError, /empty/) do
+      result.call()
+    end
+  }
+```
+
+### Using Minitest expectations
+
+```ruby
+  Then { stack.top.must_equal :second_item }
+  Then { stack.depth.must_equal original_depth - 1}
+  Then { result.must_raise(Stack::UnderflowError, /empty/) }
+```
+
+### Disabling Natural Assertions
+
+Natural assertions may be disabled, either globally or on a per
+context basis. See the **configuration** section below to see how to
+disable natural assertions project wide.
+
+Here's a heads up: If you use natural assertions, but configure Given
+to disable them, then all your specs will mysteriously pass. This is
+why the **red** part of _Red/Green/Refactor_ is so important.
 
 ### Failure Messages with Natural Assertions
 
@@ -426,7 +518,7 @@ analsysis of the expression that failed.
 For example, given the following failing specification:
 
 ```ruby
-  RSpec::Given.use_natural_assertions
+  Given.use_natural_assertions
 
   describe "Natural Assertions" do
     Given(:foo) { 1 }
@@ -459,6 +551,19 @@ Natural assertions will give additional information (e.g. "expected:
 3 to equal: 2") for top level expressions involving any of the
 comparison operators (==, !=, <, <=, >, >=) or matching operators (=~,
 !~).
+
+### Checking for exceptions with Natural Assertions
+
+If you wish to see if the result of a _When_ clause is an exception,
+you can use the following:
+
+```ruby
+    When(:result) { stack.pop }
+    Then { result == Failure(UnderflowError, /empty/) }
+```
+
+The <code>Failure()</code> method accepts the same arguments as
+<code>have_failed</code> and <code>raise_error</code>.
 
 ### Caveats on Natural Assertions
 
@@ -508,23 +613,22 @@ like this is good:
 ```
 
 It is good to note that non-idempotent assertions will also cause
-problems with And clauses.
+problems with And and Invariant clauses.
 
 ### Mixing Natural Assertions and RSpec Assertions
 
-Natural assertions and RSpec assertions for the most part can be
-intermixed in a single test suite, even within a single context.
-Because there are a few corner cases that might cause problems, they
-must be explicitly enabled before they will be considered.
-
-To enable natural assertions in a context, call the
-_use_natural_assertions_ method in that context. For example:
+Natural assertions, RSpec should assertions and Minitest assertions
+can be intermixed in a single test suite, even within a single
+context.
 
 ```ruby
   context "Outer" do
-    use_natural_assertions
-
     context "Inner" do
+      Then { a == b }               # Natural Assertions
+      Then { a.should == b }        # RSpec style
+      Then { expect(a).to eq(b) }   # RSpec style
+      Then { assert_equal b, a }    # Minitest style
+      Then { a.must_equal b }       # Minitest style
     end
 
     context "Disabled" do
@@ -537,7 +641,7 @@ Both the _Outer_ and _Inner_ contexts will use natural assertions. The
 _Disabled_ context overrides the setting inherited from _Outer_ and
 will not process natural assertions.
 
-See the **configuration** section below to see how to enable natural
+See the **configuration** section below to see how to disable natural
 assertions project wide.
 
 ### Matchers and Natural Assertions
@@ -582,7 +686,7 @@ There are several ways of creating fuzzy numbers:
 
 * <code>about(n)</code> -- Same as <code>about(n).epsilon(10)</code>.
 
-When the file <code>rspec/given/fuzzy_shortcuts</code> is required,
+When the file <code>given/fuzzy_shortcuts</code> is required,
 the following unicode shortcut methods are added to Numeric to create
 fuzzy numbers.
 
@@ -599,7 +703,7 @@ fuzzy numbers.
 
 The RSpec matcher used for detecting exceptions will work with natural
 assertions out of the box. Just check for equality against the
-<code>have_failed</code> return value.
+<code>Failure()</code> method return value.
 
 For example, the following two Then clauses are equivalent:
 
@@ -608,7 +712,7 @@ For example, the following two Then clauses are equivalent:
     Then { result.should have_failed(StandardError, /message/) }
 
     # Using natural assertions
-    Then { result == have_failed(StandardError, /message/) }
+    Then { result == Failure(StandardError, /message/) }
 ```
 
 ### Processing Natural Assertions
@@ -622,7 +726,9 @@ following are true:
 1. The block returns false (blocks that return true pass the
    assertion and don't need a failure message).
 
-1. The block does not use RSpec's _should_ or _expect_ methods.
+1. The block does not use the native frameworks assertions or
+   expectations (e.g. RSpec's _should_ or _expect_ methods, or
+   Minitest's _assert\_xxx_ or _must\_xxx_ methods).
 
 Detecting that last point (the use of _should_ and _expect_) is done
 by modifying the RSpec runtime to report uses of _should_ and
@@ -632,11 +738,11 @@ _expect_.
 
 Natural assertions use the Ripper library to parse the failing
 condition and find all the sub-expression values upon a failure.
-Currently Ripper is not supported on JRuby 1.7.2. Charles Nutter has
-said that Ripper support is coming soon and may arrive as early as
-version 1.7.3. Until then, natural assertions are disabled when
-running under JRuby. Never fear, JRuby supports all the other features
-of rspec-given and will work just fine.
+Currently Ripper is not fully supported on JRuby 1.7.4. Charles Nutter
+has said that Ripper support is coming soon and may arrive soon. Until
+then, natural assertions are disabled when running under JRuby. Never
+fear, JRuby supports all the other features of rspec-given and will
+work just fine.
 
 ### Further Reading
 
@@ -654,7 +760,7 @@ the pretty output and wish to disable source code caching
 unconditionally, then add the following line to your spec helper file:
 
 ```ruby
-    RSpec::Given.source_caching_disabled = true
+    Given.source_caching_disabled = true
 ```
 
 Natural assertions are disabled by default. To globally configure
@@ -662,19 +768,38 @@ natural assertions, add one of the following lines to your spec_helper
 file:
 
 ```ruby
-    RSpec::Given.use_natural_assertions         # Enable natural assertions
-    RSpec::Given.use_natural_assertions true    # Same as above
-    RSpec::Given.use_natural_assertions false   # Disable natural assertions
-    RSpec::Given.use_natural_assertions :always # Always process natural assertions
-                                                # ... even when should/expect are detected
+    Given.use_natural_assertions         # Enable natural assertions
+    Given.use_natural_assertions true    # Same as above
+    Given.use_natural_assertions false   # Disable natural assertions
+    Given.use_natural_assertions :always # Always process natural assertions
+                                         # ... even when should/expect are detected
 ```
 
 # License
 
-RSpec-Given is available under the MIT License.  See the MIT-LICENSE
-file in the source distribution.
+rspec-given, minitest-given and given_core are available under the MIT
+License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* Version 3.0.0
+
+  * Support for minitest added.
+
+  * Introduced gem given_core to contain the common logic between the
+    RSpec and Minitest versions. Both the rspec-given gem and the
+    minitest-given gem have a dependency on given_core.
+
+  * Natural assertions are now enabled by default.
+
+* Version 2.4.4
+
+  * Support for RSpec 2.13 added.
+
+* Version 2.4.3
+
+  * Better natural assertion messages when dealing with multi-line
+    output.
 
 * Version 2.4.2
 

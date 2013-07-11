@@ -1,8 +1,7 @@
-require 'rspec/given'
 require 'example_helper'
 require 'stack'
 
-RSpec::Given.use_natural_assertions
+Given.use_natural_assertions
 
 describe Stack do
   Given(:stack) { Stack.new }
@@ -24,7 +23,7 @@ describe Stack do
 
     context "when popping" do
       When(:result) { stack.pop }
-      Then { result.should have_failed(Stack::UnderflowError, /empty/) }
+      Then { result == Failure(Stack::UnderflowError, /empty/) }
     end
   end
 

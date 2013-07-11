@@ -1,4 +1,3 @@
-require 'rspec/given'
 require 'example_helper'
 
 describe "Then" do
