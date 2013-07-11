@@ -4,9 +4,18 @@ require 'given/failure'
 
 module Given
 
-  # Provide run-time methods to support Given infrastructure. All the
-  # methods in this module are considered private and
-  # implementation-specific.
+  # Provide run-time instance methods to support Given infrastructure.
+  # All the methods in this module are considered private and
+  # implementation-specific, and should not be directly called by the
+  # application developer.
+  #
+  # By convention, these private instance specific methods are
+  # prefixed with _gvn_ to avoid name collisions with application
+  # methods defined in a spec.
+  #
+  # (Note that private class methods are prefixed with _Gvn_ and
+  # private instance methods are prefixed with _gvn_).
+  #
   module InstanceExtensions   # :nodoc:
 
     # List of containing contexts in order from innermost to
@@ -112,6 +121,15 @@ module Given
     end
   end
 
+  # Provide run-time class methods to support Given infrastructure.
+  # Methods that begin with _Gvn_ are considered private and
+  # implementation specific, and should not be directly called by
+  # appliation code. Other methods without the _Gvn_ prefix are public
+  # and intended for use by the application developer.
+  #
+  # (Note that private class methods are prefixed with _Gvn_ and
+  # private instance methods are prefixed with _gvn_).
+  #
   module ClassExtensions
 
     # List of all givens directly in the current describe/context
