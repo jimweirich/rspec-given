@@ -55,14 +55,12 @@ module Given
   end
 
   # Fail an example with the given messages.
-  #
-  # This should be the only place we reference the RSpec function.
-  # Everywhere else in rspec-given should be calling this function.
   def self.fail_with(*args)
     Given.framework.fail_with(*args)
   end
 
-  # Error object used by RSpec to indicate a pending example.
+  # Error object used by the current framework to indicate a pending
+  # example.
   def self.pending_error
     Given.framework.pending_error
   end
