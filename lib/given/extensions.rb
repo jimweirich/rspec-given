@@ -105,15 +105,15 @@ module Given
 
     # Evaluate a Then, And, or Invariant assertion.
     def _gvn_evaluate(clause_type, block)   # :nodoc:
-      Given.framework.start_evaluation
+      Given.start_evaluation
       passed = instance_eval(&block)
-      if ! Given.framework.explicit_assertions? && _gvn_na_configured?
+      if ! Given.explicit_assertions? && _gvn_na_configured?
         _gvn_naturally_assert(clause_type, block, passed)
       end
     end
 
     def _gvn_naturally_assert(clause_type, block, passed)
-      Given.framework.count_assertion
+      Given.count_assertion
       unless passed
         nassert = NaturalAssertion.new(clause_type, block, self, self.class._Gvn_lines)
         Given.fail_with nassert.message if _gvn_need_na_message?(nassert)

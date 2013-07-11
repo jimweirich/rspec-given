@@ -54,9 +54,27 @@ module Given
     end
   end
 
+  # Methods forwarded to the framework object.
+
   # Fail an example with the given messages.
   def self.fail_with(*args)
     Given.framework.fail_with(*args)
+  end
+
+  # Mark the start of a Then assertion evaluation.
+  def self.start_evaluation(*args)
+    Given.framework.start_evaluation(*args)
+  end
+
+  # Were there any explicit framework assertions made during the
+  # execution of the Then block?
+  def self.explicit_assertions?(*args)
+    Given.framework.explicit_assertions?(*args)
+  end
+
+  # Increment the number of assertions made in the framework.
+  def self.count_assertion(*args)
+    Given.framework.count_assertion(*args)
   end
 
   # Error object used by the current framework to indicate a pending
