@@ -19,14 +19,6 @@ module Given
       end
     end
 
-    # Minitest expectation method. Since Failure inherits from
-    # BasicObject, we need to add this method explicitly.
-    def must_raise(*args)
-      ::Minitest::Spec.current.assert_raises(*args) do
-        die
-      end
-    end
-
     # Create a failure object that will rethrow the given exception
     # whenever an undefined method is called.
     def initialize(exception)
