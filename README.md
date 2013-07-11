@@ -703,7 +703,7 @@ fuzzy numbers.
 
 The RSpec matcher used for detecting exceptions will work with natural
 assertions out of the box. Just check for equality against the
-<code>have_failed</code> return value.
+<code>Failure()</code> method return value.
 
 For example, the following two Then clauses are equivalent:
 
