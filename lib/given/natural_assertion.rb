@@ -88,10 +88,20 @@ module Given
     end
 
     def then_block?(sexp)
-      delve(sexp,0) == :program &&
-        delve(sexp,1,0) == :stmts_add &&
-        delve(sexp,1,2,0) == :method_add_block &&
-        (delve(sexp,1,2,2,0) == :brace_block || delve(sexp,1,2,2,0) == :do_block)
+      program_sexp?(sexp) && method_with_block?(sexp) && has_block_sexp?(sexp)
+    end
+
+    def program_sexp?(sexp)
+      delve(sexp,0) == :program
+    end
+
+    def method_with_block?(sexp)
+      delve(sexp,1,0) == :stmts_add &&
+        delve(sexp,1,2,0) == :method_add_block
+    end
+
+    def has_block_sexp?(sexp)
+      delve(sexp,1,2,2,0) == :brace_block || delve(sexp,1,2,2,0) == :do_block
     end
 
     def extract_first_statement(block_sexp)
