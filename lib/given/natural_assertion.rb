@@ -1,5 +1,6 @@
 require 'given/module_methods'
 require 'given/evaluator'
+require 'given/binary_operation'
 
 if Given::NATURAL_ASSERTIONS_SUPPORTED
   require 'ripper'
@@ -36,20 +37,10 @@ module Given
 
     private
 
-    BINARY_EXPLAINATIONS = {
-      :== => "to equal",
-      :!= => "to not equal",
-      :<  => "to be less than",
-      :<= => "to be less or equal to",
-      :>  => "to be greater than",
-      :>= => "to be greater or equal to",
-      :=~ => "to match",
-      :!~ => "to not match",
-    }
-
     def explain_failure
-      if assertion_sexp.first == :binary && msg = BINARY_EXPLAINATIONS[assertion_sexp[2]]
-        @output << explain_expected("expected", assertion_sexp[1], msg, assertion_sexp[3])
+      binary = BinaryOperation.parse(assertion_sexp)
+      if binary && binary.explain
+        @output << explain_expected("expected", binary.left, binary.explain, binary.right)
       end
     end
 
