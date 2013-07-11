@@ -786,9 +786,9 @@ License. See the MIT-LICENSE file in the source distribution.
 
   * Support for minitest added.
 
-  * Introduced gem given_core to contain the common logic between the
+  * Introduced gem given\_core to contain the common logic between the
     RSpec and Minitest versions. Both the rspec-given gem and the
-    minitest-given gem have a dependency on given_core.
+    minitest-given gem have a dependency on given\_core.
 
   * Natural assertions are now enabled by default.
 
