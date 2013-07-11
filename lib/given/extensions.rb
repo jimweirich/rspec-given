@@ -204,13 +204,9 @@ module Given
     # in a Failure object.
     def _Gvn_when_actions_with_capture(name, block) # :nodoc:
       let(name) do
-        begin
+        Failure.capture(Given.pending_error) do
           _gvn_establish_givens
           instance_eval(&block)
-        rescue Given.pending_error => ex
-          raise
-        rescue Exception => ex
-          Failure.new(ex)
         end
       end
       _Gvn_before do __send__(name) end

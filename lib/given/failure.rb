@@ -6,6 +6,21 @@ module Given
   class Failure < BasicObject
     undef_method :==, :!=, :!
 
+    # Evaluate a block. If an exception is raised, capture it in a
+    # Failure object. Explicitly listed exceptions are passed thru
+    # without capture.
+    def self.capture(*exceptions)
+      begin
+        yield
+      rescue *exceptions => ex
+        raise
+      rescue ::Exception => ex
+        new(ex)
+      end
+    end
+
+    # Minitest expectation method. Since Failure inherits from
+    # BasicObject, we need to add this method explicitly.
     def must_raise(*args)
       ::Minitest::Spec.current.assert_raises(*args) do
         die
