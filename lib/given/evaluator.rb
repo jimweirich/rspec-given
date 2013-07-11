@@ -27,6 +27,10 @@ module Given
       EvalErr.new("#{ex.class}: #{ex.message}")
     end
 
+    def location
+      @example.class._Gvn_location_of(@block)
+    end
+
     private
 
     def eval_in_context(exp_string)

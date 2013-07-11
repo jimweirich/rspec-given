@@ -226,11 +226,16 @@ module Given
     #   Then { ... assertion ... }
     #
     def Then(&block)
-      file, line = eval "[__FILE__, __LINE__]", block.binding
+      file, line = _Gvn_location_of(block)
       description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
       cmd = description ? "it(description)" : "specify"
       eval %{#{cmd} do _gvn_then(&block) end}, binding, file, line
       _Gvn_context_info[:then_defined] = true
+    end
+
+    # Return file and line number where the block is defined.
+    def _Gvn_location_of(block)
+      eval "[__FILE__, __LINE__]", block.binding
     end
 
     # Establish an invariant that must be true for all Then blocks

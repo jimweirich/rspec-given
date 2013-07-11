@@ -79,7 +79,7 @@ module Given
     end
 
     def set_file_and_line(block)
-      @code_file, @code_line = eval "[__FILE__, __LINE__]", block.binding
+      @code_file, @code_line = @evaluator.location
       @code_line = @code_line.to_i
     end
 
