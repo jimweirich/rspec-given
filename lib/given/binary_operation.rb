@@ -2,14 +2,15 @@ module Given
 
   class BinaryOperation
     BINARY_EXPLAINATIONS = {
-      :== => "to equal",
-      :!= => "to not equal",
-      :<  => "to be less than",
-      :<= => "to be less or equal to",
-      :>  => "to be greater than",
-      :>= => "to be greater or equal to",
-      :=~ => "to match",
-      :!~ => "to not match",
+      :==  => "to equal",
+      :!=  => "to not equal",
+      :<   => "to be less than",
+      :<=  => "to be less or equal to",
+      :>   => "to be greater than",
+      :>=  => "to be greater or equal to",
+      :=~  => "to match",
+      :!~  => "to not match",
+      :=== => "to be matched by",
     }
 
     attr_reader :left, :operator, :right
