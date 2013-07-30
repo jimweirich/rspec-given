@@ -104,8 +104,9 @@ task :verify_rspec2 do
   end
 end
 
+desc "Check all files load properly when independenly loaded."
 task :load_check do
-  SRC_FILES = FileList['lib/rspec/given/*.rb'].exclude(%r(rspec1))
+  SRC_FILES = FileList['lib/given/*.rb'].exclude(%r(rspec1))
   SRC_FILES.each do |fn|
     sh %{ruby -Ilib -e 'load "#{fn}"'}
   end
