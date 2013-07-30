@@ -1,3 +1,5 @@
+require 'given/natural_assertion'
+require 'given/line_extractor'
 
 module Given
   module Assertions
@@ -26,11 +28,13 @@ module Given
       @enable_postconditions
     end
 
-    def self.enable_all(enabled=false)
+    def self.enable_all(enabled=true)
       enable_asserts enabled
       enable_preconditions enabled
       enable_postconditions enabled
     end
+
+    enable_all
 
     AssertError = Class.new(StandardError)
     PreconditionError = Class.new(AssertError)
