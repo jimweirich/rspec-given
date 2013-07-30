@@ -44,9 +44,6 @@ end
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
-task :examples => [:specs, :rs_examples]
-
-desc "Run the RSpec 2 specs and examples"
 task :examples => [:specs, :rs_examples, :mt_examples]
 
 desc "Run the specs"
@@ -55,7 +52,7 @@ task :specs do
   sh "rspec spec"
 end
 
-EXAMPLES = FileList['examples/**/*_spec.rb'].
+EXAMPLES = FileList['examples/**/*_spec.rb', 'examples/use_assertions.rb'].
   exclude('examples/failing/*.rb').
   exclude('examples/minitest/*.rb').
   exclude('examples/integration/failing/*.rb')
