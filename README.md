@@ -744,6 +744,70 @@ then, natural assertions are disabled when running under JRuby. Never
 fear, JRuby supports all the other features of rspec-given and will
 work just fine.
 
+### Non-Spec Assertions
+
+Given also provides three assertions meant to be used in
+non-test/non-spec code. For example, here is a square root function
+decked out with pre and post-condition assertions.
+
+```ruby
+require 'given/assertions'
+require 'given/fuzzy_number'
+
+include Given::Assertions
+include Given::Fuzzy
+
+def sqrt(n)
+  Precondition { n >= 0 }
+  result = Math.sqrt(n)
+  Postcondition { result ** 2 == about(n) }
+  result
+end
+```
+
+To use the non-testing assertions, you need to require the
+'given/assertions' file and then include the
+<code>Given::Assertions</code> module into what ever class is using
+the
+<code>Precondition</code>/<code>Postcondition</code>/<code>Assert</code>
+methods. The code block for these assertions should always be a
+regular Ruby true/false value (the <code>should</code> and
+<code>expect</code> methods from RSpec are not available).
+
+Note that this example also uses the fuzzy number matching, but that
+is not required for the assertions themselves.
+
+The assertion methods are:
+
+* <code>Precondition { bool }</code> -- If the block evaluates to
+  false (or nil), throw a Given::Assertions::PreconditionError.
+
+* <code>Postcondition { bool }</code> -- If the block evaluates to
+  false (or nil), throw a Given::Assertions::PostconditionError.
+
+* <code>Assert { bool }</code> -- If the block evaluates to
+  false (or nil), throw a Given::Assertions::AssertError.
+
+Both PreconditionError and PostconditionError are subclasses of
+AssertError.
+
+You can disable assertion checking with one of the following commands:
+
+* <code>Given::Assertions.enable_preconditions bool</code> --
+  Enable/Disable precondition assertions.
+  (default to enable)
+
+* <code>Given::Assertions.enable_postconditions bool</code> --
+  Enable/Disable postcondition assertions.
+  (default to enable)
+
+* <code>Given::Assertions.enable_asserts bool</code> --
+  Enable/Disable assert assertions. (default to enable)
+
+* <code>Given::Assertions.enable_all bool</code> --
+  Enable/Disable all assertions with a single command.
+  (default to enable)
+
 ### Further Reading
 
 Natural assertions were inspired by the [wrong assertion
@@ -781,6 +845,15 @@ rspec-given, minitest-given and given_core are available under the MIT
 License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* Version 3.1.0
+
+  * Add support for Precondition/Postcondition/Assert in non-spec
+    code.
+
+* Version 3.0.1
+
+  * Add support for the === operation in natural assertions.
 
 * Version 3.0.0
 
