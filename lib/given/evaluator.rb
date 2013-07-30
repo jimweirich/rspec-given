@@ -28,7 +28,7 @@ module Given
     end
 
     def location
-      @example.class._Gvn_location_of(@block)
+      Given.location_of(@block)
     end
 
     private

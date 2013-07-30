@@ -54,6 +54,11 @@ module Given
     end
   end
 
+  # Return file and line number where the block is defined.
+  def self.location_of(block)
+    eval "[__FILE__, __LINE__]", block.binding
+  end
+
   # Methods forwarded to the framework object.
 
   # Fail an example with the given messages.
