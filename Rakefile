@@ -128,7 +128,7 @@ file "README.md" => ["examples/stack/stack_spec.rb", "lib/given/version.rb"] do
       while line = ins.gets
         case state
         when :copy
-          if line =~ /rspec-given, version +\d+(\.(\d+|beta))+/i
+          if line =~ /rspec-given, minitest-given, and given-core, version +\d+(\.(\d+|beta))+/i
             line.gsub!(/version +\d+(\.(\d+|beta))+/i, "version #{Given::VERSION}")
             outs.puts line
           elsif line =~ /^<pre>/
