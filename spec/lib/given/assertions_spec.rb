@@ -1,7 +1,10 @@
+require 'spec_helper'
 require 'rspec/given'
 require 'given/assertions'
 
 describe Given::Assertions do
+  use_natural_assertions_if_supported
+
   Given { extend Given::Assertions }
 
   describe "Assert { }" do
