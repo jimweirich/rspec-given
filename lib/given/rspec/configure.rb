@@ -1,5 +1,5 @@
 require 'rspec'
-require 'rspec/given'
+require 'rspec/given' unless defined?(RSpec::Given)
 
 RSpec.configure do |c|
   c.extend(Given::ClassExtensions)
