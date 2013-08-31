@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.1.0.
+Covering rspec-given, minitest-given, and given-core, version 3.1.1.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -738,11 +738,9 @@ _expect_.
 
 Natural assertions use the Ripper library to parse the failing
 condition and find all the sub-expression values upon a failure.
-Currently Ripper is not fully supported on JRuby 1.7.4. Charles Nutter
-has said that Ripper support is coming soon and may arrive soon. Until
-then, natural assertions are disabled when running under JRuby. Never
-fear, JRuby supports all the other features of rspec-given and will
-work just fine.
+Currently Ripper is not supported on Rubinius and versions of JRuby
+prior to JRuby-1.7.5. Natural assertions are disabled in that case.
+However, all other features of Given are supported.
 
 ### Non-Spec Assertions
 
