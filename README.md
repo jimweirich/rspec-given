@@ -267,8 +267,10 @@ E.g.
 
       context "inner context" do
 
-        # At this point, the _When_ of the outer context
-        # should be treated as a _Given_ of the inner context
+        # At this point, the _When_ of the outer context will be run
+        # before the _When_ of then inner context (but after all the
+        # _Givens_ of all the contexts).  You can think of the outer
+        # _When_ as a special given for the inner scope.
 
         When { code specified in the inner context }
         Then { assert something about the inner context }
