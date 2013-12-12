@@ -11,10 +11,10 @@ describe "Natural Assertions" do
   Given(:null) { nil }
   Then { foo+foo+2*foo == expected }
   Then { nil == "HI" && true && :symbol  && 1}
-  Then { foo.should == 2 }
+  Then { expect(foo).to eq(2) }
   Then { foo != 1 }
-  Then { foo.should_not == 1 }
-  Then { foo.should be_nil }
+  Then { expect(foo).to_not == 1 }
+  Then { expect(foo).to be_nil }
   Then { ary.empty? }
   Then { !null.nil? }
   Then { fail "OUCH" }

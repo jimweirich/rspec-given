@@ -35,7 +35,7 @@ describe "And" do
       @message = ex.message
     end
 
-    it "should define a message" do
+    it "defines a message" do
       message = self.class.instance_eval { @message }
       given_assert_match(/and.*without.*then/i, message)
     end

@@ -6,20 +6,20 @@ describe Given::ClassExtensions do
   describe "Given with var" do
     context "with simple given" do
       Given(:a) { 1 }
-      Then { a.should == 1 }
+      Then { expect(a).to eq(1) }
     end
 
     context "is lazy" do
       Given(:a) { trace << :given; 1 }
-      Then { a.should == 1 }
-      Then { trace.should == [] }
-      Then { a; trace.should == [:given] }
+      Then { expect(a).to eq(1) }
+      Then { expect(trace).to eq([]) }
+      Then { a; expect(trace).to eq([:given]) }
 
       context "when nested" do
         Given(:a) { trace << :nested; 2 }
-        Then { a.should == 2 }
-        Then { trace.should == [] }
-        Then { a; trace.should == [:nested] }
+        Then { expect(a).to eq(2) }
+        Then { expect(trace).to eq([]) }
+        Then { a; expect(trace).to eq([:nested]) }
       end
     end
   end
@@ -27,11 +27,11 @@ describe Given::ClassExtensions do
   describe "Given without var" do
     context "is lazy" do
       Given { trace << :given }
-      Then { trace.should == [:given] }
+      Then { expect(trace).to eq([:given]) }
 
       context "when nested" do
         Given { trace << :nested }
-        Then { trace.should == [:given, :nested] }
+        Then { expect(trace).to eq([:given, :nested]) }
       end
     end
   end
@@ -39,20 +39,20 @@ describe Given::ClassExtensions do
   describe "Given!" do
     context "with simple given" do
       Given!(:a) { 1 }
-      Then { a.should == 1 }
+      Then { expect(a).to eq(1) }
     end
 
     context "is not lazy" do
       Given!(:a) { trace << :given; 1 }
-      Then { a.should == 1 }
-      Then { trace.should == [:given] }
-      Then { a; trace.should == [:given] }
+      Then { expect(a).to eq(1) }
+      Then { expect(trace).to eq([:given]) }
+      Then { a; expect(trace).to eq([:given]) }
     end
 
     context "when preceeded by a Given block" do
       Given { trace << :given }
       Given!(:other) { trace << :given_bang }
-      Then { trace.should == [:given, :given_bang] }
+      Then { expect(trace).to eq([:given, :given_bang]) }
     end
   end
 
@@ -65,12 +65,12 @@ describe Given::ClassExtensions do
     When(:result_outer) { trace << :when_result_outer }
 
     Then {
-      trace.should == [
-        :before_outer, :before2_outer,
-        :given_outer, :given_bang_outer,
-        :when_outer,
-        :when_result_outer,
-      ]
+      expect(trace).to eq([
+          :before_outer, :before2_outer,
+          :given_outer, :given_bang_outer,
+          :when_outer,
+          :when_result_outer,
+        ])
     }
 
     context "with a nested When" do
@@ -81,14 +81,14 @@ describe Given::ClassExtensions do
       When { trace << :when_inner }
 
       Then {
-        trace.should == [
-          :before_outer, :before2_outer,
-          :given_outer, :given_bang_outer,
-          :given_inner, :given_bang_inner,
-          :when_outer, :when_result_outer,
-          :before_inner,
-          :when_result_inner, :when_inner,
-        ]
+        expect(trace).to eq([
+            :before_outer, :before2_outer,
+            :given_outer, :given_bang_outer,
+            :given_inner, :given_bang_inner,
+            :when_outer, :when_result_outer,
+            :before_inner,
+            :when_result_inner, :when_inner,
+          ])
       }
     end
 
@@ -98,13 +98,13 @@ describe Given::ClassExtensions do
       Given!(:x_inner) { trace << :given_bang_inner }
 
       Then {
-        trace.should == [
-          :before_outer, :before2_outer,
-          :given_outer, :given_bang_outer,
-          :given_inner, :given_bang_inner,
-          :when_outer, :when_result_outer,
-          :before_inner,
-        ]
+        expect(trace).to eq([
+            :before_outer, :before2_outer,
+            :given_outer, :given_bang_outer,
+            :given_inner, :given_bang_inner,
+            :when_outer, :when_result_outer,
+            :before_inner,
+          ])
       }
     end
   end
@@ -112,62 +112,62 @@ describe Given::ClassExtensions do
   describe "When without result" do
     Given { trace << :given }
     When { trace << :when }
-    Then { trace.should == [:given, :when] }
+    Then { expect(trace).to eq([:given, :when]) }
 
     context "with nesting" do
       Given { trace << :nested }
-      Then { trace.should == [:given, :nested, :when] }
+      Then { expect(trace).to eq([:given, :nested, :when]) }
     end
 
     context "with nesting of When" do
       Given { trace << :nested }
       When { trace << :when_nested }
-      Then { trace.should == [:given, :nested, :when, :when_nested] }
+      Then { expect(trace).to eq([:given, :nested, :when, :when_nested]) }
     end
   end
 
   describe "When with result" do
     Given { trace << :given }
     When(:result) { trace << :when; :result }
-    Invariant { result.should == :result }
+    Invariant { expect(result).to eq(:result) }
 
-    Then { trace.should == [:given, :when] }
+    Then { expect(trace).to eq([:given, :when]) }
 
     context "with nesting" do
       Given { trace << :nested }
-      Then { trace.should == [:given, :nested, :when] }
+      Then { expect(trace).to eq([:given, :nested, :when]) }
     end
 
     context "with nesting of When" do
       Given { trace << :nested }
       When { trace << :when_nested }
-      Then { trace.should == [:given, :nested, :when, :when_nested] }
+      Then { expect(trace).to eq([:given, :nested, :when, :when_nested]) }
     end
   end
 
   describe "When with unreferenced result" do
     Given { trace << :given }
     When(:result) { trace << :when; :result }
-    Then { trace.should == [:given, :when] }
+    Then { expect(trace).to eq([:given, :when]) }
   end
 
   describe "Invariant with When" do
     Given { trace << :given }
     Invariant { trace << :invariant }
     When { trace << :when }
-    Then { trace.should == [:given, :when, :invariant] }
+    Then { expect(trace).to eq([:given, :when, :invariant]) }
   end
 
   describe "Invariant without When" do
     Given { trace << :given }
     Invariant { trace << :invariant }
-    Then { trace.should == [:given, :invariant] }
+    Then { expect(trace).to eq([:given, :invariant]) }
   end
 
   describe "Then" do
     Given { trace << :given }
     Then { trace << :then }
-    And { trace.should == [:given, :then] }
+    And { expect(trace).to eq([:given, :then]) }
   end
 
   describe "Then referencing givens" do
@@ -184,7 +184,7 @@ describe Given::ClassExtensions do
     Given { trace << :given }
     Then { trace << :then }
     And { trace << :and}
-    And { trace.should == [:given, :then, :and] }
+    And { expect(trace).to eq([:given, :then, :and]) }
   end
 
 end
@@ -196,9 +196,9 @@ describe "use_natural_assertions" do
     When(:result) { CONTEXT.use_natural_assertions }
 
     if ::Given::NATURAL_ASSERTIONS_SUPPORTED
-      Then { result.should_not have_failed }
+      Then { expect(result).to_not have_failed }
     else
-      Then { result.should have_failed(ArgumentError) }
+      Then { expect(result).to have_failed(ArgumentError) }
     end
   end
 end

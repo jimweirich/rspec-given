@@ -10,15 +10,15 @@ module Given
     When(:result) { cache.get(file_name) }
 
     context "when reading the file" do
-      Then { result[DESCRIBE_LINE].should =~ /describe FileCache do/ }
-      Then { result.size.should == MAX_LINE }
+      Then { expect(result[DESCRIBE_LINE]).to match(/describe FileCache do/) }
+      Then { expect(result.size).to eq MAX_LINE }
     end
 
     context "when getting the same file twice" do
-      Given { cache.should_receive(:read_lines).once.and_return(["A"]) }
+      Given { expect(cache).to receive(:read_lines).once.and_return(["A"]) }
       When(:result2) { cache.get(file_name) }
-      Then { result.should == ["A"] }
-      Then { result2.should == ["A"] }
+      Then { expect(result).to eq ["A"] }
+      Then { expect(result2).to eq ["A"] }
     end
   end
 end

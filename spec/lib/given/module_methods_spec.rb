@@ -5,9 +5,9 @@ describe "RSpec::Given.use_natural_assertions" do
     When(:result) { ::Given.use_natural_assertions }
 
     if ::Given::NATURAL_ASSERTIONS_SUPPORTED
-      Then { result.should_not have_failed }
+      Then { expect(result).to_not have_failed }
     else
-      Then { result.should have_failed(ArgumentError) }
+      Then { expect(result).to have_failed(ArgumentError) }
     end
   end
 end

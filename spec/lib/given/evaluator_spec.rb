@@ -6,10 +6,10 @@ describe "Environmental Access" do
   Given(:a) { 2 }
   FauxThen { X + a }
 
-  Then { block_result.should == 3 }
-  Then { ev.eval_string("X").should == "1" }
-  Then { ev.eval_string("a").should == "2" }
-  Then { ev.eval_string("X+a").should == "3" }
+  Then { expect(block_result).to eq(3) }
+  Then { expect(ev.eval_string("X")).to eq("1") }
+  Then { expect(ev.eval_string("a")).to eq("2") }
+  Then { expect(ev.eval_string("X+a")).to eq("3") }
 end
 
 module Nested
@@ -18,10 +18,10 @@ module Nested
     use_natural_assertions false
     Given(:a) { 2 }
     FauxThen { X + a }
-    Then { block_result.should == 3 }
-    Then { ev.eval_string("a").should == "2" }
-    Then { ev.eval_string("X").should == "1" }
-    Then { ev.eval_string("a+X").should == "3" }
+    Then { expect(block_result).to eq(3) }
+    Then { expect(ev.eval_string("a")).to eq("2") }
+    Then { expect(ev.eval_string("X")).to eq("1") }
+    Then { expect(ev.eval_string("a+X")).to eq("3") }
   end
 end
 
@@ -29,6 +29,6 @@ describe "Evaluator with error object" do
   use_natural_assertions false
   FauxThen { 1 }
   When(:result) { ev.eval_string("fail 'XYZ'") }
-  Then { result.class.should == Given::EvalErr }
-  Then { result.inspect.should == "RuntimeError: XYZ" }
+  Then { expect(result.class).to eq(Given::EvalErr) }
+  Then { expect(result.inspect).to eq("RuntimeError: XYZ") }
 end

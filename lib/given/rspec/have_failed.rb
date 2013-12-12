@@ -19,10 +19,10 @@ module RSpec
       # Typical Usage:
       #
       #    When(:result) { fail "OUCH" }
-      #    Then { result.should have_failed(StandardError, /OUCH/) }
+      #    Then { expect(result).to have_failed(StandardError, /OUCH/) }
       #
       #    When(:result) { good_code }
-      #    Then { result.should_not have_failed }
+      #    Then { expect(result).to_not have_failed }
       #
       # :call-seq:
       #    have_failed([exception_class [, message_pattern]])

@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.1.1.
+Covering rspec-given, minitest-given, and given-core, version 3.2.0.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -19,8 +19,7 @@ structure RSpec specifications.
 
 ## Status
 
-* rspec-given is ready for production use.
-* minitest-given is experimental.
+* rspec-given and minitest-given are ready for production use.
 
 ### RSpec/Given
 
@@ -311,11 +310,15 @@ specify that behavior:
 
 ```ruby
     When(:result) { stack.pop }
-    Then { result.should have_failed(UnderflowError, /empty/) }
+    Then { expect(result).to have_failed(UnderflowError, /empty/) }
 ```
 
-Note that the arguments to the 'have_failed' matcher are the same as
+The arguments to the 'have_failed' matcher are the same as
 those given to the standard RSpec matcher 'raise_error'.
+
+*NOTE:* Prior to RSpec 3, the .should method worked with the failed
+result. In RSpec 3 the <code>.should</code> method is deprecated and
+should not be used with the failed result.
 
 ### Then
 
@@ -627,7 +630,7 @@ context.
   context "Outer" do
     context "Inner" do
       Then { a == b }               # Natural Assertions
-      Then { a.should == b }        # RSpec style
+      Then { a.should == b }        # Deprecated RSpec style
       Then { expect(a).to eq(b) }   # RSpec style
       Then { assert_equal b, a }    # Minitest style
       Then { a.must_equal b }       # Minitest style
@@ -711,7 +714,7 @@ For example, the following two Then clauses are equivalent:
 
 ```ruby
     # Using an RSpec matcher
-    Then { result.should have_failed(StandardError, /message/) }
+    Then { expect(result).to have_failed(StandardError, /message/) }
 
     # Using natural assertions
     Then { result == Failure(StandardError, /message/) }
@@ -845,6 +848,10 @@ rspec-given, minitest-given and given_core are available under the MIT
 License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* Version 3.2.0
+
+  * Add support for RSpec 3 beta
 
 * Version 3.1.0
 

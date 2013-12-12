@@ -8,7 +8,7 @@ describe Given::Failure do
   Given(:exception) { StandardError.new("Oops") }
   Given(:failure) { Given::Failure.new(exception) }
 
-  Then { failure.is_a?(Given::Failure).should be_true }
+  Then { expect(failure.is_a?(Given::Failure)).to eq(true) }
 
   describe "general operations" do
     Then { expect { failure.to_s }.to raise_error(StandardError, "Oops") }
@@ -20,10 +20,10 @@ describe Given::Failure do
     Then { expect { ! failure }.to raise_error(StandardError, "Oops") }
   end
 
-  describe "should raise error" do
-    Then { failure.should raise_error(StandardError, "Oops") }
-    Then { failure.should raise_error(StandardError) }
-    Then { failure.should raise_error }
+  describe "raising error" do
+    Then { expect(failure).to raise_error(StandardError, "Oops") }
+    Then { expect(failure).to raise_error(StandardError) }
+    Then { expect(failure).to raise_error }
   end
 
   describe "== have_failed" do

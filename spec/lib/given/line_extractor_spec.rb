@@ -27,12 +27,12 @@ module Given
         "  of their fellowmen\n"
       }
       Given(:expected_line) { "  for all good men\n" }
-      Then { result.should == expected_line }
+      Then { expect(result).to eq(expected_line) }
     end
 
     context "when the line doesn't exist" do
       Given(:input) { "" }
-      Then { result.should be_nil }
+      Then { expect(result).to be_nil }
     end
 
     context "when the line has leading and trailing white space" do
@@ -40,7 +40,7 @@ module Given
         "  Then { y } \n" +
         "  Then { x }\n"
       }
-      Then { result.should == "  Then { x }\n" }
+      Then { expect(result).to eq("  Then { x }\n") }
     end
 
     context "when the Then is split over several lines with {}" do
@@ -51,7 +51,7 @@ module Given
         "  }\n" +
         "end\n"
       }
-      Then { result.should == "  Then {\n    x\n  }\n" }
+      Then { expect(result).to eq("  Then {\n    x\n  }\n") }
     end
 
     context "when the Then is has blank lines" do
@@ -62,7 +62,7 @@ module Given
         "  }\n" +
         "end\n"
       }
-      Then { result.should == "  Then {\n\n    x\n  }\n" }
+      Then { expect(result).to eq("  Then {\n\n    x\n  }\n") }
     end
 
     context "when the Then is split over several lines with do/end" do
@@ -73,12 +73,12 @@ module Given
         "  end\n" +
         "end\n"
       }
-      Then { result.should == "  Then do\n    x\n  end\n" }
+      Then { expect(result).to eq("  Then do\n    x\n  end\n") }
     end
 
     describe "converting to a string" do
       Given(:input) { "" }
-      Then { extractor.to_s.should =~ /line *extractor/i }
+      Then { expect(extractor.to_s).to match(/line *extractor/i) }
     end
   end
 end

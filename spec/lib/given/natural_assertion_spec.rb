@@ -9,107 +9,107 @@ describe Given::NaturalAssertion do
   describe "#content?" do
     context "with empty block" do
       FauxThen { }
-      Then { na.should_not have_content }
+      Then { expect(na).to_not have_content }
     end
     context "with block returning false" do
       FauxThen { false }
-      Then { na.should have_content }
+      Then { expect(na).to have_content }
     end
   end
 
   describe "failure messages" do
     let(:msg) { na.message }
-    Invariant { msg.should =~ /^FauxThen expression/ }
+    Invariant { expect(msg).to match(/^FauxThen expression/) }
 
     context "with equals assertion" do
       Given(:a) { 1 }
       FauxThen { a == 2 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto equal: +2\b/ }
-      Then { msg.should =~ /\bfalse +<- +a == 2\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto equal: +2\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a == 2\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with equals assertion with do/end" do
       Given(:a) { 1 }
       FauxThen do a == 2 end
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto equal: +2\b/ }
-      Then { msg.should =~ /\bfalse +<- +a == 2\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto equal: +2\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a == 2\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with not-equals assertion" do
       Given(:a) { 1 }
       FauxThen { a != 1 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto not equal: +1\b/ }
-      Then { msg.should =~ /\bfalse +<- +a != 1\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto not equal: +1\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a != 1\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with less than assertion" do
       Given(:a) { 1 }
       FauxThen { a < 1 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto be less than: +1\b/ }
-      Then { msg.should =~ /\bfalse +<- +a < 1\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto be less than: +1\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a < 1\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with less than or equal to assertion" do
       Given(:a) { 1 }
       FauxThen { a <= 0 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto be less or equal to: +0\b/ }
-      Then { msg.should =~ /\bfalse +<- +a <= 0\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto be less or equal to: +0\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a <= 0\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with greater than assertion" do
       Given(:a) { 1 }
       FauxThen { a > 1 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto be greater than: +1\b/ }
-      Then { msg.should =~ /\bfalse +<- +a > 1\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto be greater than: +1\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a > 1\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with greater than or equal to assertion" do
       Given(:a) { 1 }
       FauxThen { a >= 3 }
-      Then { msg.should =~ /\bexpected: +1\b/ }
-      Then { msg.should =~ /\bto be greater or equal to: +3\b/ }
-      Then { msg.should =~ /\bfalse +<- +a >= 3\b/ }
-      Then { msg.should =~ /\b1 +<- +a\b/ }
+      Then { expect(msg).to match(/\bexpected: +1\b/) }
+      Then { expect(msg).to match(/\bto be greater or equal to: +3\b/) }
+      Then { expect(msg).to match(/\bfalse +<- +a >= 3\b/) }
+      Then { expect(msg).to match(/\b1 +<- +a\b/) }
     end
 
     context "with match assertion" do
       Given(:s) { "Hello" }
       FauxThen { s =~ /HI/ }
-      Then { msg.should =~ /\bexpected: +"Hello"$/ }
-      Then { msg.should =~ /\bto match: +\/HI\/$/ }
-      Then { msg.should =~ /\bnil +<- +s =~ \/HI\/$/ }
-      Then { msg.should =~ /"Hello" +<- +s$/ }
+      Then { expect(msg).to match(/\bexpected: +"Hello"$/) }
+      Then { expect(msg).to match(/\bto match: +\/HI\/$/) }
+      Then { expect(msg).to match(/\bnil +<- +s =~ \/HI\/$/) }
+      Then { expect(msg).to match(/"Hello" +<- +s$/) }
     end
 
     context "with not match assertion" do
       Given(:s) { "Hello" }
       FauxThen { s !~ /Hello/ }
-      Then { msg.should =~ /\bexpected: +"Hello"$/ }
-      Then { msg.should =~ /\bto not match: +\/Hello\/$/ }
-      Then { msg.should =~ /\bfalse +<- +s !~ \/Hello\/$/ }
-      Then { msg.should =~ /"Hello" +<- +s$/ }
+      Then { expect(msg).to match(/\bexpected: +"Hello"$/) }
+      Then { expect(msg).to match(/\bto not match: +\/Hello\/$/) }
+      Then { expect(msg).to match(/\bfalse +<- +s !~ \/Hello\/$/) }
+      Then { expect(msg).to match(/"Hello" +<- +s$/) }
     end
 
     context "with exception" do
       Given(:ary) { nil }
       FauxThen { ary[1] == 3 }
-      Then { msg.should =~ /\bexpected: +NoMethodError/ }
-      Then { msg.should =~ /\bto equal: +3$/ }
-      Then { msg.should =~ /\bNoMethodError.+NilClass\n +<- +ary\[1\] == 3$/ }
-      Then { msg.should =~ /\bNoMethodError.+NilClass\n +<- +ary\[1\]$/ }
-      Then { msg.should =~ /\bnil +<- +ary$/ }
+      Then { expect(msg).to match(/\bexpected: +NoMethodError/) }
+      Then { expect(msg).to match(/\bto equal: +3$/) }
+      Then { expect(msg).to match(/\bNoMethodError.+NilClass\n +<- +ary\[1\] == 3$/) }
+      Then { expect(msg).to match(/\bNoMethodError.+NilClass\n +<- +ary\[1\]$/) }
+      Then { expect(msg).to match(/\bnil +<- +ary$/) }
     end
 
     context "with value with newlines" do
@@ -123,10 +123,10 @@ describe Given::NaturalAssertion do
       end
       Given(:zzzz) { FunkyInspect.new }
       FauxThen { zzzz.ok? }
-      Then { msg.should =~ /\n  false   <- zzzz\.ok\?/ }
-      Then { msg.should =~ /\n  XXXX\n/ }
-      Then { msg.should =~ /\n  YYYY\n/ }
-      Then { msg.should =~ /\n          <- zzzz$/ }
+      Then { expect(msg).to match(/\n  false   <- zzzz\.ok\?/) }
+      Then { expect(msg).to match(/\n  XXXX\n/) }
+      Then { expect(msg).to match(/\n  YYYY\n/) }
+      Then { expect(msg).to match(/\n          <- zzzz$/) }
     end
   end
 
@@ -134,7 +134,7 @@ describe Given::NaturalAssertion do
     context "with no statements" do
       FauxThen {  }
       When(:result) { na.message }
-      Then { result.should_not have_failed }
+      Then { expect(result).to_not have_failed }
     end
 
     context "with multiple statements" do
@@ -143,7 +143,7 @@ describe Given::NaturalAssertion do
         ary[1] == 3
       }
       When(:result) { na.message }
-      Then { result.should have_failed(Given::InvalidThenError, /multiple.*statements/i) }
+      Then { expect(result).to have_failed(Given::InvalidThenError, /multiple.*statements/i) }
     end
 
   end

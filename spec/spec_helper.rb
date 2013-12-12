@@ -8,21 +8,21 @@ Dir[dir + "/support/*.rb"].each do |fn|
 end
 
 def given_assert_equal(expected, actual)
-  actual.should == expected
+  expect(actual).to eq(expected)
 end
 
 def given_assert(cond)
-  cond.should be_true
+  expect(cond).to be_truthy
 end
 
 def given_assert_match(pattern, actual)
-  actual.should =~ pattern
+  expect(actual).to match(pattern)
 end
 
 def given_assert_not_match(pattern, actual)
-  actual.should_not =~ pattern
+  expect(actual).to_not match(pattern)
 end
 
 def given_assert_raises(error, pattern=nil, &block)
-  block.should raise_error(error, pattern)
+  expect(&block).to raise_error(error, pattern)
 end
