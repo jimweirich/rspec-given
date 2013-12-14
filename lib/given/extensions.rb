@@ -103,15 +103,23 @@ module Given
       _gvn_check_ands
     end
 
+    # Determine of the natural assertion pass/fail status of the block
+    def _gvn_block_passed?(block)
+      passed = instance_eval(&block)
+      passed = passed.to_bool if passed.respond_to?(:to_bool)
+      passed
+    end
+
     # Evaluate a Then, And, or Invariant assertion.
     def _gvn_evaluate(clause_type, block)   # :nodoc:
       Given.start_evaluation
-      passed = instance_eval(&block)
+      passed = _gvn_block_passed?(block)
       if ! Given.explicit_assertions? && _gvn_na_configured?
         _gvn_naturally_assert(clause_type, block, passed)
       end
     end
 
+    # Naturally assert the block (based on +passed+).
     def _gvn_naturally_assert(clause_type, block, passed)
       Given.count_assertion
       unless passed

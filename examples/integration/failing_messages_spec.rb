@@ -35,4 +35,9 @@ describe "Failing Messages" do
     And  { ios.out =~ /1 *<- index$/ }
     And  { ios.out =~ /"X" *<- value$/ }
   end
+
+  context "when returning false from ToBool" do
+    Given(:failing_test) { "to_bool_returns_false.rb" }
+    Then { ios.out =~ /Failure\/Error: Then \{ ToBool.new \}/ }
+  end
 end

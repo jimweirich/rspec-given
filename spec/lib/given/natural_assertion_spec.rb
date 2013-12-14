@@ -17,6 +17,30 @@ describe Given::NaturalAssertion do
     end
   end
 
+  describe "passing criteria" do
+    context "with true" do
+      FauxThen { true }
+      Then { _gvn_block_passed?(faux_block) }
+    end
+
+    context "with false" do
+      FauxThen { false }
+      Then { ! _gvn_block_passed?(faux_block) }
+    end
+
+    context "with to_bool/true" do
+      Given(:res) { double(:to_bool => true) }
+      FauxThen { res }
+      Then { _gvn_block_passed?(faux_block) }
+    end
+
+    context "with to_bool/false" do
+      Given(:res) { double(:to_bool => false) }
+      FauxThen { res }
+      Then { ! _gvn_block_passed?(faux_block) }
+    end
+  end
+
   describe "failure messages" do
     let(:msg) { na.message }
     Invariant { expect(msg).to match(/^FauxThen expression/) }

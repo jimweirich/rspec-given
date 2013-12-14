@@ -31,6 +31,10 @@ module Faux
   end
 
   module IX
+    def faux_block
+      self.class.the_block
+    end
+
     def block_result
       instance_eval(&self.class.the_block)
     end
