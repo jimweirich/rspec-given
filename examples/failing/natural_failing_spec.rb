@@ -1,5 +1,4 @@
 require 'rspec/given'
-require 'rspec/given/natural_assertion'
 
 describe "Natural Assertions" do
   use_natural_assertions
