@@ -830,7 +830,7 @@ unconditionally, then add the following line to your spec helper file:
     Given.source_caching_disabled = true
 ```
 
-Natural assertions are disabled by default. To globally configure
+Natural assertions are enabled by default. To globally configure
 natural assertions, add one of the following lines to your spec_helper
 file:
 
