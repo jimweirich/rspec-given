@@ -41,6 +41,13 @@ task :tag do
   sh "git tag #{tag_name}"
 end
 
+desc "Publish the gems"
+task :publish => [:clobber, :gem] do
+  FileList['pkg/*.gem'].each do |gemname|
+    sh "gem push #{gemname}"
+  end
+end
+
 # Running examples ---------------------------------------------------
 
 desc "Run all the examples"
