@@ -32,3 +32,10 @@ describe "Evaluator with error object" do
   Then { expect(result.class).to eq(Given::EvalErr) }
   Then { expect(result.inspect).to eq("RuntimeError: XYZ") }
 end
+
+describe "Evaluator with long inspect string" do
+  use_natural_assertions false
+  Given(:long) { "X" * 3000 }
+  FauxThen { long }
+  Then { expect(ev.eval_string("long")).to eq(%{"#{long[0...2000]} (...truncated...)}) }
+end
