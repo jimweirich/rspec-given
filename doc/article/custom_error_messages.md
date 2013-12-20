@@ -26,50 +26,40 @@ Assuming that the <code>html_content</code> method is incomplete and
 not yet marking emphasized text, the failure message from the
 specification will be:
 
-<pre>
-1) Page content conversion to HTML
-   Failure/Error: Then { page.html_content == "Have a <em>nice</em> day." }
-     Then expression failed at .../spec/models/page_spec.rb:38
-     expected: "Have a _nice_ day."
-     to equal: "Have a <em>nice</em> day."
-       false   <- page.html_content == "Have a <em>nice</em> day."
-       "Have a _nice_ day."
-                <- page.html_content
-       #<Page name: "HomePage", content: "Have a _nice_ day." ...>
-               <- page
-   # ./spec/models/page_spec.rb:38:in `block in Then'
-</pre>
+    1) Page content conversion to HTML
+       Failure/Error: Then { page.html_content == "Have a <em>nice</em> day." }
+         Then expression failed at .../spec/models/page_spec.rb:38
+         expected: "Have a _nice_ day."
+         to equal: "Have a <em>nice</em> day."
+           false   <- page.html_content == "Have a <em>nice</em> day."
+           "Have a _nice_ day."
+                    <- page.html_content
+           #<Page name: "HomePage", content: "Have a _nice_ day." ...>
+                   <- page
+       # ./spec/models/page_spec.rb:38:in `block in Then'
 
 Let's break that down:
 
 **It says what failed:**
 
-<pre>
-Failure/Error: Then { page.html_content == "Have a <em>nice</em> day." }
-</pre>
+    Failure/Error: Then { page.html_content == "Have a <em>nice</em> day." }
 
 **It says where it failed:**
 
-<pre>
-hen expression failed at .../spec/models/page_spec.rb:38
-</pre>
+    Then expression failed at .../spec/models/page_spec.rb:38
 
 **It says what was expected:**
 
-<pre>
-expected: "Have a _nice_ day."
-to equal: "Have a <em>nice</em> day."
-</pre>
+    expected: "Have a _nice_ day."
+    to equal: "Have a <em>nice</em> day."
 
 **It then breaks down each subexpression and displays its value:**
 
-<pre>
-false   <- page.html_content == "Have a <em>nice</em> day."
-"Have a _nice_ day."
-        <- page.html_content
-#<Page name: "HomePage", content: "Have a _nice_ day." ...>
-        <- page
-</pre>
+    false   <- page.html_content == "Have a <em>nice</em> day."
+    "Have a _nice_ day."
+            <- page.html_content
+    #<Page name: "HomePage", content: "Have a _nice_ day." ...>
+            <- page
 
 All of this happens without the developer needing to write any special
 error matchers or custom output.  Everything you need to debug a spec
@@ -137,20 +127,18 @@ for presence.  The failure message clearly tells you that the spec
 failed because no error messages on the <code>name</code> field
 mentioned 'blank'.
 
-<pre>
-1) Page validations with missing name
-   Failure/Error: Then { page.invalid? }
-     And expression failed at ./spec/models/page_spec.rb:27
-     Failing expression: And  { page.errors[:name].any? { |msg| msg =~ /blank/ } }
-       false   <- page.errors[:name].any? { |msg| msg =~ /blank/ }
-       ["is not a wiki name"]
-               <- page.errors[:name]
-       #<ActiveModel::Errors:... @messages={:name=>["is not a wiki name"]}>
-               <- page.errors
-       #<Page name: nil, content: "CONTENT", ...>
-               <- page
-   # ./spec/models/page_spec.rb:25:in `block in Then'
-</pre>
+    1) Page validations with missing name
+       Failure/Error: Then { page.invalid? }
+         And expression failed at ./spec/models/page_spec.rb:27
+         Failing expression: And  { page.errors[:name].any? { |msg| msg =~ /blank/ } }
+           false   <- page.errors[:name].any? { |msg| msg =~ /blank/ }
+           ["is not a wiki name"]
+                   <- page.errors[:name]
+           #<ActiveModel::Errors:... @messages={:name=>["is not a wiki name"]}>
+                   <- page.errors
+           #<Page name: nil, content: "CONTENT", ...>
+                   <- page
+       # ./spec/models/page_spec.rb:25:in `block in Then'
 
 We get informative error messages, which is exactly what we want.
 
@@ -180,15 +168,13 @@ But there is a downside.  Because <code>invalid?</code> only returns
 true/false, and there are no mention of the <code>errors</code> object
 in the Then clause, the failure message is really uninformative:
 
-<pre>
-1) Page validations with missing name
-   Failure/Error: Then { invalid_on(page, :name, /blank/) }
-     Then expression failed at ./spec/models/page_spec.rb:31
-       false   <- invalid_on(page, :name, /blank/)
-       #<Page name: nil, content: "CONTENT", ...>
-               <- page
-   # ./spec/models/page_spec.rb:31:in `block in Then'
-</pre>
+    1) Page validations with missing name
+       Failure/Error: Then { invalid_on(page, :name, /blank/) }
+         Then expression failed at ./spec/models/page_spec.rb:31
+           false   <- invalid_on(page, :name, /blank/)
+           #<Page name: nil, content: "CONTENT", ...>
+                   <- page
+       # ./spec/models/page_spec.rb:31:in `block in Then'
 
 All we know is that the page is invalid.  We get no indication of what
 fields were actually in error and what the error messages actually
@@ -277,18 +263,16 @@ The failure message returned by <code>MustBeInvalid</code> is once
 again clear and to the point.  It contains all the information needed
 for debugging.
 
-<pre>
-1) Page validations with missing name
-   Failure/Error: Then { must_be_invalid(page, :name, /blank/) }
-     Then expression failed at ./spec/models/page_spec.rb:31
-       Page had no errors matching (?-mix:blank) on field name
-         Errors were:
-           * Name is not a wiki name
-                    <- must_be_invalid(page, :name, /blank/)
-       #<Page name: nil, content: "CONTENT", ...>
-                    <- page
-   # ./spec/models/page_spec.rb:31:in `block in Then'
-</pre>
+    1) Page validations with missing name
+       Failure/Error: Then { must_be_invalid(page, :name, /blank/) }
+         Then expression failed at ./spec/models/page_spec.rb:31
+           Page had no errors matching (?-mix:blank) on field name
+             Errors were:
+               * Name is not a wiki name
+                        <- must_be_invalid(page, :name, /blank/)
+           #<Page name: nil, content: "CONTENT", ...>
+                        <- page
+       # ./spec/models/page_spec.rb:31:in `block in Then'
 
 ## Summary
 
