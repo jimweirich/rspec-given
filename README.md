@@ -466,7 +466,24 @@ clauses and _before_ blocks.
 RSpec/Given now supports the use of "natural assertions" in _Then_,
 _And_, and _Invariant_ blocks. Natural assertions are just Ruby
 conditionals, without the _should_ or _expect_ methods that RSpec
-provides. Here are the Then/And examples showing natural assertions:
+provides.
+
+When using natural assertions, the value of the _Then_ expression
+determines the pass/fail state of the test.  If the expression is
+true, the test passes.  If the test is false, the test fails.
+
+If the _Then_ expression executes an RSpec (or MiniTest) assertion
+(e.g. uses <code>should</code>, <code>expect</code> or
+<code>assert_xxx</code>), then the true/false value will be ignored.
+This allows natural assertions and regular assertions clauses to be
+intermixed at will.
+
+In addition, if the value of a _Then_ class returns an object that
+responds to <code>to_bool</code>, then <code>to_bool</code> will be
+called and the return value of that will be used to determine if the
+test passed or failed.
+
+Here are the Then/And examples showing natural assertions:
 
 ### Using Natural Assertions
 
