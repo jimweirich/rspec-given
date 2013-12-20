@@ -866,6 +866,11 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.3.0
+
+  * Add support for <code>to_bool</code>.
+  * Restrict length of inspect strings printed to 2000 characters.
+
 * Version 3.2.0
 
   * Add support for RSpec 3 beta
