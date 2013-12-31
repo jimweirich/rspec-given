@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.3.0.beta21.
+Covering rspec-given, minitest-given, and given-core, version 3.4.0.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -865,6 +865,11 @@ rspec-given, minitest-given and given_core are available under the MIT
 License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* Version 3.4.0
+
+  * Bare failure objects in Then clauses will now propagate their
+    captured failure (added <code>to_bool</code> to failure object).
 
 * Version 3.3.0
 
