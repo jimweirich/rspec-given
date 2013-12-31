@@ -104,7 +104,7 @@ module Given
     end
 
     # Determine of the natural assertion pass/fail status of the block
-    def _gvn_block_passed?(block)
+    def _gvn_block_passed?(block) # :nodoc:
       passed = instance_eval(&block)
       passed = passed.to_bool if passed.respond_to?(:to_bool)
       passed
@@ -247,11 +247,12 @@ module Given
     # :call-seq:
     #   Then { ... assertion ... }
     #
-    def Then(&block)
+    def Then(opts={}, &block)
+      on_eval = opts.fetch(:on_eval, "_gvn_then")
       file, line = Given.location_of(block)
       description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
       cmd = description ? "it(description)" : "specify"
-      eval %{#{cmd} do _gvn_then(&block) end}, binding, file, line
+      eval %{#{cmd} do #{on_eval}(&block) end}, binding, file, line
       _Gvn_context_info[:then_defined] = true
     end
 
