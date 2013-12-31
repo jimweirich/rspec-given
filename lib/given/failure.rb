@@ -60,7 +60,8 @@ module Given
       method_symbol == :call ||
         method_symbol == :== ||
         method_symbol == :!= ||
-        method_symbol == :is_a?
+        method_symbol == :is_a? ||
+        method_symbol == :to_bool
     end
 
     private
