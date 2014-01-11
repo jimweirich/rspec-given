@@ -758,11 +758,15 @@ _expect_.
 
 ### Platform Support
 
-Natural assertions use the Ripper library to parse the failing
-condition and find all the sub-expression values upon a failure.
+Given uses the Ripper library to parse the source lines and failing
+conditions to find all the sub-expression values upon a failure.
 Currently Ripper is not supported on Rubinius and versions of JRuby
-prior to JRuby-1.7.5. Natural assertions are disabled in that case.
-However, all other features of Given are supported.
+prior to JRuby-1.7.5.
+
+If you want to use a version of Ruby that does not support Ripper,
+then natural assertions will disabled. In addition, you should also
+disable source caching in the configuration (see the configuration
+section below).
 
 ### Non-Spec Assertions
 
@@ -787,7 +791,7 @@ end
 
 To use the non-testing assertions, you need to require the
 'given/assertions' file and then include the
-<code>Given::Assertions</code> module into what ever class is using
+code>Given::Assertions</code> module into what ever class is using
 the
 <code>Precondition</code>/<code>Postcondition</code>/<code>Assert</code>
 methods. The code block for these assertions should always be a
