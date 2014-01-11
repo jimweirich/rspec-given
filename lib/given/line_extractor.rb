@@ -1,3 +1,5 @@
+require 'ripper'
+require 'sorcerer'
 require 'given/file_cache'
 
 module Given
