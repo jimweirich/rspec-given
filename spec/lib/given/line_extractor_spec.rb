@@ -76,6 +76,16 @@ module Given
       Then { expect(result).to eq("  Then do\n    x\n  end\n") }
     end
 
+    context "when the Then is oddly formatted" do
+      Given(:input) {
+        "describe 'foobar' do\n" +
+        "  Then { result == ['a',\n" +
+        "            'a'] }\n" +
+        "end\n"
+      }
+      Then { expect(result).to eq("  Then { result == ['a',\n            'a'] }\n") }
+    end
+
     describe "converting to a string" do
       Given(:input) { "" }
       Then { expect(extractor.to_s).to match(/line *extractor/i) }

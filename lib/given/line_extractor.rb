@@ -19,23 +19,26 @@ module Given
 
     def extract_lines_from(lines, line_index)
       result = lines[line_index]
-      if continued?(result)
-        level = indentation_level(result)
-        begin
-          line_index += 1
-          result << lines[line_index]
-        end while indentation_level(lines[line_index]) > level
+      while result && incomplete?(result)
+        line_index += 1
+        result << lines[line_index]
       end
       result
     end
 
-    def continued?(string)
-      string =~ /(\{|do) *$/
+    def incomplete?(string)
+      ! complete_sexp?(parse(string))
     end
 
-    def indentation_level(string)
-      string =~ /^(\s*)\S/
-      $1.nil? ? 1000000 : $1.size
+    def complete_sexp?(sexp)
+      Sorcerer.source(sexp)
+      true
+    rescue Sorcerer::Resource::NotSexpError => ex
+      false
+    end
+
+    def parse(string)
+      Ripper::SexpBuilder.new(string).parse
     end
   end
 end
