@@ -23,14 +23,6 @@ module Given
     @_gvn_source_caching_disabled = value
   end
 
-  # Detect the formatting requested in the given configuration object.
-  #
-  # If the format requires it, source caching will be enabled.
-  def self.detect_formatters(c)
-    format_active = c.formatters.any? { |f| f.class.name !~ /ProgressFormatter/ }
-    Given.source_caching_disabled = ! format_active
-  end
-
   # Globally enable/disable natural assertions.
   #
   # There is a similar function in Extensions that works at a

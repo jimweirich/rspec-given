@@ -16,5 +16,5 @@ RSpec.configure do |c|
   end
 
   Given.use_natural_assertions if Given::NATURAL_ASSERTIONS_SUPPORTED
-  Given.detect_formatters(c)
+  Given.source_caching_disabled = false
 end
