@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.5.0.
+Covering rspec-given, minitest-given, and given-core, version 3.5.3.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
