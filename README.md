@@ -870,6 +870,16 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.5.3
+
+  * source_caching_disabled now hard defaults to false, rather than
+    attempting to guess the default from the formatters.
+
+* Version 3.5.0
+
+  * Use Ripper to determine complete subexpressions (rather than
+    relying on finicky indentation rules.
+
 * Version 3.4.0
 
   * Bare failure objects in Then clauses will now propagate their
