@@ -791,7 +791,7 @@ end
 
 To use the non-testing assertions, you need to require the
 'given/assertions' file and then include the
-code>Given::Assertions</code> module into what ever class is using
+<code>Given::Assertions</code> module into what ever class is using
 the
 <code>Precondition</code>/<code>Postcondition</code>/<code>Assert</code>
 methods. The code block for these assertions should always be a
