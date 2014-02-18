@@ -870,6 +870,10 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.5.4
+
+  * Accommodate the name change on RSpec's Pending exception.
+
 * Version 3.5.3
 
   * source_caching_disabled now hard defaults to false, rather than
