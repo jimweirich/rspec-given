@@ -24,8 +24,20 @@ module RSpec
         ::RSpec::Expectations.fail_with(*args)
       end
 
-      def pending_error
-        RSpec::Core::Pending::PendingDeclaredInExample
+      # Use the RSpec pending error if we can find it.
+      if defined?(RSpec::Core::Pending::PendingDeclaredInExample)
+        def pending_error
+          RSpec::Core::Pending::PendingDeclaredInExample
+        end
+      elsif defined?(RSpec::Core::Pending::SkipDeclaredInExample)
+        def pending_error
+          RSpec::Core::Pending::SkipDeclaredInExample
+        end
+      else
+        PendingError = Class.new(StandardError)
+        def pending_error
+          PendingError
+        end
       end
     end
   end

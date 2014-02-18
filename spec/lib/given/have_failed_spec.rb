@@ -40,7 +40,10 @@ module HaveFailedSpec
     end
 
     context "with a pending exception" do
-      When(:result) { fail RSpec::Core::Pending::PendingDeclaredInExample, "Required pending in example ... please ignore" }
+      def pending_error
+        RSpec::Given::Framework.new.pending_error
+      end
+      When(:result) { fail pending_error, "Required pending in example ... please ignore" }
       Then { Given.fail_with "This example should have been pending" }
     end
 
