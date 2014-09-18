@@ -12,6 +12,7 @@ if Given::NATURAL_ASSERTIONS_SUPPORTED
 end
 
 require 'given/rspec/have_failed'
+require 'given/rspec/raise_error'
 require 'given/rspec/before_extensions'
 require 'given/rspec/framework'
 require 'given/rspec/use_natural_assertions'

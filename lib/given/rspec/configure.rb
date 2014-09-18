@@ -8,6 +8,7 @@ RSpec.configure do |c|
   c.include(Given::FailureMethod)
   c.extend(RSpec::Given::BeforeHack)
   c.include(RSpec::Given::HaveFailed)
+  c.include(RSpec::Given::RaiseError)
 
   if c.respond_to?(:backtrace_exclusion_patterns)
     c.backtrace_exclusion_patterns << /lib\/rspec\/given/
