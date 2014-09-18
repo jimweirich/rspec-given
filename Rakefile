@@ -78,9 +78,9 @@ task :rs => [:specs, :rs_examples]
 desc "Run the Minitest tests and examples"
 task :mt => [:specs, :mt_examples]
 
-desc "Run the examples in RSpec 2"
-task :rs_examples => [:verify_rspec2] do
-  puts "Running examples (with RSpec2)"
+desc "Run the examples in RSpec"
+task :rs_examples => [:verify_rspec] do
+  puts "Running examples (with RSpec)"
   sh "rspec #{EXAMPLES}"
 end
 
@@ -91,20 +91,14 @@ task :mt_examples do
 end
 
 desc "Run failing examples"
-task :failing => [:verify_rspec2] do
-  puts "Running failing examples (with RSpec2)"
+task :failing => [:verify_rspec] do
+  puts "Running failing examples (with RSpec)"
   sh "rspec #{FAILING_EXAMPLES}"
 end
 
-task :verify_rspec1 do
-  sh "type spec >/dev/null 2>&1", :verbose => false do |status|
-    fail "You need to install RSpec 1 in order to test against it." unless status
-  end
-end
-
-task :verify_rspec2 do
-  sh "type rspec >/dev/null 2>&1", :verbose => false do |status|
-    fail "You need to install RSpec 2 in order to test against it." unless status
+task :verify_rspec do
+  sh "rspec >/dev/null 2>&1", :verbose => false do |status|
+    fail "You need to install RSpec in order to test against it." unless status
   end
 end
 

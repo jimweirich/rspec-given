@@ -1,15 +1,6 @@
-
-# The implementation of RaiseError changed between RSpec 2.11 and 2.12.
-if RSpec::Matchers::BuiltIn::RaiseError.instance_methods.include?(:does_not_match?)
-  require 'given/rspec/have_failed_212.rb'
-else
-  require 'given/rspec/have_failed_pre212.rb'
-end
-
 module RSpec
   module Given
     module HaveFailed
-
       # Specializes the RaiseError matcher to handle
       # Failure/non-failure objects.
 
@@ -29,7 +20,7 @@ module RSpec
       #    have_failed([exception_class [, message_pattern]]) { |ex| ... }
       #
       def have_failed(error=Exception, message=nil, &block)
-        HaveFailedMatcher.new(error, message, &block)
+        RSpec::Given::RaiseError::RaiseErrorMatcher.new(error, message, &block)
       end
       alias have_raised have_failed
     end

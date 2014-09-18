@@ -48,15 +48,14 @@ EOF
     ]
 
     s.add_dependency("given_core", "= #{Given::VERSION}")
-    s.add_dependency("rspec", ">= 2.12")
+    s.add_dependency("rspec", ">= 3.1")
 
-    s.required_ruby_version = '>= 1.9.2'
+    s.required_ruby_version = '>= 1.9.3'
     s.license = "MIT"
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/jimweirich/rspec-given"
-    s.rubyforge_project = "given"
   end
 
   MINITEST_GIVEN_SPEC = Gem::Specification.new do |s|
@@ -78,7 +77,7 @@ EOF
     s.add_dependency("given_core", "= #{Given::VERSION}")
     s.add_dependency("minitest", "> 4.3")
 
-    s.required_ruby_version = '>= 1.9.2'
+    s.required_ruby_version = '>= 1.9.3'
     s.license = "MIT"
 
     s.author = "Jim Weirich"
@@ -106,7 +105,7 @@ EOF
 
     s.add_dependency("sorcerer", ">= 0.3.7")
 
-    s.required_ruby_version = '>= 1.9.2'
+    s.required_ruby_version = '>= 1.9.3'
     s.license = "MIT"
 
     s.author = "Jim Weirich"
