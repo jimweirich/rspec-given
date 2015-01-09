@@ -55,7 +55,7 @@ EOF
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
-    s.homepage = "http://github.com/jimweirich/rspec-given"
+    s.homepage = "http://github.com/rspec-given/rspec-given"
     s.rubyforge_project = "given"
   end
 
@@ -83,7 +83,7 @@ EOF
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
-    s.homepage = "http://github.com/jimweirich/rspec-given"
+    s.homepage = "http://github.com/rspec-given/rspec-given"
     s.rubyforge_project = "given"
   end
 
@@ -111,7 +111,7 @@ EOF
 
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
-    s.homepage = "http://github.com/jimweirich/rspec-given"
+    s.homepage = "http://github.com/rspec-given/rspec-given"
     s.rubyforge_project = "given"
   end
 

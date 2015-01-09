@@ -2,9 +2,9 @@
 
 | Master |
 | :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
+| [![Master Build Status](https://secure.travis-ci.org/rspec-given/rspec-given.png?branch=master)](https://travis-ci.org/rspec-given/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.5.3.
+Covering rspec-given, minitest-given, and given-core, version 3.6.0.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -72,9 +72,9 @@ end
 ```
 
 See
-[stack_spec.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
+[stack_spec.rb](https://github.com/rspec-given/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
 and
-[example_helper.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/example_helper.rb)
+[example_helper.rb](https://github.com/rspec-given/rspec-given/blob/minispec/examples/example_helper.rb)
 
 ## Installation
 
@@ -870,6 +870,10 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.6.0
+
+  * Various fixes for RSpec 3.0 (See [#1](https://github.com/rspec-given/rspec-given/pull/1))
+
 * Version 3.5.4
 
   * Accommodate the name change on RSpec's Pending exception.
@@ -948,7 +952,7 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # Links
 
-* Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
-* Clone URL: git://github.com/jimweirich/rspec-given.git
-* Bug/Issue Reporting: [https://github.com/jimweirich/rspec-given/issues](https://github.com/jimweirich/rspec-given/issues)
-* Continuous Integration: [http://travis-ci.org/#!/jimweirich/rspec-given](http://travis-ci.org/#!/jimweirich/rspec-given)
+* Github: [https://github.com/rspec-given/rspec-given](https://github.com/rspec-given/rspec-given)
+* Clone URL: git://github.com/rspec-given/rspec-given.git
+* Bug/Issue Reporting: [https://github.com/rspec-given/rspec-given/issues](https://github.com/rspec-given/rspec-given/issues)
+* Continuous Integration: [http://travis-ci.org/#!/rspec-given/rspec-given](http://travis-ci.org/#!/rspec-given/rspec-given)
