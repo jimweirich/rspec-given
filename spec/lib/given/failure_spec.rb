@@ -21,9 +21,9 @@ describe Given::Failure do
   end
 
   describe "raising error" do
-    Then { expect(failure).to raise_error(StandardError, "Oops") }
-    Then { expect(failure).to raise_error(StandardError) }
-    Then { expect(failure).to raise_error }
+    Then { expect { failure.call }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure.call }.to raise_error(StandardError) }
+    Then { expect { failure.call }.to raise_error }
   end
 
   describe "== have_failed" do
