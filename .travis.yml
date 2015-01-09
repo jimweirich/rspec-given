@@ -4,6 +4,6 @@ env:
   - RSPEC_VERSION="2.14.0"
   - RSPEC_VERSION=">=3.1.0"
 rvm:
-  - jruby
+  - jruby-1.7.9
   - 1.9.3
   - 2.0.0
