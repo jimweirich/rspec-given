@@ -9,7 +9,7 @@ module HaveFailedSpec
     context "with a failure" do
       When(:result) { fail CustomError, "Ouch" }
 
-      Then { expect(result).to raise_error(CustomError, "Ouch") }
+      Then { expect { result.call }.to raise_error(CustomError, "Ouch") }
       Then { expect(result).to have_failed(CustomError, "Ouch") }
       Then { expect(result).to have_raised(CustomError, "Ouch") }
 
@@ -23,10 +23,10 @@ module HaveFailedSpec
     context "with a standard failure" do
       When(:result) { fail "Ouch" }
 
-      Then { expect(result).to raise_error(StandardError, "Ouch") }
-      Then { expect(result).to raise_error(StandardError, /^O/) }
-      Then { expect(result).to raise_error(StandardError) }
-      Then { expect(result).to raise_error }
+      Then { expect { result.call }.to raise_error(StandardError, "Ouch") }
+      Then { expect { result.call }.to raise_error(StandardError, /^O/) }
+      Then { expect { result.call }.to raise_error(StandardError) }
+      Then { expect { result.call }.to raise_error }
 
       Then { expect(result).to have_failed(StandardError, "Ouch") }
       Then { expect(result).to have_failed(StandardError, /^O/) }

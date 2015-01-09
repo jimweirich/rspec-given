@@ -7,7 +7,7 @@ module RSpec
       class HaveFailedMatcher < RSpec::Matchers::BuiltIn::RaiseError
         def matches?(given_proc, negative_expectation = false)
           if given_proc.is_a?(::Given::Failure)
-            super
+            super(lambda { given_proc.call }, negative_expectation)
           else
             super(lambda { }, negative_expectation)
           end
