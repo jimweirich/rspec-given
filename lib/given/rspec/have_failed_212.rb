@@ -15,7 +15,7 @@ module RSpec
 
         def does_not_match?(given_proc)
           if given_proc.is_a?(::Given::Failure)
-            super(lambda { given_proc.call })
+            super(given_proc)
           else
             super(lambda { })
           end
