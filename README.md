@@ -27,7 +27,7 @@ The rspec-given gem is the original given/when/then extension for
 RSpec. It now depends on a given_core gem for the basic functionality
 and then adds the RSpec specific code.
 
-* rspec-given now requires RSpec version 2.12 or better.
+* rspec-given now requires RSpec version 2.14.0 or better.
 
 ### Minitest/Given
 
