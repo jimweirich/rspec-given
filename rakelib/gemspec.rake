@@ -48,7 +48,7 @@ EOF
     ]
 
     s.add_dependency("given_core", "= #{Given::VERSION}")
-    s.add_dependency("rspec", ">= 2.12")
+    s.add_dependency("rspec", ">= 2.14.0")
 
     s.required_ruby_version = '>= 1.9.2'
     s.license = "MIT"
