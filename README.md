@@ -4,7 +4,7 @@
 | :----: |
 | [![Master Build Status](https://secure.travis-ci.org/rspec-given/rspec-given.png?branch=master)](https://travis-ci.org/rspec-given/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.6.0.
+Covering rspec-given, minitest-given, and given-core, version 3.7.0.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -869,6 +869,10 @@ rspec-given, minitest-given and given_core are available under the MIT
 License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* Version 3.7.0
+
+  * Add support for Rails tests when using minitest-given (See [#6](https://github.com/rspec-given/rspec-given/pull/6))
 
 * Version 3.6.0
 
