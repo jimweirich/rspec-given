@@ -55,8 +55,8 @@ describe "Lazy Givens" do
   end
 
   context "when not called" do
-    Given(:value) { :ok }
-    Then { given_assert_equal :ok, value }
+    Given(:some_value) { :ok }
+    Then { given_assert_equal :ok, some_value }
   end
 end
 

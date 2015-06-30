@@ -22,7 +22,16 @@ describe "Failing Messages" do
   context "when referencing undefined methods" do
     Given(:failing_test) { "undefined_method_spec.rb" }
     Then { ios.err == "" }
-    And { ios.out =~ /undefined local variable or method `xyz'/ }
+    And { complains_xyz_is_not_in_scope?(ios.out) }
+
+    def complains_xyz_is_not_in_scope?(out)
+      [
+        # RSpec <3.2's message:
+        "undefined local variable or method `xyz'",
+        # RSpec >3.2's message:
+        "`xyz` is not available from within an example"
+      ].any? { |msg| out.include?(msg) }
+    end
   end
 
   context "when breaking down expressions" do
