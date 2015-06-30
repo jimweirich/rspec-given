@@ -22,7 +22,7 @@ describe "Failing Messages" do
   context "when referencing undefined methods" do
     Given(:failing_test) { "undefined_method_spec.rb" }
     Then { ios.err == "" }
-    And { ios.out =~ /undefined local variable or method `xyz'/ }
+    And { ios.out =~ /`xyz` is not available from within an example/ }
   end
 
   context "when breaking down expressions" do
