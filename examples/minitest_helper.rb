@@ -35,4 +35,5 @@ module NaturalAssertionControl
 end
 
 Minitest::Spec.send(:include, GivenAssertions)
+Minitest::Test.send(:include, GivenAssertions)
 include NaturalAssertionControl
