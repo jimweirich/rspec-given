@@ -2,6 +2,22 @@
 # The before blocks defined in Minitest are inadequate for our use.
 # This before_extension file allows us to use real before blocks.
 
+module Given
+  module MiniTest
+    module ClassExtensions
+      # Lazy accessor for Given's before blocks
+      def _Gvn_before_blocks
+        @_Gvn_before_blocks ||= []
+      end
+
+      # Define a Given style before block
+      def _Gvn_before(&block)
+        _Gvn_before_blocks << block
+      end
+    end
+  end
+end
+
 module Minitest
   class Spec
 

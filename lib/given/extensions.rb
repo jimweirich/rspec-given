@@ -158,16 +158,6 @@ module Given
       @_Gvn_and_blocks ||= []
     end
 
-    # Lazy accessor for Given's before blocks
-    def _Gvn_before_blocks
-      @_Gvn_before_blocks ||= []
-    end
-
-    # Define a Given style before block
-    def _Gvn_before(&block)
-      _Gvn_before_blocks << block
-    end
-
     # Context information ofr the current describe/context block.
     def _Gvn_context_info       # :nodoc:
       @_Gvn_context_info ||= {}
