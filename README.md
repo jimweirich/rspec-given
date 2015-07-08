@@ -870,6 +870,10 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.7.1
+
+  * Mixin Minitest extensions for both ActiveSupport::TestCase (when present) as well as for MiniTest::Spec (see [#8](https://github.com/rspec-given/rspec-given/pulls/8))
+
 * Version 3.7.0
 
   * Add support for Rails tests when using minitest-given (See [#6](https://github.com/rspec-given/rspec-given/pull/6))
