@@ -347,6 +347,12 @@ should use an empty _Then_ clause, like this:
     Then { }
 ```
 
+A _Then_ clause accepts arguments for user-defined rspec metadata:
+
+```ruby
+    Then(:zippy, :foo => 17) { ... }
+```
+
 #### Then examples:
 
 ```ruby
