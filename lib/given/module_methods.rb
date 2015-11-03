@@ -3,7 +3,7 @@ module Given
   # Does this platform support natural assertions?
   RBX_IN_USE = (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx')
   JRUBY_IN_USE = defined?(JRUBY_VERSION)
-  OLD_JRUBY_IN_USE = JRUBY_IN_USE && (JRUBY_VERSION < '1.7.5')
+  OLD_JRUBY_IN_USE = JRUBY_IN_USE && (Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.5'))
 
   NATURAL_ASSERTIONS_SUPPORTED = ! (OLD_JRUBY_IN_USE || RBX_IN_USE)
 
