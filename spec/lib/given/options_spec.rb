@@ -24,12 +24,6 @@ describe "Configuration Options" do
   end
 
   describe "Global natural assertion configuration" do
-    unless Given::NATURAL_ASSERTIONS_SUPPORTED
-      before do
-        pending "Natural assertions are not supported in JRuby"
-      end
-    end
-
     before do
       Given.use_natural_assertions false
     end
@@ -46,7 +40,7 @@ describe "Configuration Options" do
       Then { expect(_gvn_need_na_message?(nassert)).to be_falsy }
 
       context "overridden locally" do
-        use_natural_assertions_if_supported
+        use_natural_assertions
         Then { expect(_gvn_need_na_message?(nassert)).to be_truthy }
       end
     end
@@ -120,7 +114,7 @@ describe "Configuration Options" do
       Then { expect(_gvn_need_na_message?(nassert)).to be_falsy }
 
       context "overridden locally" do
-        use_natural_assertions_if_supported(true)
+        use_natural_assertions
         Then { expect(_gvn_need_na_message?(nassert)).to be_truthy }
       end
 

@@ -2,9 +2,6 @@ require 'rspec/given'
 require 'spec_helper'
 
 describe Given::NaturalAssertion do
-  before do
-    pending "Natural Assertions disabled for JRuby" unless Given::NATURAL_ASSERTIONS_SUPPORTED
-  end
 
   describe "#content?" do
     context "with empty block" do

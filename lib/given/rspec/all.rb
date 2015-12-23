@@ -6,10 +6,8 @@ module RSpec
   end
 end
 
-if Given::NATURAL_ASSERTIONS_SUPPORTED
-  require 'given/rspec/monkey'
-  raise "Unsupported version of RSpec (#{RSpec::Version::STRING}), unable to detect assertions" unless RSpec::Given::MONKEY
-end
+require 'given/rspec/monkey'
+raise "Unsupported version of RSpec (#{RSpec::Version::STRING}), unable to detect assertions" unless RSpec::Given::MONKEY
 
 require 'given/rspec/have_failed'
 require 'given/rspec/before_extensions'

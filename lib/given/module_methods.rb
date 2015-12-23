@@ -1,11 +1,5 @@
 
 module Given
-  # Does this platform support natural assertions?
-  RBX_IN_USE = (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx')
-  JRUBY_IN_USE = defined?(JRUBY_VERSION)
-  OLD_JRUBY_IN_USE = JRUBY_IN_USE && (Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.5'))
-
-  NATURAL_ASSERTIONS_SUPPORTED = true
 
   def self.framework
     @_gvn_framework
@@ -41,10 +35,9 @@ module Given
   #
   # An error is raised if the the platform does not support natural
   # assertions and the flag is attempting to enable them.
+  #
+  # NOTE: Deprecated. Natural assertions are supported on all platforms now.
   def self.ok_to_use_natural_assertions(enabled)
-    if enabled && ! NATURAL_ASSERTIONS_SUPPORTED
-      fail ArgumentError, "Natural Assertions are disabled for JRuby"
-    end
   end
 
   # Return file and line number where the block is defined.

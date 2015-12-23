@@ -12,4 +12,4 @@ Minitest::Spec.send(:extend, Given::MiniTest::ClassExtensions)
 Minitest::Spec.send(:include, Given::FailureMethod)
 Minitest::Spec.send(:include, Given::InstanceExtensions)
 Minitest::Spec.send(:include, Given::MiniTest::InstanceExtensions)
-Given.use_natural_assertions if Given::NATURAL_ASSERTIONS_SUPPORTED
+Given.use_natural_assertions

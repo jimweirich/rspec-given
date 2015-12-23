@@ -203,15 +203,9 @@ describe Given::ClassExtensions do
 end
 
 describe "use_natural_assertions" do
-  context "when in JRuby" do
-    CONTEXT = self
+  CONTEXT = self
 
-    When(:result) { CONTEXT.use_natural_assertions }
+  When(:result) { CONTEXT.use_natural_assertions }
 
-    if ::Given::NATURAL_ASSERTIONS_SUPPORTED
-      Then { expect(result).to_not have_failed }
-    else
-      Then { expect(result).to have_failed(ArgumentError) }
-    end
-  end
+  Then { expect(result).to_not have_failed }
 end

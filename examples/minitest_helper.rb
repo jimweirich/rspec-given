@@ -22,18 +22,5 @@ module GivenAssertions
   end
 end
 
-module NaturalAssertionControl
-  def use_natural_assertions_if_supported(enabled=true)
-    if enabled && ! Given::NATURAL_ASSERTIONS_SUPPORTED
-      Given {
-        skip "Natural assertions are not supported in JRuby"
-      }
-    else
-      use_natural_assertions(enabled)
-    end
-  end
-end
-
 Minitest::Spec.send(:include, GivenAssertions)
 Minitest::Test.send(:include, GivenAssertions)
-include NaturalAssertionControl

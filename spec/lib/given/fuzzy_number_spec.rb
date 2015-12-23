@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Given::Fuzzy::FuzzyNumber do
-  use_natural_assertions_if_supported
   include Given::Fuzzy
 
   describe "attributes" do

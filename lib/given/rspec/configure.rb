@@ -15,6 +15,6 @@ RSpec.configure do |c|
     c.backtrace_clean_patterns << /lib\/rspec\/given/
   end
 
-  Given.use_natural_assertions if Given::NATURAL_ASSERTIONS_SUPPORTED
+  Given.use_natural_assertions
   Given.source_caching_disabled = false
 end

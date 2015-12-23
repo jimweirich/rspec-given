@@ -61,7 +61,6 @@ module HaveFailedSpec
     end
 
     context "with natural assertions" do
-      use_natural_assertions_if_supported
 
       context "with failure" do
         When(:result) { fail CustomError, "Ouch" }

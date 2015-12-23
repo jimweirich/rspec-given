@@ -67,10 +67,6 @@ EXAMPLES = FileList['examples/**/*_spec.rb', 'examples/use_assertions.rb'].
 
 MT_EXAMPLES = FileList['examples/minitest-rails/**/*_spec.rb', 'examples/minitest/**/*_spec.rb']
 
-unless Given::NATURAL_ASSERTIONS_SUPPORTED
-  EXAMPLES.exclude("examples/stack/*.rb")
-end
-
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 
 desc "Run the RSpec specs and examples"
