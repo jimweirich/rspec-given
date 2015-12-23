@@ -771,12 +771,13 @@ _expect_.
 
 Given uses the Ripper library to parse the source lines and failing
 conditions to find all the sub-expression values upon a failure.
-Currently Ripper is not supported on Rubinius and versions of JRuby
-prior to JRuby-1.7.5.
 
-If you want to use a version of Ruby that does not support Ripper,
-then natural assertions will disabled. In addition, you should also
-disable source caching in the configuration (see the configuration
+If Ripper is not available, like on Rubinius and versions of JRuby prior to
+JRuby-1.7.5, detailed explanations of failures for natural assertions won't be
+available.  Natural assertions will still work, though.
+
+If you want to use a version of Ruby that does not support Ripper, then you
+should disable source caching in the configuration (see the configuration
 section below).
 
 ### Non-Spec Assertions
@@ -880,6 +881,11 @@ rspec-given, minitest-given and given_core are available under the MIT
 License. See the MIT-LICENSE file in the source distribution.
 
 # History
+
+* next release
+
+  * Natural assertions now work on Rubinius and older versions of JRuby (see [#15](https://github.com/rspec-given/rspec-given/issues/15))
+    * WARNING: On these platforms, detailed failure explanations aren't available and source code snippets of Then clauses will only show the first line.
 
 * Version 3.7.1
 
