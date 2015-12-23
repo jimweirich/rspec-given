@@ -37,7 +37,7 @@ module Given
     @natural_assertions_enabled
   end
 
-  # Is is OK to use natural assertions on this platform.
+  # It is OK to use natural assertions on this platform.
   #
   # An error is raised if the the platform does not support natural
   # assertions and the flag is attempting to enable them.
