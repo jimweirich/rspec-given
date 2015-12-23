@@ -2,9 +2,15 @@ require 'given/module_methods'
 require 'given/evaluator'
 require 'given/binary_operation'
 
-if Given::NATURAL_ASSERTIONS_SUPPORTED
+begin
   require 'ripper'
   require 'sorcerer'
+rescue LoadError
+  # NOTE: on Rubinius or old JRuby, Ripper isn't available
+  warn <<-WARNING
+rspec-given: WARNING: Ripper is not available, so detailed failure
+explanations of natural assertions WILL NOT printed.
+  WARNING
 end
 
 module Given
@@ -23,15 +29,20 @@ module Given
     VOID_SEXP = [:void_stmt]
 
     def has_content?
+      return true if ! defined?(::Ripper)
       assertion_sexp != VOID_SEXP
     end
 
     def message
       @output = "#{@clause_type} expression failed at #{source_line}\n"
-      @output << "Failing expression: #{source.strip}\n" if @clause_type != "Then"
-      explain_failure
-      display_pairs(expression_value_pairs)
-      @output << "\n"
+      if defined?(::Ripper)
+        @output << "Failing expression: #{source.strip}\n" if @clause_type != "Then"
+        explain_failure
+        display_pairs(expression_value_pairs)
+        @output << "\n"
+      else
+        @output << "Failing expression (possibly truncated): #{source.strip}\n"
+      end
       @output
     end
 

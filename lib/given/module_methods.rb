@@ -5,7 +5,7 @@ module Given
   JRUBY_IN_USE = defined?(JRUBY_VERSION)
   OLD_JRUBY_IN_USE = JRUBY_IN_USE && (Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.5'))
 
-  NATURAL_ASSERTIONS_SUPPORTED = ! (OLD_JRUBY_IN_USE || RBX_IN_USE)
+  NATURAL_ASSERTIONS_SUPPORTED = true
 
   def self.framework
     @_gvn_framework

@@ -1,6 +1,16 @@
-require 'ripper'
-require 'sorcerer'
+begin
+  require 'ripper'
+  require 'sorcerer'
+rescue LoadError
+  # NOTE: on Rubinius or old JRuby, Ripper isn't available
+  warn <<-WARNING
+rspec-given: WARNING: Sorcerer is not available, so in case of a failing Then
+clause, only its FIRST LINE of source will be printed, no matter how many
+lines it actually spans.
+  WARNING
+end
 require 'given/file_cache'
+
 
 module Given
   class LineExtractor
@@ -21,6 +31,7 @@ module Given
 
     def extract_lines_from(lines, line_index)
       result = lines[line_index]
+      return result if ! defined?(::Sorcerer)
       while result && incomplete?(result)
         line_index += 1
         result << lines[line_index]
