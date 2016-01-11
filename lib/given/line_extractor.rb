@@ -35,7 +35,7 @@ module Given
     def complete_sexp?(sexp)
       Sorcerer.source(sexp)
       true
-    rescue Sorcerer::Resource::NotSexpError => ex
+    rescue Sorcerer::Resource::NotSexpError
       false
     end
 
