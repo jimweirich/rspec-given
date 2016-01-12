@@ -7,7 +7,11 @@ describe "Failing Messages" do
   IOS = Struct.new(:out, :err)
 
   def run_spec(filename)
-    inn, out, err, wait = Open3.popen3("rspec", "examples/integration/failing/#{filename}")
+    _inn, out, err, _wait = Open3.popen3(
+      "rspec", "examples/integration/failing/#{filename}",
+      # Ensure our `project_source_dirs` config is set when we shell out to RSpec.
+      "-rexample_helper"
+    )
     IOS.new(out.read, err.read)
   end
 
@@ -52,7 +56,7 @@ describe "Failing Messages" do
 
   context "with an oddly formatted then" do
     Given(:failing_test) { "oddly_formatted_then.rb" }
-    Then { ios.out =~ /Failure\/Error: Then \{ result == \['a',$/ }
+    Then { ios.out =~ /Failure\/Error:\s*Then \{ result == \['a',$/ }
     And  { ios.out =~ /expected: "anything"/ }
     And  { ios.out =~ /to equal: \["a", "a"\]/ }
   end

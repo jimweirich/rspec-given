@@ -1,4 +1,12 @@
 require 'rspec/given'
+RSpec.configure do |config|
+  # Before RSpec 3.4, RSpec would only print lines in failures from spec files.
+  # Starting in 3.4, it now prints lines from the new `project_source_dirs` config
+  # setting. We want it to print lines from our specs instead of printing
+  # `::RSpec::Expectations.fail_with(*args)` from within lib/given/rspec/framework.rb,
+  # so we remove `lib` from the directories here.
+  config.project_source_dirs -= ["lib"] if config.respond_to?(:project_source_dirs)
+end
 
 # Load the support modules.
 
