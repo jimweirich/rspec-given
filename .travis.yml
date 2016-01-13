@@ -1,4 +1,5 @@
 language: ruby
+sudo: false
 bundler_args: --without dev
 env:
   - RSPEC_VERSION="2.14.0"
