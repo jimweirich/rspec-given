@@ -180,16 +180,6 @@ describe Given::ClassExtensions do
     Then { result == :ok }
   end
 
-  if RSpec::Version::STRING.start_with? "2"
-    describe "Then with metadata" do
-      Then(:opt => :val) { expect(example.metadata[:opt]).to eq(:val) }
-    end
-  else
-    describe "Then with metadata" do
-      Then(:key, :opt => :val) { expect([RSpec.current_example.metadata[:key], RSpec.current_example.metadata[:opt]]).to eq([true, :val]) }
-    end
-  end
-
   describe "And" do
     Given { trace << :given }
     Then { trace << :then }
@@ -197,6 +187,19 @@ describe Given::ClassExtensions do
     And { expect(trace).to eq([:given, :then, :and]) }
   end
 
+  describe "Adding metadata to Then & And (RSpec 2+)" do
+    Given(:test) { RSpec.respond_to?(:current_example) ? RSpec.method(:current_example) : method(:example) }
+    Then(:key => :val) { test.call.metadata[:key] == :val }
+    And { test.call.metadata[:key] == :val }
+
+    if rspec_3_or_later?
+      describe "Supporting default-to-true metadata symbols (RSpec 3 only)" do
+        Then(:magic, :foo => :bar) { test.call.metadata[:magic] == true }
+        And { test.call.metadata[:foo] == :bar }
+      end
+    end
+
+  end
 end
 
 describe "use_natural_assertions" do

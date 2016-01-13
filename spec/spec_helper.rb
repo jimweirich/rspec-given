@@ -34,3 +34,7 @@ end
 def given_assert_raises(error, pattern=nil, &block)
   expect(&block).to raise_error(error, pattern)
 end
+
+def rspec_3_or_later?
+  Gem::Version.new(RSpec::Version::STRING).segments[0] >= 3
+end
