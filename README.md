@@ -347,11 +347,16 @@ should use an empty _Then_ clause, like this:
     Then { }
 ```
 
-A _Then_ clause accepts arguments for user-defined rspec metadata:
+A _Then_ clause accepts arguments for user-defined RSpec metadata:
 
 ```ruby
     Then(:zippy, :foo => 17) { ... }
 ```
+
+Metadata on _Then_ clauses is an RSpec-only feature. You can read more about
+metadata [in RSpec's
+documentation](https://www.relishapp.com/rspec/rspec-core/docs/metadata/user-defined-metadata).
+
 
 #### Then examples:
 
