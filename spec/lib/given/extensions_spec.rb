@@ -180,6 +180,16 @@ describe Given::ClassExtensions do
     Then { result == :ok }
   end
 
+  if RSpec::Version::STRING.start_with? "2"
+    describe "Then with metadata" do
+      Then(:opt => :val) { expect(example.metadata[:opt]).to eq(:val) }
+    end
+  else
+    describe "Then with metadata" do
+      Then(:key, :opt => :val) { expect([RSpec.current_example.metadata[:key], RSpec.current_example.metadata[:opt]]).to eq([true, :val]) }
+    end
+  end
+
   describe "And" do
     Given { trace << :given }
     Then { trace << :then }
