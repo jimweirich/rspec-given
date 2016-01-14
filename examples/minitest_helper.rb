@@ -1,4 +1,3 @@
-
 module GivenAssertions
   def given_assert(cond)
     assert cond
@@ -22,5 +21,14 @@ module GivenAssertions
   end
 end
 
+module NaturalAssertionControl
+  def skip_natural_assertions_if_not_supported
+    if !Given::NATURAL_ASSERTIONS_SUPPORTED
+      Given { skip "This test requires a Ruby runtime with full natural assertions support." }
+    end
+  end
+end
+
 Minitest::Spec.send(:include, GivenAssertions)
 Minitest::Test.send(:include, GivenAssertions)
+include NaturalAssertionControl

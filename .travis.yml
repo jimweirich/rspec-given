@@ -6,5 +6,6 @@ env:
   - RSPEC_VERSION=">=3.1.0"
 rvm:
   - jruby
+  - rbx-2
   - 1.9.3
   - 2.3.0
