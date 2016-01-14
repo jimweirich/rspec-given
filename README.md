@@ -882,10 +882,13 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
-* next release
+* Version 3.8.0
 
-  * Natural assertions now work on Rubinius and older versions of JRuby (see [#15](https://github.com/rspec-given/rspec-given/issues/15))
+  * RSpec metadata can now be added to _Then_ clauses (see [#11](https://github.com/rspec-given/rspec-given/pull/11))
+  * Natural assertions now run on Rubinius and older versions of JRuby (see [#15](https://github.com/rspec-given/rspec-given/issues/15))
     * WARNING: On these platforms, detailed failure explanations aren't available and source code snippets of Then clauses will only show the first line.
+    * WARNING: Assertions of void statements (e.g. `Then { }`) will fail only under runtimes lacking Ripper support
+  * `Given.ok_to_use_natural_assertions` was removed; the method was never properly supported as public, but it was publicly reachable
 
 * Version 3.7.1
 
