@@ -10,9 +10,11 @@ module Given
                                  rescue LoadError
                                    # Expected on Rubinius & old JRuby
                                    warn <<-WARNING.gsub(/^\s+/,'')
-                                     rspec-given: WARNING: Ripper is not available, so multi-line Then statements
-                                     will not be printed correctly and detailed failure
-                                     explanations of natural assertions WILL NOT be printed.
+                                     rspec-given: WARNING: Ripper is not available, so multi-line Then
+                                     statements will not be printed correctly and detailed failure
+                                     explanations of natural assertions WILL NOT be printed. Additionally,
+                                     assertions containing void statements (e.g. `Then { }`) will fail
+                                     in this runtime.
                                    WARNING
                                    false
                                  end
