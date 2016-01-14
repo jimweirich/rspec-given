@@ -44,6 +44,7 @@ module Given
     end
 
     context "when the Then is split over several lines with {}" do
+      skip_natural_assertions_if_not_supported
       Given(:input) {
         "describe 'foobar' do\n" +
         "  Then {\n" +
@@ -55,6 +56,7 @@ module Given
     end
 
     context "when the Then is has blank lines" do
+      skip_natural_assertions_if_not_supported
       Given(:input) {
         "describe 'foobar' do\n" +
         "  Then {\n\n" +
@@ -66,6 +68,7 @@ module Given
     end
 
     context "when the Then is split over several lines with do/end" do
+      skip_natural_assertions_if_not_supported
       Given(:input) {
         "describe 'foobar' do\n" +
         "  Then do\n" +
@@ -77,6 +80,7 @@ module Given
     end
 
     context "when the Then is oddly formatted" do
+      skip_natural_assertions_if_not_supported
       Given(:input) {
         "describe 'foobar' do\n" +
         "  Then { result == ['a',\n" +
