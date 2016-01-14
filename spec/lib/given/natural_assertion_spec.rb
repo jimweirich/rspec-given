@@ -3,6 +3,13 @@ require 'spec_helper'
 
 describe Given::NaturalAssertion do
 
+  if (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx') || (defined?(JRUBY_VERSION) &&
+      Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.5'))
+    Then { Given::NATURAL_ASSERTIONS_SUPPORTED == false }
+  else
+    Then { Given::NATURAL_ASSERTIONS_SUPPORTED == true }
+  end
+
   describe "#content?" do
     context "with empty block" do
       FauxThen { }
