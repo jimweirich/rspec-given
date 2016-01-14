@@ -22,22 +22,12 @@ module Given
   # There is a similar function in Extensions that works at a
   # describe or context scope.
   def self.use_natural_assertions(enabled=true)
-    ok_to_use_natural_assertions(enabled)
     @natural_assertions_enabled = enabled
   end
 
   # TRUE if natural assertions are globally enabled?
   def self.natural_assertions_enabled?
     @natural_assertions_enabled
-  end
-
-  # It is OK to use natural assertions on this platform.
-  #
-  # An error is raised if the the platform does not support natural
-  # assertions and the flag is attempting to enable them.
-  #
-  # NOTE: Deprecated. Natural assertions are supported on all platforms now.
-  def self.ok_to_use_natural_assertions(enabled)
   end
 
   # Return file and line number where the block is defined.

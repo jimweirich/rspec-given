@@ -272,7 +272,6 @@ module Given
 
     # Configure the use of natural assertions in this context.
     def use_natural_assertions(enabled=true)
-      Given.ok_to_use_natural_assertions(enabled)
       _Gvn_context_info[:natural_assertions_enabled] = enabled
     end
   end
