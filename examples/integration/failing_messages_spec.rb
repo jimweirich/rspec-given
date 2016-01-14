@@ -2,8 +2,6 @@ require 'example_helper'
 require 'open3'
 
 describe "Failing Messages" do
-  skip_natural_assertions_if_not_supported
-
   IOS = Struct.new(:out, :err)
 
   def run_spec(filename)
@@ -18,12 +16,14 @@ describe "Failing Messages" do
   When(:ios) { run_spec(failing_test) }
 
   context "when referencing constants from nested modules" do
+    skip_natural_assertions_if_not_supported
     Given(:failing_test) { "module_nesting_spec.rb" }
     Then { ios.err == "" }
     And { ios.out !~ /uninitialized constant RSpec::Given::InstanceExtensions::X/ }
   end
 
   context "when referencing undefined methods" do
+    skip_natural_assertions_if_not_supported
     Given(:failing_test) { "undefined_method_spec.rb" }
     Then { ios.err == "" }
     And { complains_xyz_is_not_in_scope?(ios.out) }
@@ -39,6 +39,7 @@ describe "Failing Messages" do
   end
 
   context "when breaking down expressions" do
+    skip_natural_assertions_if_not_supported
     Given(:failing_test) { "eval_subexpression_spec.rb" }
     Then { ios.err == "" }
     And  { ios.out =~ /false *<- array\[index\]\.upcase == value$/ }
@@ -55,6 +56,7 @@ describe "Failing Messages" do
   end
 
   context "with an oddly formatted then" do
+    skip_natural_assertions_if_not_supported
     Given(:failing_test) { "oddly_formatted_then.rb" }
     Then { ios.out =~ /Failure\/Error:\s*Then \{ result == \['a',$/ }
     And  { ios.out =~ /expected: "anything"/ }

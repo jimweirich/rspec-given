@@ -12,8 +12,8 @@ end
 
 describe Given::NaturalAssertion do
   describe "#content?" do
-    skip_natural_assertions_if_not_supported
     context "with empty block" do
+      skip_natural_assertions_if_not_supported
       FauxThen { }
       Then { expect(na).to_not have_content }
     end
