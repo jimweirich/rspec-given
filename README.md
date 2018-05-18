@@ -53,7 +53,7 @@ things to watch out for:
 
 * Only one before block is allowed in any given Minitest::Spec
   describe block. This doesn't effect the number of Givens you are
-  allowed to use, but it may surprise if you are use to RSpec.
+  allowed to use, but it may surprise you if you are used to RSpec.
 
 ### Auto Selecting
 
