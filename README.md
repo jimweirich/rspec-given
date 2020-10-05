@@ -882,6 +882,10 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.8.1
+
+  * Fix deprecation warnings fro Ruby 2.6 & up
+
 * Version 3.8.0
 
   * RSpec metadata can now be added to _Then_ clauses (see [#11](https://github.com/rspec-given/rspec-given/pull/11))
