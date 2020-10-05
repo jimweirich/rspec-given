@@ -56,7 +56,6 @@ EOF
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/rspec-given/rspec-given"
-    s.rubyforge_project = "given"
   end
 
   MINITEST_GIVEN_SPEC = Gem::Specification.new do |s|
@@ -84,7 +83,6 @@ EOF
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/rspec-given/rspec-given"
-    s.rubyforge_project = "given"
   end
 
   GIVEN_CORE_SPEC = Gem::Specification.new do |s|
@@ -112,7 +110,6 @@ EOF
     s.author = "Jim Weirich"
     s.email = "jim.weirich@gmail.com"
     s.homepage = "http://github.com/rspec-given/rspec-given"
-    s.rubyforge_project = "given"
   end
 
   Gem::PackageTask.new(MINITEST_GIVEN_SPEC) do |pkg|
