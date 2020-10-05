@@ -63,7 +63,7 @@ describe Given::NaturalAssertion do
 
     context "with equals assertion with do/end" do
       Given(:a) { 1 }
-      FauxThen do a == 2 end
+      FauxThen { a == 2 }
       Then { expect(msg).to match(/\bexpected: +1\b/) }
       Then { expect(msg).to match(/\bto equal: +2\b/) }
       Then { expect(msg).to match(/\bfalse +<- +a == 2\b/) }
