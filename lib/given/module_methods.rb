@@ -32,7 +32,11 @@ module Given
 
   # Return file and line number where the block is defined.
   def self.location_of(block)
-    block.binding.source_location
+    if block.binding.respond_to?(:source_location)
+      block.binding.source_location
+    else
+      eval "[__FILE__, __LINE__]", block.binding
+    end
   end
 
   # Methods forwarded to the framework object.
