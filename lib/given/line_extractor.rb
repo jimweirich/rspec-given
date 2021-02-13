@@ -1,5 +1,4 @@
-require 'ripper'
-require 'sorcerer'
+require 'given/natural_assertion'
 require 'given/file_cache'
 
 module Given
@@ -20,6 +19,7 @@ module Given
     private
 
     def extract_lines_from(lines, line_index)
+      return lines[line_index] unless NATURAL_ASSERTIONS_SUPPORTED
       result = lines[line_index]
       while result && incomplete?(result)
         line_index += 1
@@ -29,13 +29,13 @@ module Given
     end
 
     def incomplete?(string)
-      ! complete_sexp?(parse(string))
+      !complete_sexp?(parse(string))
     end
 
     def complete_sexp?(sexp)
       Sorcerer.source(sexp)
       true
-    rescue Sorcerer::Resource::NotSexpError => ex
+    rescue Sorcerer::Resource::NotSexpError
       false
     end
 

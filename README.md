@@ -2,9 +2,9 @@
 
 | Master |
 | :----: |
-| [![Master Build Status](https://secure.travis-ci.org/jimweirich/rspec-given.png?branch=master)](https://travis-ci.org/jimweirich/rspec-given) |
+| [![Master Build Status](https://secure.travis-ci.org/rspec-given/rspec-given.png?branch=master)](https://travis-ci.org/rspec-given/rspec-given) |
 
-Covering rspec-given, minitest-given, and given-core, version 3.5.3.
+Covering rspec-given, minitest-given, and given-core, version 3.8.2.
 
 rspec-given and minitest-given are extensions to your favorite testing
 framework to allow Given/When/Then notation when writing specs.
@@ -27,7 +27,7 @@ The rspec-given gem is the original given/when/then extension for
 RSpec. It now depends on a given_core gem for the basic functionality
 and then adds the RSpec specific code.
 
-* rspec-given now requires RSpec version 2.12 or better.
+* rspec-given now requires RSpec version 2.14.0 or better.
 
 ### Minitest/Given
 
@@ -53,7 +53,7 @@ things to watch out for:
 
 * Only one before block is allowed in any given Minitest::Spec
   describe block. This doesn't effect the number of Givens you are
-  allowed to use, but it may surprise if you are use to RSpec.
+  allowed to use, but it may surprise you if you are used to RSpec.
 
 ### Auto Selecting
 
@@ -72,9 +72,9 @@ end
 ```
 
 See
-[stack_spec.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
+[stack_spec.rb](https://github.com/rspec-given/rspec-given/blob/minispec/examples/stack/stack_spec.rb)
 and
-[example_helper.rb](https://github.com/jimweirich/rspec-given/blob/minispec/examples/example_helper.rb)
+[example_helper.rb](https://github.com/rspec-given/rspec-given/blob/minispec/examples/example_helper.rb)
 
 ## Installation
 
@@ -346,6 +346,17 @@ should use an empty _Then_ clause, like this:
 ```ruby
     Then { }
 ```
+
+A _Then_ clause accepts arguments for user-defined RSpec metadata:
+
+```ruby
+    Then(:zippy, :foo => 17) { ... }
+```
+
+Metadata on _Then_ clauses is an RSpec-only feature. You can read more about
+metadata [in RSpec's
+documentation](https://www.relishapp.com/rspec/rspec-core/docs/metadata/user-defined-metadata).
+
 
 #### Then examples:
 
@@ -760,12 +771,13 @@ _expect_.
 
 Given uses the Ripper library to parse the source lines and failing
 conditions to find all the sub-expression values upon a failure.
-Currently Ripper is not supported on Rubinius and versions of JRuby
-prior to JRuby-1.7.5.
 
-If you want to use a version of Ruby that does not support Ripper,
-then natural assertions will disabled. In addition, you should also
-disable source caching in the configuration (see the configuration
+If Ripper is not available, like on Rubinius and versions of JRuby prior to
+JRuby-1.7.5, detailed explanations of failures for natural assertions won't be
+available.  Natural assertions will still work, though.
+
+If you want to use a version of Ruby that does not support Ripper, then you
+should disable source caching in the configuration (see the configuration
 section below).
 
 ### Non-Spec Assertions
@@ -870,6 +882,30 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # History
 
+* Version 3.8.1
+
+  * Fix deprecation warnings fro Ruby 2.6 & up
+
+* Version 3.8.0
+
+  * RSpec metadata can now be added to _Then_ clauses (see [#11](https://github.com/rspec-given/rspec-given/pull/11))
+  * Natural assertions now run on Rubinius and older versions of JRuby (see [#15](https://github.com/rspec-given/rspec-given/issues/15))
+    * WARNING: On these platforms, detailed failure explanations aren't available and source code snippets of Then clauses will only show the first line.
+    * WARNING: Assertions of void statements (e.g. `Then { }`) will fail only under runtimes lacking Ripper support
+  * `Given.ok_to_use_natural_assertions` was removed; the method was never properly supported as public, but it was publicly reachable
+
+* Version 3.7.1
+
+  * Mixin Minitest extensions for both ActiveSupport::TestCase (when present) as well as for MiniTest::Spec (see [#8](https://github.com/rspec-given/rspec-given/pulls/8))
+
+* Version 3.7.0
+
+  * Add support for Rails tests when using minitest-given (See [#6](https://github.com/rspec-given/rspec-given/pull/6))
+
+* Version 3.6.0
+
+  * Various fixes for RSpec 3.0 (See [#1](https://github.com/rspec-given/rspec-given/pull/1))
+
 * Version 3.5.4
 
   * Accommodate the name change on RSpec's Pending exception.
@@ -948,7 +984,7 @@ License. See the MIT-LICENSE file in the source distribution.
 
 # Links
 
-* Github: [https://github.com/jimweirich/rspec-given](https://github.com/jimweirich/rspec-given)
-* Clone URL: git://github.com/jimweirich/rspec-given.git
-* Bug/Issue Reporting: [https://github.com/jimweirich/rspec-given/issues](https://github.com/jimweirich/rspec-given/issues)
-* Continuous Integration: [http://travis-ci.org/#!/jimweirich/rspec-given](http://travis-ci.org/#!/jimweirich/rspec-given)
+* Github: [https://github.com/rspec-given/rspec-given](https://github.com/rspec-given/rspec-given)
+* Clone URL: git://github.com/rspec-given/rspec-given.git
+* Bug/Issue Reporting: [https://github.com/rspec-given/rspec-given/issues](https://github.com/rspec-given/rspec-given/issues)
+* Continuous Integration: [http://travis-ci.org/#!/rspec-given/rspec-given](http://travis-ci.org/#!/rspec-given/rspec-given)

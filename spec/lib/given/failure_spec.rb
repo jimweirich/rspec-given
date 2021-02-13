@@ -21,27 +21,24 @@ describe Given::Failure do
   end
 
   describe "raising error" do
-    Then { expect(failure).to raise_error(StandardError, "Oops") }
-    Then { expect(failure).to raise_error(StandardError) }
-    Then { expect(failure).to raise_error }
+    Then { expect { failure.call }.to raise_error(StandardError, "Oops") }
+    Then { expect { failure.call }.to raise_error(StandardError) }
+    Then { expect { failure.call }.to raise_error }
   end
 
   describe "== have_failed" do
-    use_natural_assertions_if_supported
     Then { failure == have_failed(StandardError, "Oops") }
     Then { failure == have_failed(StandardError) }
     Then { failure == have_failed }
   end
 
   describe "== Failure" do
-    use_natural_assertions_if_supported
     Then { failure == Failure(StandardError, "Oops") }
     Then { failure == Failure(StandardError) }
     Then { failure == Failure() }
   end
 
   describe "!= Failure" do
-    use_natural_assertions_if_supported
     Then { expect { failure != Object.new }.to raise_error(StandardError) }
     Then { failure != Failure(other_error) }
   end

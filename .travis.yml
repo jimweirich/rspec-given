@@ -1,8 +1,11 @@
 language: ruby
+sudo: false
 bundler_args: --without dev
 env:
-  - CI=true
+  - RSPEC_VERSION="2.14.0"
+  - RSPEC_VERSION=">=3.1.0"
 rvm:
   - jruby
+  - rbx-2
   - 1.9.3
-  - 2.0.0
+  - 2.3.0

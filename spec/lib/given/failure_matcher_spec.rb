@@ -8,7 +8,6 @@ module FailureMatcherSpec
   NotMetError = RSpec::Expectations::ExpectationNotMetError
 
   describe Given::FailureMatcher do
-    use_natural_assertions_if_supported
 
     Given(:error) { CustomError.new("CUSTOM") }
 

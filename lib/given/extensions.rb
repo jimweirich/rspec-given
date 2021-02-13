@@ -247,11 +247,13 @@ module Given
     # :call-seq:
     #   Then { ... assertion ... }
     #
-    def Then(opts={}, &block)
-      on_eval = opts.fetch(:on_eval, "_gvn_then")
+    def Then(*metadata, &block)
+      opts = metadata.last
+      opts = {} unless opts.is_a? Hash
+      on_eval = opts.delete(:on_eval) || "_gvn_then"
       file, line = Given.location_of(block)
       description = _Gvn_lines.line(file, line) unless Given.source_caching_disabled
-      cmd = description ? "it(description)" : "specify"
+      cmd = description ? "it(description, *metadata)" : "specify(*metadata)"
       eval %{#{cmd} do #{on_eval}(&block) end}, binding, file, line
       _Gvn_context_info[:then_defined] = true
     end
@@ -270,7 +272,6 @@ module Given
 
     # Configure the use of natural assertions in this context.
     def use_natural_assertions(enabled=true)
-      Given.ok_to_use_natural_assertions(enabled)
       _Gvn_context_info[:natural_assertions_enabled] = enabled
     end
   end

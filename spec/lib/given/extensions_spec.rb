@@ -187,18 +187,25 @@ describe Given::ClassExtensions do
     And { expect(trace).to eq([:given, :then, :and]) }
   end
 
+  describe "Adding metadata to Then & And (RSpec 2+)" do
+    Given(:test) { RSpec.respond_to?(:current_example) ? RSpec.method(:current_example) : method(:example) }
+    Then(:key => :val) { test.call.metadata[:key] == :val }
+    And { test.call.metadata[:key] == :val }
+
+    if rspec_3_or_later?
+      describe "Supporting default-to-true metadata symbols (RSpec 3 only)" do
+        Then(:magic, :foo => :bar) { test.call.metadata[:magic] == true }
+        And { test.call.metadata[:foo] == :bar }
+      end
+    end
+
+  end
 end
 
 describe "use_natural_assertions" do
-  context "when in JRuby" do
-    CONTEXT = self
+  CONTEXT = self
 
-    When(:result) { CONTEXT.use_natural_assertions }
+  When(:result) { CONTEXT.use_natural_assertions }
 
-    if ::Given::NATURAL_ASSERTIONS_SUPPORTED
-      Then { expect(result).to_not have_failed }
-    else
-      Then { expect(result).to have_failed(ArgumentError) }
-    end
-  end
+  Then { expect(result).to_not have_failed }
 end

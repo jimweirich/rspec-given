@@ -1,13 +1,19 @@
 require 'rspec/given'
 require 'spec_helper'
 
-describe Given::NaturalAssertion do
-  before do
-    pending "Natural Assertions disabled for JRuby" unless Given::NATURAL_ASSERTIONS_SUPPORTED
+describe Given::NATURAL_ASSERTIONS_SUPPORTED do
+  if (defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx') || (defined?(JRUBY_VERSION) &&
+      Gem::Version.new(JRUBY_VERSION) < Gem::Version.new('1.7.5'))
+    Then { Given::NATURAL_ASSERTIONS_SUPPORTED == false }
+  else
+    Then { Given::NATURAL_ASSERTIONS_SUPPORTED == true }
   end
+end
 
+describe Given::NaturalAssertion do
   describe "#content?" do
     context "with empty block" do
+      skip_natural_assertions_if_not_supported
       FauxThen { }
       Then { expect(na).to_not have_content }
     end
@@ -42,6 +48,7 @@ describe Given::NaturalAssertion do
   end
 
   describe "failure messages" do
+    skip_natural_assertions_if_not_supported
     let(:msg) { na.message }
     Invariant { expect(msg).to match(/^FauxThen expression/) }
 
@@ -56,7 +63,7 @@ describe Given::NaturalAssertion do
 
     context "with equals assertion with do/end" do
       Given(:a) { 1 }
-      FauxThen do a == 2 end
+      FauxThen { a == 2 }
       Then { expect(msg).to match(/\bexpected: +1\b/) }
       Then { expect(msg).to match(/\bto equal: +2\b/) }
       Then { expect(msg).to match(/\bfalse +<- +a == 2\b/) }
@@ -167,7 +174,11 @@ describe Given::NaturalAssertion do
         ary[1] == 3
       }
       When(:result) { na.message }
-      Then { expect(result).to have_failed(Given::InvalidThenError, /multiple.*statements/i) }
+      if Given::NATURAL_ASSERTIONS_SUPPORTED
+        Then { expect(result).to have_failed(Given::InvalidThenError, /multiple.*statements/i) }
+      else
+        Then { expect(result).to match(/FauxThen expression failed/) }
+      end
     end
 
   end

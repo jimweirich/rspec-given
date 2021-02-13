@@ -62,13 +62,10 @@ end
 EXAMPLES = FileList['examples/**/*_spec.rb', 'examples/use_assertions.rb'].
   exclude('examples/failing/*.rb').
   exclude('examples/minitest/*.rb').
+  exclude('examples/minitest-rails/*.rb').
   exclude('examples/integration/failing/*.rb')
 
-MT_EXAMPLES = FileList['examples/minitest/**/*_spec.rb']
-
-unless Given::NATURAL_ASSERTIONS_SUPPORTED
-  EXAMPLES.exclude("examples/stack/*.rb")
-end
+MT_EXAMPLES = FileList['examples/minitest-rails/**/*_spec.rb', 'examples/minitest/**/*_spec.rb']
 
 FAILING_EXAMPLES = FileList['examples/failing/**/*_spec.rb']
 

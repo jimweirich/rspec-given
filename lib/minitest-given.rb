@@ -6,4 +6,4 @@
 #
 # Thanks.
 
-require 'given/minitest/all'
+require 'minitest/given'

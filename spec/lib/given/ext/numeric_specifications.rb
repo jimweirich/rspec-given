@@ -4,7 +4,6 @@ require 'rspec/given'
 require 'rspec/given/fuzzy_shortcuts'
 
 describe "Numeric Extensions" do
-  use_natural_assertions_if_supported
 
   Given(:n) { 10 }
   Given(:about_n) { about(n) }

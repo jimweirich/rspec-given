@@ -1,15 +1,9 @@
 module NaturalAssertionControl
-  def use_natural_assertions_if_supported(enabled=true)
-    if enabled && ! Given::NATURAL_ASSERTIONS_SUPPORTED
-      Given {
-        pending "Natural assertions are not supported in JRuby"
-      }
-    else
-      use_natural_assertions(enabled)
+  def skip_natural_assertions_if_not_supported
+    if !Given::NATURAL_ASSERTIONS_SUPPORTED
+      Given { pending "This test requires a Ruby runtime with full natural assertions support." }
     end
   end
 end
 
-RSpec.configure do |c|
-  c.extend(NaturalAssertionControl)
-end
+RSpec.configure { |c| c.extend(NaturalAssertionControl) }

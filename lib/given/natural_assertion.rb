@@ -2,12 +2,22 @@ require 'given/module_methods'
 require 'given/evaluator'
 require 'given/binary_operation'
 
-if Given::NATURAL_ASSERTIONS_SUPPORTED
-  require 'ripper'
-  require 'sorcerer'
-end
-
 module Given
+  NATURAL_ASSERTIONS_SUPPORTED = begin
+                                   require 'ripper'
+                                   require 'sorcerer'
+                                   true
+                                 rescue LoadError
+                                   # Expected on Rubinius & old JRuby
+                                   warn <<-WARNING.gsub(/^\s+/,'')
+                                     rspec-given: WARNING: Ripper is not available, so multi-line Then
+                                     statements will not be printed correctly and detailed failure
+                                     explanations of natural assertions WILL NOT be printed. Additionally,
+                                     assertions containing void statements (e.g. `Then { }`) will fail
+                                     in this runtime.
+                                   WARNING
+                                   false
+                                 end
 
   InvalidThenError = Class.new(StandardError)
 
@@ -23,15 +33,20 @@ module Given
     VOID_SEXP = [:void_stmt]
 
     def has_content?
+      return true unless NATURAL_ASSERTIONS_SUPPORTED
       assertion_sexp != VOID_SEXP
     end
 
     def message
       @output = "#{@clause_type} expression failed at #{source_line}\n"
-      @output << "Failing expression: #{source.strip}\n" if @clause_type != "Then"
-      explain_failure
-      display_pairs(expression_value_pairs)
-      @output << "\n"
+      if NATURAL_ASSERTIONS_SUPPORTED
+        @output << "Failing expression: #{source.strip}\n" if @clause_type != "Then"
+        explain_failure
+        display_pairs(expression_value_pairs)
+        @output << "\n"
+      else
+        @output << "Failing expression (possibly truncated): #{source.strip}\n"
+      end
       @output
     end
 
@@ -174,5 +189,4 @@ module Given
       "#{@code_file}:#{@code_line}"
     end
   end
-
 end
